@@ -667,7 +667,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["lydia", "Mein Than", "Lydia eingestellt.", s => s.lydia],
     ["awake", "He, du. Endlich wach.", "Nach über 4 Stunden Pause zurückgekommen.", s => s.awake >= 1],
     ["quest", "Nur noch eine Quest", "Lieber Skyrim gespielt als poliert.", s => s.quests >= 1],
-    ["khajiit", "Khajiit hat Teile", "Beim Khajiit-Händler eingekauft.", s => s.bonus >= 2],
+    ["khajiit", "Skoomius hat Teile", "Bei Skoomius Maximus eingekauft.", s => s.bonus >= 2],
     ["play10", "Fast so lange wie in Skyrim", "10 Stunden gespielt.", s => s.play >= 36000],
     ["play100", "Mehr als in Skyrim", "100 Stunden gespielt.", s => s.play >= 360000],
     ["biz10", "Serienunternehmer", "In 10 bescheuerte Ideen investiert.", s => s.bizIn >= 10],
@@ -703,6 +703,9 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["lvl25", "Veteran", "Stufe 25 erreicht.", s => s.level >= 25],
     ["perk1", "Erster Perk", "Einen Perk gelernt.", s => Object.keys(s.perks || {}).length >= 1],
     ["tree", "Sternenkundig", "Ein ganzes Sternbild gelernt.", s => TREES.some(t => t.perks.every(([id]) => s.perks && s.perks[id]))],
+    ["skfed", "Skoomius' bester Freund", "Skoomius fünfmal gefüttert.", s => fc(s, "skFed") >= 5],
+    ["skchef", "Küchenchef", "Skoomius ist dein Hofkoch.", s => fc(s, "c_sk_hofkoch") >= 1],
+    ["senf", "Mit Senf", "Skoomius hat einen Hydranten gegessen.", s => fc(s, "c_sk_frisst") >= 1],
     ["allperks", "Drachenblut", "Alle Perks gelernt.", s => Object.keys(s.perks || {}).length >= Object.keys(PERKS).length]
   ];
   const fc = (s, k) => (s.f && s.f[k]) || 0;
@@ -740,6 +743,12 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       { t: "Verdiene CHF {n} fürs Benzin.", v: s => s.total, n: () => Math.max(1e5, cps() * 1800) },
       { t: "Schick {n} Hydranten nach Berlin. Weniger Hydranten, mehr Garage.", v: s => s.sentAll, n: () => 2 }
     ], reward: { text: "23 Töffs, ein Seitenwagen, ein Gido. Die Ausfahrt geht bis zum Bodensee. Zwölf Töffs kommen zurück.", bonus: 10, cash: [1e5, 1800] } },
+    { giver: "Skoomius Maximus", title: "Skoomius' Festmahl", intro: "«Skoomius plant ein Festmahl. Für sich. Und für dich, wenn etwas übrig bleibt. Es bleibt nie etwas übrig.»", steps: [
+      { t: "Skoomius braucht Geld für Zutaten. Verdiene CHF {n}.", v: s => s.total, n: () => Math.max(5e4, cps() * 1200) },
+      { t: "Er will glänzende Teller. Poliere {n} Mal.", v: s => s.taps, n: () => 400 },
+      { t: "Irgendwo im Schopf hat er sein letztes Skooma versteckt. Öffne {n} Kisten.", v: s => s.revealed, n: () => 5 },
+      { t: "Ein Festmahl braucht Unterhaltung. Erlebe {n} Ereignisse.", v: s => s.evCount, n: () => 3 }
+    ], reward: { text: "Skoomius isst 14 Gänge, drei Tische und die Tischdecke. Zum Dank schenkt er dir sein Kochbuch «Alles schmeckt». Es hat eine Seite: «Mehr Butter».", bonus: 10, cash: [5e4, 1200] } },
     { giver: "Die Graubärte", title: "Der Weltenfresser", intro: "«Alduin ist zurück und will alle Hydranten der Welt verschlingen. Nur der vollständige Hydranten-Schrei kann ihn aufhalten.»", steps: [
       { t: "Öffne alle 100 Kisten.", v: s => s.revealed, n: () => 100, abs: true },
       { t: "Lerne alle drei Wörter des Hydranten-Schreis.", v: s => s.words, n: () => 3, abs: true },
@@ -869,6 +878,12 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     "Hydranten werden nie befördert. Sie bleiben ein Leben lang Soldat.",
     "Ein Hydrant mit Atemschutz ist ein Taucher. Bitte nicht ausprobieren.",
     "Gido hat 23 Töffs, 100 Hydranten und 1 Parkplatz.",
+    "Skoomius Maximus isst an einem Tag so viel wie die ganze Feuerwehr Münchwilen am Feuerwehrfest.",
+    "Skoomius sagt, jeder Hydrant schmeckt anders. Niemand will wissen, woher er das weiss.",
+    "Skoomius' Lieblingsessen: alles. Zweites Lieblingsessen: noch mehr davon.",
+    "Skoomius hat Skooma aufgegeben. Jetzt ist er süchtig nach Fondue.",
+    "Sagt Skoomius «nur einen Bissen», ist danach der Kühlschrank leer.",
+    "Skoomius hat einmal einen Draugr probiert. «Zu trocken», sagt er.",
     "Die Pensionierten polieren gratis. Lernen tun sie dabei nichts. Das ist Erfahrung, sagen sie."
   ];
 
@@ -1228,7 +1243,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   };
   function showDetail(i) {
     const k = S.order[i]; const d = $("detail");
-    const state = S.gone[i] === "berlin" ? " · steht jetzt in Berlin" : S.gone[i] === "sold" ? " · nach Osaka verkauft" : S.gone[i] === "traded" ? " · gegen ein Töff-Ersatzteil getauscht" : "";
+    const state = S.gone[i] === "berlin" ? " · steht jetzt in Berlin" : S.gone[i] === "sold" ? " · nach Osaka verkauft" : S.gone[i] === "traded" ? " · gegen ein Töff-Ersatzteil getauscht" : S.gone[i] === "eaten" ? " · von Skoomius gegessen, mit Senf" : "";
     d.hidden = false;
     d.innerHTML = `${hySvg(rcol(k))}<div><b>${esc(hydName(i))}</b><br><span style="color:${rcol(k)};font-weight:700">${esc(RAR[k].n)}</span> · +${RAR[k].pct} % Einkommen${esc(state)}<br><span style="color:var(--muted)">${esc(k === "U" ? "Euer Treffpunkt. Unverkäuflich." : RAR[k].msg)}</span></div>`;
   }
@@ -1423,9 +1438,9 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     } },
     { id: "khajiit", ok: () => S.money >= 50 && S.bonus < 20, run: () => {
       const cost = Math.max(50, cps() * 40);
-      modal({ kicker: "HÄNDLER VOR DEM SCHOPF", title: "Ein Khajiit-Händler", text: "«Khajiit hat Hydranten-Ersatzteile, wenn du Münzen hast.»", acts: [
-        { label: `Kaufen (CHF ${fmt(cost)}, +2 % Einkommen dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.bonus += 2; toast("Die Teile sind leicht klebrig, funktionieren aber."); } else toast("«Khajiit sieht keine Münzen.»"); } },
-        { label: "Nur schauen", run: () => toast("«Khajiit wartet. Khajiit hat Zeit.»") }
+      modal({ kicker: "HÄNDLER VOR DEM SCHOPF", title: "Skoomius Maximus", text: "Ein sehr runder Khajiit mit Serviette um den Hals: «Skoomius hat Hydranten-Ersatzteile, wenn du Münzen hast. Skooma hat Skoomius keins mehr. Skoomius hat alles selbst getrunken.»", acts: [
+        { label: `Kaufen (CHF ${fmt(cost)}, +2 % Einkommen dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.bonus += 2; toast("Die Teile sind klebrig und riechen nach Mondzucker. Funktionieren aber."); } else toast("«Skoomius sieht keine Münzen. Skoomius sieht nur Hunger.»"); } },
+        { label: "Nur schauen", run: () => toast("«Skoomius wartet. Skoomius isst in der Zwischenzeit deinen Znüni.»") }
       ] });
     } },
     { id: "lydia", ok: () => !S.lydia && S.revealed >= 8, run: () => {
@@ -1749,6 +1764,46 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: "Sofort eine neue Idee pitchen", run: () => setTimeout(() => EVENTS.find(e => e.id === "biz").run(), 60) }
       ] });
     } },
+    // ----- Skoomius Maximus -----
+    { id: "sk_hunger", w: 2, ok: () => S.money >= 50, run: () => {
+      const cost = Math.max(80, cps() * 60);
+      modal({ kicker: "SKOOMIUS MAXIMUS", title: "Skoomius hat Hunger", text: "Skoomius steht in der Tür. «Skoomius hat seit zwanzig Minuten nichts gegessen. Skoomius stirbt.» Sein Blick wandert zu deinem Kühlschrank.", acts: [
+        { label: `Füttern (CHF ${fmt(cost)}, Wischen ×4 für 30 s)`, run: () => { if (S.money >= cost) { S.money -= cost; bump("skFed"); S.tapBuff = 4; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; toast("Skoomius isst 40 Bratwürste, ein Fondue und den Kühlschrank. Aus Dankbarkeit poliert er mit."); } else { bump("skNo"); toast("Zu wenig Geld. Skoomius isst stattdessen den Polierlappen. Er hat einen neuen gefunden."); } } },
+        { label: "Nein, Skoomius.", run: () => { bump("skNo"); if (S.zwerg > 0) S.zwerg = Math.max(0, S.zwerg - 3); toast("Skoomius isst aus Protest einen Gartenzwerg. Frau Hugentobler hat es gesehen."); } }
+      ] });
+    } },
+    { id: "sk_kritik", ok: () => S.revealed >= 5, run: () => {
+      const cash = Math.max(40, cps() * 60);
+      modal({ kicker: "GUIDE MICHELIN VON HIMMELSRAND", title: "Skoomius' Feinschmecker-Kritik", text: "Skoomius hat an deinen Hydranten geleckt und eine Kritik geschrieben: «Rostig: nussig, mit metallischem Abgang. Feuerrot: frech, aber ehrlich. Gold: zu süss. Skoomius will mehr.»", acts: [
+        { label: `Veröffentlichen (+CHF ${fmt(cash)})`, run: () => { earn(cash); bump("skCritic"); toast("Drei Sterne! Feinschmecker aus ganz Himmelsrand wollen an deinen Hydranten lecken. Gido ist dagegen."); } },
+        { label: "Ihm sagen, dass man Hydranten nicht isst", run: () => toast("Skoomius ist zutiefst beleidigt. Er isst zum Trost einen ganzen Laib Käse. Mit Rinde.") }
+      ] });
+    } },
+    { id: "sk_entzug", ok: () => fc(S, "skFed") >= 1, run: () => {
+      const cost = Math.max(100, cps() * 90);
+      modal({ kicker: "SKOOMIUS MAXIMUS", title: "Skoomius auf Entzug", text: "Skoomius zittert. «In ganz Münchwilen gibt es kein Skooma. Skoomius braucht Zucker. Sehr viel Zucker. Jetzt.»", acts: [
+        { label: `300 Süssrollen bestellen (CHF ${fmt(cost)}, Einkommen ×2 für 60 s)`, run: () => { if (S.money >= cost) { S.money -= cost; bump("skFed"); S.sweetroll++; S.incBuff = 2; S.incBuffUntil = now() + 60000; toast("Skoomius isst alle 300 Süssrollen in vier Minuten. Jetzt poliert er fröhlich mit dem Schwanz."); } else toast("Zu wenig Geld. Skoomius leckt die Glasur von Gidos Töff."); } },
+        { label: "Ihm Gidos Kafi geben", run: () => toast("Skoomius trinkt die ganze Kanne, rennt dreimal um Münchwilen und schläft dann in einem Hydranten ein.") }
+      ] });
+    } },
+    { id: "sk_fondue", ok: () => S.revealed >= 8, run: () => {
+      modal({ kicker: "SKOOMIUS KOCHT", title: "Fondue im Hydranten", text: "Skoomius hat einen Hydranten ausgehöhlt und kocht darin Fondue für ganz Münchwilen. 40 Kilo Käse. Er hat schon die Hälfte probiert.", acts: [
+        { label: "Mitessen (Einkommen ×3 für 45 s)", run: () => { S.incBuff = 3; S.incBuffUntil = now() + 45000; bump("skFondue"); toast("Bestes Fondue der Schweiz. Schmeckt leicht nach Hydrant."); } },
+        { label: "Gido holen", run: () => toast("Gido bringt Brot. Und einen zweiten Hydranten, für Raclette.") }
+      ] });
+    } },
+    { id: "sk_hofkoch", w: 3, ok: () => fc(S, "skFed") >= 3 && once("sk_hofkoch"), run: () => { mark("sk_hofkoch");
+      modal({ kicker: "SKOOMIUS MAXIMUS", title: "Skoomius bleibt", text: "Skoomius hat so oft bei dir gegessen, dass er beschlossen hat, zu bleiben. Ab jetzt kocht er für die Pensionierten. Satt polieren sie viel besser.", acts: [
+        { label: "Willkommen, Küchenchef! (+10 % für immer)", run: () => { S.qbonus += 10; toast("Skoomius hängt seine Serviette an einen Hydranten. Das ist jetzt seine Küche."); } }
+      ] });
+    } },
+    { id: "sk_frisst", w: 3, ok: () => fc(S, "skNo") >= 2 && once("sk_frisst") && activeSlots().some(i => S.order[i] === "c"), run: () => { mark("sk_frisst");
+      const i = activeSlots().find(i => S.order[i] === "c");
+      S.gone[i] = "eaten";
+      modal({ kicker: "AM NÄCHSTEN MORGEN", title: "Skoomius hatte Hunger", text: `Du hast Skoomius zweimal nichts gegeben. Heute Nacht hat er ${hydName(i)} gegessen. Mit Senf. Nur der Deckel ist übrig.`, acts: [
+        { label: "Den Deckel einrahmen", run: () => toast("Gido hängt den Deckel in der Garage neben die Käfer-Busse.") }
+      ] });
+    } },
     { id: "biz", w: 3, ok: () => S.money >= 50, run: () => {
       const [idea, win, lose] = BIZ[Math.floor(Math.random() * BIZ.length)];
       const by = Math.random() < .5 ? `${friend()} hat eine Idee` : "Du hast um 3 Uhr nachts eine Idee";
@@ -1783,6 +1838,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["Mietfeuerwehr: Gefreiter und Soldat löschen auf Bestellung, Atemschutz gegen Aufpreis.", "Erster Auftrag: ein Grillfest. Ihr löscht den Grill. Der Kunde zahlt trotzdem.", "Gefreiter und Soldat streiten über die Befehlskette. Das Feuer geht von allein aus."],
     ["Ein Hydrant, der Kafi ausschenkt.", "Der pensionierte Feuerwehrmann zieht direkt daneben ein.", "Es kommt Kafi raus. Leider auch beim Löschen."],
     ["Hydranten-Leasing für Hunde, die sich keinen eigenen leisten können.", "Bruno der Dackel schliesst ein Fünfjahres-Leasing ab.", "Kein einziger Hund kann einen Vertrag unterschreiben."],
+    ["Skoomius' Restaurant «Zum vollen Magen»: alles, was Skoomius nicht selber isst.", "Ein einziges Gericht verlässt die Küche. Die Kritiken sind überragend.", "Skoomius isst die ganze Eröffnungsfeier selbst. Inklusive Tische."],
+    ["Skoomius' Diät-Ratgeber: «Wie ich 40 Bratwürste am Tag esse und trotzdem Hunger habe».", "Bestseller in Himmelsrand. Alle Khajiit kaufen zwei Exemplare.", "Skoomius isst die gesamte Erstauflage. Papier hatte er noch nie probiert."],
     ["Ein Skyrim-Mod, in dem alle Drachen Hydranten sind.", "Eine Million Downloads. Ein Spielestudio ruft an.", "Die Hydranten-Drachen können nicht fliegen. Das Spiel stürzt ab, ihr auch."],
     ["Süssrollen-Lieferdienst für Wachleute in ganz Himmelsrand.", "Kein einziger Diebstahl mehr. Die Wachen lieben euch.", "Alle Süssrollen wurden unterwegs gestohlen. Niemand weiss, von wem."],
     ["Pfeil-ins-Knie-Versicherung für ehemalige Abenteurer.", "Jeder Wachmann in Himmelsrand schliesst eine ab.", "Alle melden am selben Tag einen Schaden. Am Knie."],
