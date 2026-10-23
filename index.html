@@ -111,7 +111,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .sub { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.45; max-width: 60ch; }
 
 /* Hof */
-#p-hof { align-items: center; text-align: center; gap: 8px; }
+#p-hof { align-items: center; text-align: center; gap: 6px; }
 .yard-title { font-family: var(--f-display); font-size: 13px; color: var(--muted); letter-spacing: .08em; }
 #p-hof {
   --rc: var(--r-c); --glow: 10%;
@@ -123,7 +123,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 #p-hof[data-tier="2"] { --glow: 34%; }
 #p-hof[data-tier="3"] { --glow: 48%; }
 #p-hof[data-tier="4"] { --glow: 62%; }
-.tapzone { position: relative; width: 100%; display: grid; place-items: center; padding-block: 8px; isolation: isolate; }
+.tapzone {
+  position: relative; width: 100%; display: grid; place-items: center; padding-block: 4px; isolation: isolate;
+  /* hydrant width follows the screen height so the facts below stay visible on small phones */
+  --hw: min(44vw, 190px, 20vh); --hw: min(44vw, 190px, 20svh);
+}
 .rays {
   position: absolute; z-index: -1; left: 50%; top: 45%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
   background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--rc) 30%, transparent) 0deg 9deg, transparent 9deg 24deg);
@@ -148,14 +152,19 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .yard-name .nm { font-weight: 700; font-size: 15px; overflow-wrap: anywhere; }
 .yard-name .meta { font-size: 13px; color: var(--muted); }
 .big-hydrant {
-  background: none; border: 0; padding: 0; width: min(52vw, 220px); aspect-ratio: 120 / 200; max-width: 100%;
+  background: none; border: 0; padding: 0; width: var(--hw); aspect-ratio: 120 / 200; max-width: 100%;
   color: var(--r-c); transition: transform .08s ease-out; touch-action: manipulation;
   filter: drop-shadow(0 10px 12px rgba(0,0,0,.18));
 }
 .big-hydrant svg { width: 100%; height: 100%; display: block; }
 .big-hydrant.squish { transform: scale(.94, .9) translateY(4px); }
-.puddle { width: min(60vw, 250px); height: 18px; border-radius: 50%; background: var(--water); opacity: .18; margin-top: -10px; }
+.puddle { width: calc(var(--hw) * 1.2); height: 16px; border-radius: 50%; background: var(--water); opacity: .18; margin-top: -10px; }
 .tap-hint { font-size: 13px; color: var(--muted); }
+@media (max-height: 620px) {
+  .yard-title { display: none; }
+  .tapzone { --hw: min(44vw, 190px, 16vh); --hw: min(44vw, 190px, 16svh); }
+  #p-hof { padding-block: 10px 12px; }
+}
 .tap-hint b { font-family: var(--f-num); color: var(--ink); }
 .float {
   position: absolute; pointer-events: none; font-family: var(--f-num); font-weight: 600; color: var(--water);
