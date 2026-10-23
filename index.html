@@ -104,6 +104,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--water); out
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 24px;
   display: flex; flex-direction: column; gap: 12px;
 }
+.panel > * { flex-shrink: 0; }
 h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0; text-wrap: balance; letter-spacing: .01em; }
 .sub { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.45; max-width: 60ch; }
 
@@ -192,16 +193,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .fees tr.sum td { font-weight: 700; border-bottom: 0; border-top: 2px solid var(--ink); }
 .stamp { align-self: flex-end; font-family: var(--f-display); font-size: 12px; color: var(--red); border: 2px solid var(--red); border-radius: 6px; padding: 4px 8px; transform: rotate(-4deg); }
 
-/* Rangliste */
-.lb { display: flex; flex-direction: column; gap: 8px; }
-.lb-row { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
-.lb-row.me { border-color: var(--red); box-shadow: inset 4px 0 0 var(--red); }
-.lb-pos { font-family: var(--f-display); font-size: 20px; color: var(--muted); text-align: center; }
-.lb-row:first-child .lb-pos { color: var(--r-G); }
-.lb-name { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
-.lb-meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-.lb-val { font-family: var(--f-num); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-.lb-val small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+/* Erfolge */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.stats div { background: var(--surface); padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stats span { font-size: 12px; color: var(--muted); }
+.stats b { font-family: var(--f-num); font-weight: 600; font-size: 15px; overflow-wrap: anywhere; }
 .note { font-size: 13px; color: var(--muted); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; line-height: 1.45; }
 .ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 12px; font-weight: 500; }
 
@@ -332,13 +328,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <div class="parcel" id="parcel"></div>
     </section>
 
-    <section class="panel" id="p-rang" role="tabpanel" hidden>
-      <h2>Rangliste</h2>
-      <p class="sub">Wer verwaltet Gidos Erbe besser? Gezählt wird alles, was je verdient wurde.</p>
-      <div class="lb" id="lb"></div>
-      <div class="note" id="lb-note"></div>
-      <button class="ghost" id="copy-score">Meinen Stand als Text kopieren</button>
-      <h2 style="margin-top:12px">Erfolge <span class="cnt" id="ach-count" style="font-family:var(--f-num);font-size:14px;color:var(--muted)"></span></h2>
+    <section class="panel" id="p-erfolge" role="tabpanel" hidden>
+      <h2>Dein Stand</h2>
+      <div class="stats" id="stats"></div>
+      <button class="ghost" id="copy-score">Stand kopieren und per WhatsApp schicken</button>
+      <h2 style="margin-top:12px">Erfolge <span id="ach-count" style="font-family:var(--f-num);font-size:14px;color:var(--muted)"></span></h2>
       <p class="sub">Jeder Erfolg gibt dauerhaft +1 % Einkommen, auch nach einem neuen Erbe.</p>
       <div class="achs" id="achs"></div>
     </section>
@@ -353,8 +347,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10l9-6 9 6v10H3z"/><path d="M8 20v-6h8v6"/></svg>Schopf<i class="dot" id="dot-schopf" hidden></i></button>
     <button role="tab" id="t-berlin" data-p="p-berlin" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8l9-4 9 4v9l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v9"/></svg>Berlin</button>
-    <button role="tab" id="t-rang" data-p="p-rang" aria-selected="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20V12h4v8M10 20V6h4v14M16 20v-5h4v5"/></svg>Rangliste</button>
+    <button role="tab" id="t-erfolge" data-p="p-erfolge" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4"/></svg>Erfolge</button>
   </nav>
 </div>
 
@@ -747,7 +741,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     $("do-prestige").onclick = () => {
       if (!ready) return;
       modal({ kicker: "BRIEF VOM NOTAR", title: `Testament, Teil ${S.erbe + 1}`,
-        text: `In Gidos Garage stehen nochmals 100 Kisten. Wenn du das Erbe antrittst, beginnst du von vorn: Geld, Personal, Verbesserungen und Kisten sind weg. Du behältst Erfolge, Medaillen und deinen Platz in der Rangliste und bekommst ${m} neue Gido-Medaillen.`,
+        text: `In Gidos Garage stehen nochmals 100 Kisten. Wenn du das Erbe antrittst, beginnst du von vorn: Geld, Personal, Verbesserungen und Kisten sind weg. Du behältst Erfolge und Medaillen und bekommst ${m} neue Gido-Medaillen.`,
         acts: [{ label: `Erbe antreten (+${m} Medaillen)`, run: doPrestige }, { label: "Noch nicht" }] });
     };
   }
@@ -757,7 +751,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       sentAll: S.sentAll, sold: S.sold, goldClicks: S.goldClicks, evCount: S.evCount };
     S = Object.assign(freshState(), keep);
     $("detail").hidden = true;
-    saveLocal(); pushCloud();
+    saveLocal();
     toast(`Erbe Nr. ${S.erbe} angetreten. ${S.medals} Medaillen glänzen an deiner Brust.`);
     showTab("p-hof");
   }
@@ -849,8 +843,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       ] });
     } },
     { id: "brief", ok: () => S.revealed >= 3, run: () => {
-      modal({ kicker: "NACHRICHT AUS BERLIN", title: `${friend()} schreibt`, text: friend() === "Filip" ? "«Hier in Berlin gibt es keine schönen Hydranten. Nur so grüne Pumpen. Ich vermisse Münchwilen.»" : "«Na, schon reich? Ich bin dir in der Rangliste auf den Fersen.»", acts: [
-        { label: friend() === "Filip" ? "Paket vorbereiten" : "Rangliste ansehen", run: () => showTab(friend() === "Filip" ? "p-berlin" : "p-rang") },
+      modal({ kicker: "NACHRICHT AUS BERLIN", title: `${friend()} schreibt`, text: friend() === "Filip" ? "«Hier in Berlin gibt es keine schönen Hydranten. Nur so grüne Pumpen. Ich vermisse Münchwilen.»" : "«Na, schon reich? Schick mir mal deinen Stand, ich bin dir auf den Fersen.»", acts: [
+        { label: friend() === "Filip" ? "Paket vorbereiten" : "Meinen Stand ansehen", run: () => showTab(friend() === "Filip" ? "p-berlin" : "p-erfolge") },
         { label: "Später", run: () => {} }
       ] });
     } },
@@ -923,47 +917,26 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (tab === "p-personal") renderGens();
     else if (tab === "p-schopf") renderSchopf();
     else if (tab === "p-berlin") renderBerlin();
-    else if (tab === "p-rang") renderBoard();
+    else if (tab === "p-erfolge") renderErfolge();
   }
   function renderAll() { lastAfford = ""; renderHud(); refreshAffordance(); renderPanel(); }
 
-  // ---------- Leaderboard (shared db) ----------
-  let db = null, uid = null, board = [], cloudState = "connecting", writable = true;
-  function myEntry() {
-    return { player: S.name || "Unbekannt", total: Math.floor(S.total), revealed: S.revealed, sent: S.sentAll, erbe: S.erbe, medals: S.medals, ach: achCount(), best: rarest() || "", title: title(), updatedAt: now() };
-  }
-  function renderBoard() {
-    let rows = board.slice();
-    if (!uid) {
-      // offline: show only the local player
-      rows = [{ id: "local", ...myEntry() }];
-    } else {
-      const mine = { id: uid, ...myEntry() };
-      rows = rows.filter(r => r.id !== uid).concat([mine]);
-    }
-    rows.sort((a, b) => (b.total || 0) - (a.total || 0));
-    $("lb").innerHTML = rows.map((r, i) => {
-      const me = r.id === uid || r.id === "local";
-      const best = r.best && RAR[r.best] ? RAR[r.best].n : "noch nichts";
-      return `<div class="lb-row ${me ? "me" : ""}"><div class="lb-pos">${i + 1}</div>
-        <div style="min-width:0"><div class="lb-name">${esc(String(r.player || "Unbekannt").slice(0, 24))}${me ? " (du)" : ""}</div>
-        <div class="lb-meta">${esc(String(r.title || ""))} · Erbe ${+r.erbe || 1} · ${+r.revealed || 0}/100 Kisten · ${+r.sent || 0} nach Berlin · ${+r.ach || 0} Erfolge · Bester Fund: ${esc(best)}</div></div>
-        <div class="lb-val">CHF ${fmt(+r.total || 0)}<small>verdient</small></div></div>`;
-    }).join("");
-    const notes = {
-      connecting: "Verbinde mit der Rangliste …",
-      live: `Live: Sobald ${friend()} spielt, erscheint der Stand hier. Dein Stand wird alle 30 Sekunden hochgeladen.`,
-      readonly: "Du kannst die Rangliste sehen, aber nicht eintragen. Andrin muss dich in den Freigabe-Einstellungen per E-Mail als «Editor» einladen.",
-      offline: "Die gemeinsame Rangliste ist noch nicht verbunden. Dein Spielstand wird auf diesem Gerät gespeichert. Kopiere deinen Stand und schick ihn per WhatsApp."
-    };
-    $("lb-note").textContent = notes[cloudState] || notes.offline;
+  // ---------- Erfolge & eigener Stand ----------
+  function renderErfolge() {
+    const best = rarest() ? RAR[rarest()].n : "noch nichts";
+    const stats = [
+      ["Insgesamt verdient", "CHF " + fmt(S.total)], ["Titel", title()], ["Erbe Nr.", S.erbe],
+      ["Gido-Medaillen", S.medals], ["Kisten offen", S.revealed + "/100"], ["Nach Berlin verschickt", S.sentAll],
+      ["Bester Fund", best], ["Gewischt", grp(S.taps) + "×"]
+    ];
+    $("stats").innerHTML = stats.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");
     renderAch();
   }
   function checkAch() {
     if (!S.name) return;
-    for (const [id, n] of ACH) if (!S.ach[id] && ACH.find(a => a[0] === id)[3](S)) {
+    for (const [id, n, , test] of ACH) if (!S.ach[id] && test(S)) {
       S.ach[id] = 1; toast(`Erfolg: «${n}» (+1 % Einkommen)`);
-      if (tab === "p-rang") renderBoard();
+      if (tab === "p-erfolge") renderErfolge();
     }
   }
   function renderAch() {
@@ -977,50 +950,6 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const done = () => toast("Kopiert. Ab in den Chat damit.");
     try { navigator.clipboard.writeText(txt).then(done, () => toast(txt)); } catch { toast(txt); }
   };
-
-  let pushing = false, lastPushed = -1, savePushing = false;
-  async function pushCloud() {
-    if (!db || !uid || !S.name) return;
-    if (writable && !pushing && Math.floor(S.total) !== lastPushed) {
-      pushing = true;
-      try { await db.doc("leaderboard/" + uid).set(myEntry()); lastPushed = Math.floor(S.total); }
-      catch (e) { if (e && e.code === "invalid_argument") { writable = false; cloudState = "readonly"; if (tab === "p-rang") renderBoard(); } }
-      pushing = false;
-    }
-    if (!savePushing) {
-      savePushing = true;
-      try { S.savedAt = now(); await db.doc("data/users/" + uid + "/save").set({ json: JSON.stringify(S), savedAt: S.savedAt }); } catch {}
-      savePushing = false;
-    }
-  }
-  async function initCloud() {
-    try {
-      if (!window.claude || !window.claude.use) { cloudState = "offline"; return; }
-      const [d, u] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
-      const id = u ? await u.id() : null;
-      if (!d || !id) { cloudState = "offline"; if (tab === "p-rang") renderBoard(); return; }
-      db = d; uid = id;
-      // pull a newer save from another device
-      try {
-        const snap = await db.doc("data/users/" + uid + "/save").get();
-        if (snap.exists) {
-          const remote = JSON.parse(snap.data().json);
-          if (remote && remote.v === 1 && (remote.savedAt || 0) > (S.savedAt || 0) + 5000) {
-            S = Object.assign(freshState(), remote); applyOffline(); renderAll(); toast("Spielstand von einem anderen Gerät geladen.");
-          }
-        }
-      } catch {}
-      if (u.can) { const w = await u.can("data.write"); if (w === false) { writable = false; } }
-      cloudState = writable ? "live" : "readonly";
-      db.collection("leaderboard").orderBy("total", "desc").limit(30).onSnapshot(
-        s => { board = s.docs.map(x => ({ id: x.id, ...x.data() })); if (tab === "p-rang") renderBoard(); },
-        () => { cloudState = "offline"; if (tab === "p-rang") renderBoard(); }
-      );
-      pushCloud();
-      setInterval(pushCloud, 30000);
-    } catch { cloudState = "offline"; }
-    if (tab === "p-rang") renderBoard();
-  }
 
   // ---------- Offline earnings & intro ----------
   function applyOffline() {
@@ -1053,7 +982,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   }
   function setName(n) {
     S.name = n; S.lastSeen = now(); S.nextEvent = now() + 45000; S.nextGold = now() + 40000;
-    saveLocal(); renderAll(); pushCloud();
+    saveLocal(); renderAll();
     toast(`Willkommen, ${n}. Tipp auf den Hydranten.`);
   }
 
@@ -1068,7 +997,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     requestAnimationFrame(frame);
   }
   setInterval(saveLocal, 5000);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) { saveLocal(); pushCloud(); } else applyOffline(); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) saveLocal(); else applyOffline(); });
 
   function start(data) {
     const hot = data && data.state;
@@ -1077,7 +1006,6 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     renderAll();
     if (!S.name) intro();
     requestAnimationFrame(frame);
-    initCloud();
   }
   const hot = window.claude && window.claude.hot;
   if (hot && hot.snapshot) hot.snapshot(() => ({ state: S }));
