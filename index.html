@@ -249,10 +249,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
 /* Tabs */
 .tabs {
-  display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: repeat(6, 1fr); background: var(--surface); border-top: 1px solid var(--line);
   padding-left: max(4px, env(safe-area-inset-left, 0px)); padding-right: max(4px, env(safe-area-inset-right, 0px));
 }
-.tabs button { border: 0; background: none; padding: 8px 2px 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; color: var(--muted); position: relative; }
+.tabs button { border: 0; background: none; padding: 8px 2px 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--muted); position: relative; min-width: 0; }
 .tabs button svg { width: 22px; height: 22px; }
 .tabs button[aria-selected="true"] { color: var(--red); font-weight: 700; }
 .tabs button[aria-selected="true"]::before { content: ""; position: absolute; top: 0; left: 20%; right: 20%; height: 3px; background: var(--red); border-radius: 0 0 3px 3px; }
@@ -347,6 +347,45 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 @keyframes flap { from { transform: translate(0, 0) rotate(-8deg); } to { transform: translate(40px, 14px) rotate(8deg); } }
 .big-hydrant .sea { display: none; }
 #p-hof[data-season="advent"] .sea-hat, #p-hof[data-season="halloween"] .sea-pumpkin, #p-hof[data-season="august"] .sea-flag { display: inline; }
+
+/* Skills */
+.lvl { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.lvl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.lvl-n { font-family: var(--f-display); font-size: 20px; }
+.lvl-pts { font-family: var(--f-num); font-size: 13px; background: var(--signal); color: var(--signal-ink); border-radius: 6px; padding: 2px 8px; }
+.lvl-pts.none { background: var(--surface-2); color: var(--muted); }
+.xpbar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.xpbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--water), #8fd0ff); width: 0; transition: width .3s; }
+.xp-txt { font-family: var(--f-num); font-size: 12px; color: var(--muted); }
+.trees { display: flex; flex-direction: column; gap: 12px; }
+.tree { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.tree-sky { background: radial-gradient(ellipse at 50% 0%, #22305e, #0b1020 75%); padding: 12px 14px 4px; color: #e8edf8; }
+.tree-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tree-head b { font-family: var(--f-display); font-weight: 400; font-size: 16px; letter-spacing: .02em; }
+.tree-head span { font-family: var(--f-num); font-size: 12px; color: #a9b6d6; }
+.tree-sky p { margin: 4px 0 0; font-size: 12.5px; color: #a9b6d6; line-height: 1.4; }
+.tree-sky svg { width: 100%; height: auto; display: block; }
+.tree-sky .ln { stroke: #5a6a99; stroke-width: 1.5; }
+.tree-sky .ln.on { stroke: #ffd56b; }
+.tree-sky .st { fill: #3a466e; }
+.tree-sky .st.on { fill: #ffd56b; filter: drop-shadow(0 0 4px #ffd56b); }
+.tree-sky .st.next { fill: #fff; animation: twinkle 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.perks { display: flex; flex-direction: column; }
+.perk { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); }
+.perk b { font-size: 14px; display: block; }
+.perk span { font-size: 12.5px; color: var(--muted); line-height: 1.35; display: block; }
+.perk.locked { opacity: .5; }
+.perk .done { font-family: var(--f-num); font-size: 13px; color: var(--good); font-weight: 600; }
+.perk .learn { border: 0; border-radius: 8px; padding: 8px 12px; background: var(--signal); color: var(--signal-ink); font-weight: 700; font-size: 13px; }
+.perk .learn:disabled { background: var(--surface-2); color: var(--muted); cursor: default; }
+
+/* Schreie im Hof */
+.shouts { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+.shout { width: 54px; height: 54px; border-radius: 50%; border: 2px solid #ffd56b; background: radial-gradient(circle, #2a3566, #111833); color: #ffe7a3; font-family: var(--f-display); font-size: 10px; line-height: 1.05; padding: 2px; position: relative; overflow: hidden; box-shadow: 0 0 10px rgba(255,213,107,.45); }
+.shout::after { content: ""; position: absolute; inset: 0; background: conic-gradient(rgba(5,8,18,.78) calc(var(--cd, 0) * 1%), transparent 0); }
+.shout:disabled { box-shadow: none; border-color: #59617a; color: #9aa3bd; cursor: default; }
+.shout small { position: absolute; left: 0; right: 0; bottom: 6px; font-family: var(--f-num); font-size: 10px; z-index: 1; }
+.float.crit { color: var(--r-G); font-size: 24px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
 }
@@ -434,6 +473,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
           </svg>
         </button>
         <div class="puddle"></div>
+        <div class="shouts" id="shouts"></div>
       </div>
       <div class="yard-name" id="yard-name"></div>
       <div class="rankline" id="rankline"></div>
@@ -467,6 +507,17 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <div class="parcel" id="parcel"></div>
     </section>
 
+    <section class="panel" id="p-skills" role="tabpanel" hidden>
+      <h2>Skills</h2>
+      <div class="lvl">
+        <div class="lvl-top"><span class="lvl-n" id="lvl-n">Stufe 1</span><span class="lvl-pts" id="lvl-pts"></span></div>
+        <div class="xpbar"><i id="xp-bar"></i></div>
+        <div class="xp-txt" id="xp-txt"></div>
+      </div>
+      <p class="sub">XP gibt es nur fürs eigene Polieren und für Ereignisse, Mini-Spiele und Quests. Die Pensionierten polieren für dich, lernen aber nichts dabei. Jede Stufe bringt einen Perkpunkt.</p>
+      <div class="trees" id="trees"></div>
+    </section>
+
     <section class="panel" id="p-erfolge" role="tabpanel" hidden>
       <h2>Dein Stand</h2>
       <div class="stats" id="stats"></div>
@@ -486,6 +537,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10l9-6 9 6v10H3z"/><path d="M8 20v-6h8v6"/></svg>Schopf<i class="dot" id="dot-schopf" hidden></i></button>
     <button role="tab" id="t-berlin" data-p="p-berlin" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8l9-4 9 4v9l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v9"/></svg>Berlin</button>
+    <button role="tab" id="t-skills" data-p="p-skills" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>Skills<i class="dot" id="dot-skills" hidden></i></button>
     <button role="tab" id="t-erfolge" data-p="p-erfolge" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4"/></svg>Erfolge</button>
   </nav>
@@ -623,7 +676,12 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["storm", "Sturmmantel", "Im Bürgerkrieg für Ulfric.", s => s.side === "storm"],
     ["empire", "Legionär", "Im Bürgerkrieg fürs Kaiserreich.", s => s.side === "empire"],
     ["than", "Than von Weisslauf", "Vom Jarl zum Than ernannt.", s => fc(s, "c_than") >= 1],
-    ["tanaka", "Tanakas Respekt", "Herrn Tanaka viermal abgewiesen.", s => fc(s, "tanakaRespect") >= 1]
+    ["tanaka", "Tanakas Respekt", "Herrn Tanaka viermal abgewiesen.", s => fc(s, "tanakaRespect") >= 1],
+    ["lvl10", "Abenteurer-Stufe 10", "Stufe 10 erreicht.", s => s.level >= 10],
+    ["lvl25", "Veteran", "Stufe 25 erreicht.", s => s.level >= 25],
+    ["perk1", "Erster Perk", "Einen Perk gelernt.", s => Object.keys(s.perks || {}).length >= 1],
+    ["tree", "Sternenkundig", "Ein ganzes Sternbild gelernt.", s => TREES.some(t => t.perks.every(([id]) => s.perks && s.perks[id]))],
+    ["allperks", "Drachenblut", "Alle Perks gelernt.", s => Object.keys(s.perks || {}).length >= Object.keys(PERKS).length]
   ];
   const fc = (s, k) => (s.f && s.f[k]) || 0;
 
@@ -667,6 +725,40 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ], reward: { text: "HYD RAN TEN! Alduin flüchtet nach Berlin. Filip meldet: Porto hat er keins bezahlt.", bonus: 20 } }
   ];
   const val = x => (typeof x === "function" ? x() : x);
+
+  // Skill-Tree: vier Sternbilder, jeder Perk setzt den vorherigen im selben Sternbild voraus
+  const TREES = [
+    { id: "pol", n: "Sternbild des Polierers", d: "Für alle, die selbst Hand anlegen. Macht das eigene Polieren stärker.", perks: [
+      ["p1", "Rekrutenschule", "Jeder Wisch bringt 50 % mehr."],
+      ["p2", "Kritischer Wisch", "5 % Chance auf einen Wisch ×10."],
+      ["p3", "Combo-Wischer", "Schnelles Tippen baut eine Combo bis ×2 auf."],
+      ["p4", "Doppelschicht", "Eigenes Polieren gibt doppelt so viel XP."],
+      ["p5", "Meisterpolierer", "Kritische Wische: 12 % Chance, ×15."],
+      ["p6", "Legendärer Lappen", "Jeder Wisch bringt zusätzlich 3 % deines Einkommens pro Sekunde."]
+    ] },
+    { id: "atem", n: "Sternbild des Atemschutzes", d: "Ausbildung für den Ernstfall. Macht die Mini-Spiele leichter.", perks: [
+      ["a1", "Grosse Flasche", "Der Löscheinsatz dauert 10 Sekunden länger."],
+      ["a2", "Schnelles Kuppeln", "Brände wachsen 30 % langsamer."],
+      ["a3", "Feingefühl", "Der richtige Winkel beim Schlossknacken ist fast doppelt so breit."],
+      ["a4", "Ebenerz-Dietriche", "Dietriche brechen nur halb so schnell."],
+      ["a5", "Gruppenführer", "Belohnungen aus Mini-Spielen ×2."]
+    ] },
+    { id: "hand", n: "Sternbild des Händlers", d: "Verhandeln, feilschen, Glück haben. Macht Ereignisse besser.", perks: [
+      ["h1", "Vereinsmitglied", "Ereignisse kommen häufiger."],
+      ["h2", "Verhandlungsgeschick", "Geld aus Ereignissen ×1.5."],
+      ["h3", "Goldgräber", "Der goldene Hydrant kommt öfter und bleibt länger."],
+      ["h4", "Glückspilz", "Bescheuerte Business-Ideen klappen öfter (55 % statt 40 %)."],
+      ["h5", "Stammkunde der Post", "Porto nach Berlin 25 % günstiger."]
+    ] },
+    { id: "drache", n: "Sternbild des Drachenbluts", d: "Die Stimme der Hydranten. Schaltet Schreie frei, die du im Hof einsetzen kannst.", perks: [
+      ["d1", "FUS", "Schrei: Einkommen ×3 für 20 s. Abklingzeit 5 Min."],
+      ["d2", "FUS RO", "Der Schrei wird stärker: ×5 für 25 s."],
+      ["d3", "WULD", "Schrei: Wirbelwind-Wischen, 10 Wische pro Sekunde für 10 s. Abklingzeit 4 Min."],
+      ["d4", "Drachenseele", "Alle Abklingzeiten 40 % kürzer."],
+      ["d5", "HYD RAN TEN", "Der Hydranten-Schrei: Einkommen ×10 für 30 s. Abklingzeit 15 Min."]
+    ] }
+  ];
+  const PERKS = {}; TREES.forEach(t => t.perks.forEach(([id], i) => (PERKS[id] = { tree: t.id, prev: i ? t.perks[i - 1][0] : null })));
   function has(s, k, n = 1) { let c = 0; for (let i = 0; i < s.revealed; i++) if (s.order[i] === k) c++; return c >= n; }
   function genTotal(s) { let c = 0; for (const g of GENS) c += s.gens[g.id] || 0; return c; }
   const LAPPEN = { cost: 20, grow: 1.6 };
@@ -702,7 +794,44 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     "In Himmelsrand rollt Käse bergauf. In Münchwilen nur bergab.",
     "Riesen schicken Leute ins All. Die Post schickt Hydranten nach Berlin. Beides ist teuer.",
     "Auch ein Draugr hat mal klein angefangen. Mit einem Hydranten, vermutlich.",
-    "Ein Pferd in Himmelsrand klettert jede Wand hoch. Ein Hydrant in Münchwilen nicht."
+    "Ein Pferd in Himmelsrand klettert jede Wand hoch. Ein Hydrant in Münchwilen nicht.",
+    "Hydranten sind die einzigen Feuerwehrleute, die nie zu spät zur Übung kommen.",
+    "Ein Hydrant bekommt mehr Hundebesuch als ein Tierarzt.",
+    "Hydranten schlafen im Stehen. Wie Pferde. Und manche Soldaten an der Übung.",
+    "Wissenschaftlich erwiesen: Ein polierter Hydrant spritzt 3 % schöner.",
+    "In Münchwilen gibt es mehr Hydranten als Ampeln. Gido zählt nach.",
+    "Ein Thurgauer Hydrant liefert Wasser. Ein Zürcher Hydrant liefert eine Rechnung.",
+    "Gido behauptet, er erkenne jeden Hydranten am Klang. Er hat alle mit dem Schraubenschlüssel angeklopft.",
+    "Hydranten mögen keine Velos. Velos mögen keine Hydranten. Das ist seit 1890 so.",
+    "Ein Hydrant nach Berlin braucht länger als Filip. Filip nimmt den Zug.",
+    "Das Porto für einen Hydranten nach Berlin entspricht etwa 400 Kafi. Oder einer Töff-Reparatur bei Gido.",
+    "In Berlin verstecken sich die Hydranten im Boden. Aus Scham, sagt Gido.",
+    "Gefreiter ist ein Rang, kein Charakterzug. Sagt Filip.",
+    "Ein Soldat poliert. Ein Gefreiter schaut zu und gibt Tipps.",
+    "Ein Schlauch ist nur so stark wie der Hydrant, an dem er hängt. Und der Soldat, der ihn hält.",
+    "Wer Atemschutz trägt, hört sich selbst atmen. Darth Vader hat das von der Feuerwehr geklaut.",
+    "Die 7000 Stufen nach Hoch-Hrothgar sind etwa dreimal das Treppenhaus zu Filips Wohnung.",
+    "Drachen hassen Hydranten. Deshalb sind sie alle nach Himmelsrand gezogen.",
+    "Ein Khajiit hat einmal versucht, einen Hydranten zu verkaufen. Es war Gidos.",
+    "In der Bibliothek von Winterfeste gibt es kein einziges Buch über Hydranten. Noch nicht.",
+    "Fällt in Himmelsrand ein Hydrant um, steht er wegen der Physik wieder auf. Und fliegt ins All.",
+    "Ein Draugr schläft 1000 Jahre. Ein Hydrant wartet 1000 Jahre. Beide werden ungern geweckt.",
+    "Gidos Töffs verlieren Öl. Die Hydranten nicht. Gido nennt das Charakter.",
+    "Ein Oldtimer und ein Hydrant haben eines gemeinsam: Beide sind rot, und Gido gibt sie nicht her.",
+    "Gido hat seinen Käfer einmal vor einem Hydranten parkiert. Die Busse hängt eingerahmt in der Garage.",
+    "Die Condor springt nur an, wenn ein Hydrant zuschaut. Gido hat es getestet. Mehrmals.",
+    "Bescheuerte Idee Nr. 47: Hydranten mit Sitzheizung. Wird noch geprüft.",
+    "Bescheuerte Idee Nr. 112: ein Hydrant mit WLAN. Das Passwort ist «Gido1958».",
+    "Ein Dackel riecht einen Hydranten auf 2 Kilometer. Bruno auf 4.",
+    "Hydranten haben keine Ohren. Trotzdem hören sie alles, was Frau Hugentobler sagt.",
+    "Ein rostiger Hydrant ist nicht kaputt. Er hat nur Erfahrung.",
+    "Poliert man einen Hydranten lange genug, sieht man darin Gido. Das ist eine Spiegelung, kein Wunder.",
+    "Am 1. August ist der Hydrant der wichtigste Gast am Höhenfeuer. Eingeladen wird er nie.",
+    "Der Samichlaus kommt jedes Jahr am Hydranten vorbei. Der Esel markiert ihn. Wie Bruno.",
+    "Hydranten werden nie befördert. Sie bleiben ein Leben lang Soldat.",
+    "Ein Hydrant mit Atemschutz ist ein Taucher. Bitte nicht ausprobieren.",
+    "Gido hat 23 Töffs, 100 Hydranten und 1 Parkplatz.",
+    "Die Pensionierten polieren gratis. Lernen tun sie dabei nichts. Das ist Erfahrung, sagen sie."
   ];
 
   // Feuerwehr-Ränge statt Titel. Andrin war Gefreiter, Filip Soldat.
@@ -750,6 +879,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       rank: 0, skill: 15, atemCount: 0, shouts: 0, quests: 0, play: 0, bizIn: 0, bizWin: 0, bizLoss: 0, bonus: 0, buffLabel: "",
       lydia: false, sweetroll: 0, nazeem: 0, knee: 0, awake: 0, f: {}, words: 0,
       quest: null, qdone: 0, qbonus: 0, questNext: 0, side: "", lydiaPlus: false,
+      xp: 0, level: 1, perks: {}, cd: {},
       tapBuff: 1, tapBuffUntil: 0, incBuff: 1, incBuffUntil: 0,
       lastSeen: now(), savedAt: 0, nextEvent: now() + 45000, nextGold: now() + 50000, seen: {}
     };
@@ -782,11 +912,26 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   const cps = () => baseCps() * multiplier();
   const upAvailable = () => UPGRADES.filter(u => !S.upg[u.id] && genCount(u.gen) >= u.at).sort((a, b) => a.cost - b.cost);
   const medalsOnReset = () => Math.floor(Math.sqrt(S.runTotal / 1e8));
+  const hasPerk = id => !!(S.perks && S.perks[id]);
   function tapValue() {
     const buff = now() < S.tapBuffUntil ? S.tapBuff : 1;
-    return (1 + S.lappen + S.extraTap + (S.lydia ? 10 : 0) + cps() * 0.01 * S.lappen) * buff * (S.lydia ? (S.lydiaPlus ? 1.5 : 1.25) : 1);
+    return (1 + S.lappen + S.extraTap + (S.lydia ? 10 : 0) + cps() * (0.01 * S.lappen + (hasPerk("p6") ? .03 : 0))) * buff
+      * (S.lydia ? (S.lydiaPlus ? 1.5 : 1.25) : 1) * (hasPerk("p1") ? 1.5 : 1);
   }
-  function earn(x) { S.money += x; S.total += x; S.runTotal += x; }
+  let earnMult = 1;
+  function earn(x) { x *= earnMult; S.money += x; S.total += x; S.runTotal += x; }
+
+  // ---------- XP & Stufen ----------
+  const xpNeed = l => Math.round(60 * Math.pow(l, 1.6));
+  const perkPoints = () => S.level - 1 - Object.keys(S.perks || {}).length;
+  function gainXP(n) {
+    if (!S.name) return;
+    S.xp += n;
+    while (S.xp >= xpNeed(S.level)) {
+      S.xp -= xpNeed(S.level); S.level++;
+      toast(`Stufenaufstieg! Stufe ${S.level}. Ein neuer Perkpunkt wartet im Skills-Tab.`);
+    }
+  }
   const isName = n => (S.name || "").toLowerCase() === n;
   function rankIdx() { let i = 0; RANKS.forEach(([v], k) => { if (S.total >= v) i = k; }); return isName("andrin") ? Math.max(i, 1) : i; }
   const title = () => RANKS[rankIdx()][1];
@@ -814,9 +959,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t);
     clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 2600);
   }
-  let modalOpen = false;
+  let modalOpen = false, evCtx = false;
   function modal({ kicker, title, text, html, acts, input }) {
     closeModal();
+    const fromEvent = evCtx; evCtx = false;
     modalOpen = true;
     const bg = document.createElement("div"); bg.className = "modal-bg"; bg.id = "modal-bg";
     const m = document.createElement("div"); m.className = "modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
@@ -826,7 +972,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const box = document.createElement("div"); box.className = "acts";
     acts.forEach((a, i) => {
       const b = document.createElement("button"); b.textContent = a.label; if (i === 0) b.className = "primary";
-      b.onclick = () => { if (a.keep) { a.run && a.run(inp && inp.value); return; } closeModal(); a.run && a.run(inp && inp.value); renderAll(); };
+      b.onclick = () => { if (a.keep) { a.run && a.run(inp && inp.value); return; } closeModal(); earnMult = fromEvent && hasPerk("h2") ? 1.5 : 1; try { a.run && a.run(inp && inp.value); } finally { earnMult = 1; } renderAll(); };
       box.appendChild(b);
     });
     m.appendChild(box); bg.appendChild(m); document.body.appendChild(bg);
@@ -851,13 +997,18 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     $("ov-scales").innerHTML = `<path d="${d}"/>`;
   })();
   const big = $("big"), zone = $("tapzone");
-  big.addEventListener("pointerdown", e => {
-    e.preventDefault();
-    const v = tapValue(); earn(v); S.taps++;
+  let combo = 0, comboAt = 0;
+  function polish(clientX, clientY) {
+    let v = tapValue();
+    if (hasPerk("p3")) { const t = now(); combo = t - comboAt < 600 ? Math.min(1, combo + .04) : Math.max(0, combo - (t - comboAt) / 1000); comboAt = t; v *= 1 + combo; }
+    const critChance = hasPerk("p5") ? .12 : hasPerk("p2") ? .05 : 0;
+    const crit = Math.random() < critChance;
+    if (crit) v *= hasPerk("p5") ? 15 : 10;
+    earn(v); S.taps++; gainXP(hasPerk("p4") ? 2 : 1);
     big.classList.add("squish"); setTimeout(() => big.classList.remove("squish"), 80);
     const r = zone.getBoundingClientRect();
-    const x = (e.clientX || r.left + r.width / 2) - r.left, y = (e.clientY || r.top + r.height / 2) - r.top;
-    const f = document.createElement("div"); f.className = "float"; f.textContent = "+" + fmt(v);
+    const x = (clientX || r.left + r.width / 2) - r.left, y = (clientY || r.top + r.height / 2) - r.top;
+    const f = document.createElement("div"); f.className = "float" + (crit ? " crit" : ""); f.textContent = (crit ? "KRITISCH! +" : "+") + fmt(v) + (combo > .05 && hasPerk("p3") ? ` ×${(1 + combo).toFixed(1)}` : "");
     f.style.left = x + "px"; f.style.top = (y - 20) + "px"; zone.appendChild(f); setTimeout(() => f.remove(), 900);
     for (let i = 0; i < 4; i++) {
       const d = document.createElement("div"); d.className = "drop";
@@ -871,8 +1022,9 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (sk > (S.skill || 15)) S.skill = sk;
     if (S.taps === 100) toast("100 Mal poliert. Dein Daumen hat jetzt Feuerwehr-Kondition.");
     if (S.taps === 1000) toast("1000 Wische. Der Hydrant sieht dich jetzt als Familie.");
-  });
-  big.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); earn(tapValue()); S.taps++; } });
+  }
+  big.addEventListener("pointerdown", e => { e.preventDefault(); polish(e.clientX, e.clientY); });
+  big.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); polish(); } });
 
   let factIdx = Math.floor(Math.random() * FACTS.length);
   function nextFact() { factIdx = (factIdx + 1) % FACTS.length; $("ticker").innerHTML = `<b>HYDRANTEN-FAKT</b>${esc(FACTS[factIdx])}`; }
@@ -1023,7 +1175,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       sentAll: S.sentAll, sold: S.sold, goldClicks: S.goldClicks, evCount: S.evCount, rank: S.rank, skill: S.skill,
       atemCount: S.atemCount, shouts: S.shouts, quests: S.quests, play: S.play, bizIn: S.bizIn, bizWin: S.bizWin, bizLoss: S.bizLoss,
       sweetroll: S.sweetroll, nazeem: S.nazeem, knee: S.knee, awake: S.awake, f: S.f, words: S.words,
-      quest: S.quest, qdone: S.qdone, qbonus: S.qbonus, questNext: S.questNext, side: S.side };
+      quest: S.quest, qdone: S.qdone, qbonus: S.qbonus, questNext: S.questNext, side: S.side,
+      xp: S.xp, level: S.level, perks: S.perks, cd: S.cd };
     S = Object.assign(freshState(), keep);
     if (S.quest) S.quest.base = QUESTS[S.quest.i].steps[S.quest.step].v(S);
     $("detail").hidden = true; yardKey = "";
@@ -1052,7 +1205,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     }
     return best;
   }
-  const porto = () => Math.ceil(Math.max(89, cps() * 120) * Math.pow(1.6, S.sent) * (S.coupon ? .5 : 1));
+  const porto = () => Math.ceil(Math.max(89, cps() * 120) * Math.pow(1.6, S.sent) * (S.coupon ? .5 : 1) * (hasPerk("h5") ? .75 : 1));
   function renderBerlin() {
     const isFilip = S.name.toLowerCase() === "filip";
     $("berlin-sub").textContent = isFilip
@@ -1498,7 +1651,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: `Investieren (CHF ${fmt(stake)})`, run: () => {
           if (S.money < stake) { toast("Zu wenig Geld. Die Idee wartet auf bessere Zeiten."); return; }
           S.money -= stake; S.bizIn++;
-          if (Math.random() < .4) {
+          if (Math.random() < (hasPerk("h4") ? .55 : .4)) {
             const back = stake * rand(2.5, 5); earn(back); S.bizWin++;
             setTimeout(() => modal({ kicker: "ERGEBNIS", title: "Es hat funktioniert!", text: `${win} Gewinn: CHF ${fmt(back)}.`, acts: [{ label: "Wir sind Genies" }] }), 50);
           } else {
@@ -1538,22 +1691,22 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       if ((e.when === "night" && !night) || (e.when === "day" && night)) continue;
       if (e.ok() && e.id !== lastEvent) for (let i = 0; i < (e.w || 1); i++) pool.push(e);
     }
-    S.nextEvent = now() + rand(60000, 120000);
+    S.nextEvent = now() + (hasPerk("h1") ? rand(40000, 85000) : rand(60000, 120000));
     if (!pool.length) return;
-    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; if (night) bump("night"); e.run();
+    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(20); evCtx = true; e.run(); evCtx = false;
   }
 
   // ---------- Golden hydrant ----------
   let goldEl = null;
   function maybeGold() {
     if (goldEl || mgOpen || !S.name || now() < S.nextGold) return;
-    S.nextGold = now() + rand(45000, 120000);
+    S.nextGold = now() + (hasPerk("h3") ? rand(30000, 80000) : rand(45000, 120000));
     goldEl = document.createElement("button"); goldEl.className = "gold"; goldEl.setAttribute("aria-label", "Goldener Hydrant, schnell antippen");
     goldEl.innerHTML = `<svg><use href="#hy"/></svg>`;
     goldEl.style.left = rand(16, Math.max(17, innerWidth - 70)) + "px";
     goldEl.style.top = rand(110, Math.max(111, innerHeight - 180)) + "px";
     goldEl.onclick = () => {
-      S.goldClicks++;
+      S.goldClicks++; gainXP(15);
       const r = Math.random();
       if (r < .5) { const x = Math.max(30, cps() * 60, tapValue() * 20); earn(x); toast(`Goldener Hydrant, wie ein Daedra-Artefakt! +CHF ${fmt(x)}`); }
       else if (r < .8) { S.incBuff = 5; S.incBuffUntil = now() + 20000; toast("Hydranten-Rausch! Einkommen ×5 für 20 s."); }
@@ -1561,14 +1714,14 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       goldEl.remove(); goldEl = null; renderAll();
     };
     document.body.appendChild(goldEl);
-    const me = goldEl; setTimeout(() => { if (goldEl === me) { me.remove(); goldEl = null; } }, 9000);
+    const me = goldEl; setTimeout(() => { if (goldEl === me) { me.remove(); goldEl = null; } }, hasPerk("h3") ? 15000 : 9000);
   }
 
   // ---------- Mini-Spiel: Löscheinsatz ----------
   let mgOpen = false;
   const HOUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-5H9v5H3z"/></svg>';
   function fireGame(opt = {}) {
-    const secs = opt.secs || 30, mult = opt.mult || 1;
+    const secs = (opt.secs || 30) + (hasPerk("a1") ? 10 : 0), mult = (opt.mult || 1) * (hasPerk("a5") ? 2 : 1);
     mgOpen = true;
     const bg = document.createElement("div"); bg.className = "mg-bg";
     bg.innerHTML = `<div class="mg" role="dialog" aria-modal="true">
@@ -1601,7 +1754,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         nextSpawn = Math.max(.45, (opt.spawn || 1.2) - t * .02);
       }
       for (let i = 0; i < 12; i++) if (lvl[i] > 0) {
-        lvl[i] += .1 / (opt.burn || 3.2);
+        lvl[i] += .1 / ((opt.burn || 3.2) * (hasPerk("a2") ? 1.3 : 1));
         if (lvl[i] >= 1) {
           lvl[i] = 0; burnt[i] = true; lost++;
           cells[i].classList.remove("burning"); cells[i].classList.add("burnt"); $("mg-lost").textContent = lost;
@@ -1617,6 +1770,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       if (done) return;
       done = true; clearInterval(tick); bg.remove(); mgOpen = false;
       bump("fireRuns"); if (lost === 0 && saved > 0) bump("firePerfect");
+      gainXP(30 + saved * 5);
       const reward = Math.max(30, cps() * 6) * saved * (lost === 0 ? 2 : 1) * mult;
       earn(reward);
       const verdict = lost === 0 ? "Kein einziges Haus verloren. Der Kommandant salutiert."
@@ -1661,14 +1815,14 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     $("lk-quit").onclick = () => finish(false, true);
     const loop = setInterval(() => {
       const a = +angleEl.value;
-      const allowed = Math.max(0, Math.min(1, 1 - Math.max(0, Math.abs(a - sweet) - 7) / 45));
+      const allowed = Math.max(0, Math.min(1, 1 - Math.max(0, Math.abs(a - sweet) - (hasPerk("a3") ? 13 : 7)) / 45));
       const maxRot = 90 * allowed;
       let stuck = false;
       if (holding) {
         rot = Math.min(maxRot, rot + 4);
         if (allowed >= 1 && rot >= 89) return finish(true);
         if (rot >= maxRot - .5) {
-          stuck = true; health -= .03;
+          stuck = true; health -= hasPerk("a4") ? .015 : .03;
           if (health <= 0) {
             picks--; health = 1; rot = 0; holding = false; bump("picksBroken");
             $("lk-msg").textContent = picks ? "Knack! Dietrich abgebrochen." : "";
@@ -1684,16 +1838,17 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     function finish(ok, quit) {
       if (done) return;
       done = true; clearInterval(loop); bg.remove(); mgOpen = false;
+      gainXP(ok ? 80 : 20);
       if (!ok) {
         modal({ kicker: "SCHLOSS", title: quit ? "Aufgegeben" : "Alle Dietriche abgebrochen", text: "Die Truhe bleibt zu. Lydia seufzt. Gido sagt, den Schlüssel habe er sowieso irgendwo.", acts: [{ label: "Nächstes Mal" }] });
         return;
       }
       bump("locks");
       const loot = [
-        () => { const c = Math.max(200, cps() * 300); earn(c); return `Gidos Notgroschen: CHF ${fmt(c)}.`; },
+        () => { const c = Math.max(200, cps() * 300) * (hasPerk("a5") ? 2 : 1); earn(c); return `Gidos Notgroschen: CHF ${fmt(c)}.`; },
         () => { S.extraTap += 15; return "Ein Polierlappen aus Mammut-Elfenbein: +15 pro Wisch, für immer."; },
         () => { S.bonus += 4; return "Eine Schatzkarte von Gidos Grossvater: +4 % Einkommen."; },
-        () => { const c = Math.max(revealCost(), cps() * 120); earn(c); return `Ein Beutel Septime. Gido wechselt sie in CHF ${fmt(c)}.`; }
+        () => { const c = Math.max(revealCost(), cps() * 120) * (hasPerk("a5") ? 2 : 1); earn(c); return `Ein Beutel Septime. Gido wechselt sie in CHF ${fmt(c)}.`; }
       ];
       const text = loot[Math.floor(Math.random() * loot.length)]();
       modal({ kicker: "KLICK!", title: "Schloss geknackt", text: `In der Truhe: ${text}`, acts: [{ label: "Einstecken" }] });
@@ -1719,6 +1874,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const [q] = questStep();
     if (S.quest.step + 1 < q.steps.length) {
       beginStep(S.quest.i, S.quest.step + 1);
+      gainXP(50);
       toast(`Quest-Ziel erreicht! Weiter: ${fillNeed(questStep()[1].t)}`);
       return;
     }
@@ -1728,7 +1884,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     S.qbonus += r.bonus || 0;
     if (r.tap) S.extraTap += r.tap;
     if (r.coupon) S.coupon = true;
-    S.qdone++; S.quest = null; S.questNext = now() + 30000;
+    S.qdone++; S.quest = null; S.questNext = now() + 30000; gainXP(200);
     const gains = [cash ? "CHF " + fmt(cash) : "", r.bonus ? `+${r.bonus} % Einkommen für immer` : "", r.tap ? `+${r.tap} pro Wisch` : "", r.coupon ? "Berlin-Coupon −50 %" : ""].filter(Boolean).join(", ");
     modal({ kicker: "QUEST ABGESCHLOSSEN", title: q.title, text: `${r.text} Belohnung: ${gains}.`, acts: [{ label: "Ruhm und Ehre" }] });
   }
@@ -1789,6 +1945,76 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     }
   }
 
+  // ---------- Schreie ----------
+  const SHOUTS = [
+    { id: "fus", perk: "d1", label: () => hasPerk("d2") ? "FUS RO" : "FUS", cd: 300, run: () => {
+      const strong = hasPerk("d2"); S.incBuff = strong ? 5 : 3; S.incBuffUntil = now() + (strong ? 25000 : 20000);
+      toast(strong ? "FUS RO! Einkommen ×5 für 25 s." : "FUS! Einkommen ×3 für 20 s."); } },
+    { id: "wuld", perk: "d3", label: () => "WULD", cd: 240, run: () => {
+      toast("WULD! Wirbelwind-Wischen.");
+      let n = 0; const iv = setInterval(() => { polish(); if (++n >= 100) clearInterval(iv); }, 100); } },
+    { id: "hyd", perk: "d5", label: () => "HYD RAN TEN", cd: 900, run: () => {
+      S.incBuff = 10; S.incBuffUntil = now() + 30000; S.shouts++;
+      toast("HYD RAN TEN! Ganz Münchwilen bebt. Einkommen ×10 für 30 s."); } }
+  ];
+  const shoutCd = sh => sh.cd * 1000 * (hasPerk("d4") ? .6 : 1);
+  let shoutKey = "";
+  function renderShouts() {
+    const box = $("shouts"), have = SHOUTS.filter(sh => hasPerk(sh.perk));
+    const key = have.map(sh => sh.id + sh.label()).join();
+    if (key !== shoutKey) {
+      shoutKey = key;
+      box.innerHTML = have.map(sh => `<button class="shout" data-shout="${sh.id}" aria-label="Schrei ${esc(sh.label())}">${esc(sh.label())}<small></small></button>`).join("");
+    }
+    const t = now();
+    box.querySelectorAll(".shout").forEach(b => {
+      const sh = SHOUTS.find(x => x.id === b.dataset.shout), ready = (S.cd && S.cd[sh.id]) || 0, left = ready - t;
+      b.disabled = left > 0;
+      b.style.setProperty("--cd", left > 0 ? (100 * left / shoutCd(sh)).toFixed(1) : 0);
+      b.querySelector("small").textContent = left > 0 ? (left > 60000 ? Math.ceil(left / 60000) + "m" : Math.ceil(left / 1000) + "s") : "";
+    });
+  }
+  $("shouts").addEventListener("click", e => {
+    const b = e.target.closest(".shout"); if (!b || b.disabled) return;
+    const sh = SHOUTS.find(x => x.id === b.dataset.shout);
+    S.cd = S.cd || {}; S.cd[sh.id] = now() + shoutCd(sh); S.shouts++;
+    sh.run(); renderShouts();
+  });
+
+  // ---------- Skills-Tab ----------
+  function renderSkills() {
+    const pts = perkPoints();
+    $("lvl-n").textContent = `Stufe ${S.level}`;
+    const lp = $("lvl-pts"); lp.textContent = pts === 1 ? "1 Perkpunkt" : `${pts} Perkpunkte`; lp.classList.toggle("none", pts <= 0);
+    $("xp-bar").style.width = (100 * S.xp / xpNeed(S.level)).toFixed(1) + "%";
+    $("xp-txt").textContent = `${grp(S.xp)} / ${grp(xpNeed(S.level))} XP bis Stufe ${S.level + 1}`;
+    $("trees").innerHTML = TREES.map(t => {
+      const n = t.perks.length, learned = t.perks.filter(([id]) => hasPerk(id)).length;
+      const pos = t.perks.map((_, i) => [20 + i * (260 / (n - 1)), i % 2 ? 22 : 52 + (i % 3) * 4]);
+      const lines = pos.slice(1).map(([x, y], i) => `<line class="ln${hasPerk(t.perks[i + 1][0]) ? " on" : ""}" x1="${pos[i][0]}" y1="${pos[i][1]}" x2="${x}" y2="${y}"/>`).join("");
+      const stars = pos.map(([x, y], i) => {
+        const id = t.perks[i][0], on = hasPerk(id), next = !on && (!PERKS[id].prev || hasPerk(PERKS[id].prev));
+        return `<circle class="st${on ? " on" : next ? " next" : ""}" cx="${x}" cy="${y}" r="${on ? 6 : 5}"/>`;
+      }).join("");
+      const rows = t.perks.map(([id, name, desc]) => {
+        const on = hasPerk(id), avail = !PERKS[id].prev || hasPerk(PERKS[id].prev);
+        const right = on ? `<span class="done">✓ gelernt</span>` : `<button class="learn" data-perk="${id}" ${avail && pts > 0 ? "" : "disabled"}>${avail ? "Lernen" : "Gesperrt"}</button>`;
+        return `<div class="perk${!on && !avail ? " locked" : ""}"><div><b>${esc(name)}</b><span>${esc(desc)}</span></div>${right}</div>`;
+      }).join("");
+      return `<div class="tree"><div class="tree-sky"><div class="tree-head"><b>${esc(t.n)}</b><span>${learned}/${n}</span></div><p>${esc(t.d)}</p>
+        <svg viewBox="0 0 300 74" aria-hidden="true">${lines}${stars}</svg></div><div class="perks">${rows}</div></div>`;
+    }).join("");
+  }
+  $("trees").addEventListener("click", e => {
+    const b = e.target.closest("[data-perk]"); if (!b || b.disabled) return;
+    const id = b.dataset.perk;
+    if (perkPoints() <= 0 || hasPerk(id) || (PERKS[id].prev && !hasPerk(PERKS[id].prev))) return;
+    S.perks[id] = 1;
+    const name = TREES.flatMap(t => t.perks).find(x => x[0] === id)[1];
+    toast(`Perk gelernt: ${name}`);
+    renderSkills(); renderShouts();
+  });
+
   // ---------- HUD & render ----------
   function renderHud() {
     $("hud-money").innerHTML = `<small>CHF</small>${fmt(S.money)}`;
@@ -1803,7 +2029,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const hb = $("hud-buffs"); hb.hidden = !buffs; if (hb.innerHTML !== buffs) hb.innerHTML = buffs;
     $("hud-who").textContent = S.name ? `${RANKS[rankIdx()][2]} ${S.name}` : "";
     $("rankline").innerHTML = `<b>${esc(title())} ${esc(S.name || "")}</b> · Polieren ${polishSkill()} · ${fmt(tapValue())} pro Wisch`;
-    renderYard(); renderQuest(); renderEnv();
+    renderYard(); renderQuest(); renderEnv(); renderShouts();
+    $("dot-skills").hidden = perkPoints() <= 0;
   }
   let yardKey = "";
   function renderYard() {
@@ -1823,7 +2050,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   let lastAfford = "";
   function refreshAffordance() {
     // cheap check: only re-render lists when what you can afford changes
-    const key = [upAvailable().filter(u => S.money >= u.cost).length, S.money >= lappenCost(), ...GENS.map(g => S.money >= genCost(g, genCount(g.id), qty)), S.money >= revealCost(), S.money >= porto()].join("");
+    const key = [perkPoints(), S.level, upAvailable().filter(u => S.money >= u.cost).length, S.money >= lappenCost(), ...GENS.map(g => S.money >= genCost(g, genCount(g.id), qty)), S.money >= revealCost(), S.money >= porto()].join("");
     $("dot-personal").hidden = !GENS.some((g, i) => (i === 0 || genCount(GENS[i - 1].id) > 0) && S.money >= genCost(g)) && S.money < lappenCost() && !upAvailable().some(u => S.money >= u.cost);
     $("dot-schopf").hidden = !((S.revealed < 100 && S.money >= revealCost()) || (S.revealed >= 100 && S.runTotal >= PRESTIGE_MIN));
     if (key !== lastAfford) { lastAfford = key; renderPanel(); }
@@ -1833,6 +2060,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     else if (tab === "p-schopf") renderSchopf();
     else if (tab === "p-berlin") renderBerlin();
     else if (tab === "p-erfolge") renderErfolge();
+    else if (tab === "p-skills") renderSkills();
   }
   function renderAll() { lastAfford = ""; renderHud(); refreshAffordance(); renderPanel(); }
 
@@ -1843,7 +2071,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       ["Insgesamt verdient", "CHF " + fmt(S.total)], ["Titel", title()], ["Erbschaft Nr.", S.erbe],
       ["Gido-Medaillen", S.medals], ["Kisten offen", S.revealed + "/100"], ["Nach Berlin verschickt", S.sentAll],
       ["Bester Fund", best], ["Gewischt", grp(S.taps) + "×"],
-      ["Quests", `${S.qdone}/${QUESTS.length}`], ["Bürgerkrieg", S.side === "storm" ? "Sturmmantel" : S.side === "empire" ? "Kaiserreich" : "neutral"]
+      ["Stufe", S.level], ["Quests", `${S.qdone}/${QUESTS.length}`], ["Bürgerkrieg", S.side === "storm" ? "Sturmmantel" : S.side === "empire" ? "Kaiserreich" : "neutral"]
     ];
     $("stats").innerHTML = stats.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");
     renderAch();
@@ -1934,7 +2162,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     requestAnimationFrame(frame);
   }
   // test hook, only on a local dev server
-  if (location.hostname === "localhost") window.__hyd = { state: () => S, events: EVENTS, render: renderAll, fireGame, lockGame, checkQuest,
+  if (location.hostname === "localhost") window.__hyd = { state: () => S, events: EVENTS, render: renderAll, fireGame, lockGame, checkQuest, gainXP, polish,
     setPhase: p => { phaseOverride = p; envKey = ""; renderEnv(); }, setSeason: v => { seasonOverride = v; envKey = ""; renderEnv(); } };
   const hot = window.claude && window.claude.hot;
   if (hot && hot.snapshot) hot.snapshot(() => ({ state: S }));
