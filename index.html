@@ -92,6 +92,9 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--water); out
   display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: end;
   border-bottom: 4px solid var(--signal);
 }
+.hud-right { display: flex; align-items: center; gap: 8px; }
+.snd { border: 0; background: rgba(0,0,0,.22); color: #fff; border-radius: 6px; width: 30px; height: 24px; padding: 0; display: inline-grid; place-items: center; }
+.snd svg { width: 16px; height: 16px; }
 .hud-label { font-family: var(--f-display); font-size: 12px; letter-spacing: .06em; opacity: .9; grid-column: 1 / -1; display: flex; justify-content: space-between; }
 .hud-money { font-family: var(--f-num); font-weight: 600; font-size: clamp(26px, 8vw, 36px); font-variant-numeric: tabular-nums; line-height: 1.05; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hud-money small { font-size: .5em; opacity: .85; margin-right: 6px; }
@@ -446,7 +449,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
 <div class="app" id="app">
   <header class="hud">
-    <div class="hud-label"><span>Gidos Erbe · Münchwilen</span><span id="hud-who"></span></div>
+    <div class="hud-label"><span>Gidos Erbe · Münchwilen</span><span class="hud-right"><span id="hud-who"></span><button class="snd" id="snd" aria-label="Ton ausschalten"></button></span></div>
     <div class="hud-money" id="hud-money"><small>CHF</small>0</div>
     <div class="hud-rate"><span id="hud-rate">0 / s</span><br><span id="hud-mult">×1.00</span></div>
     <div class="hud-buffs" id="hud-buffs" hidden></div>
@@ -964,7 +967,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (!S.name) return;
     S.xp += n;
     while (S.xp >= xpNeed(S.level)) {
-      S.xp -= xpNeed(S.level); S.level++;
+      S.xp -= xpNeed(S.level); S.level++; sfx("level");
       toast(S.level === 2 && !hasPerk("d1") ? "Stufenaufstieg! Tipp: Im Skills-Tab, Sternbild «Drachenblut», lernst du deinen ersten Schrei: FUS." : `Stufenaufstieg! Stufe ${S.level}. Ein neuer Perkpunkt wartet im Skills-Tab.`);
     }
   }
@@ -987,6 +990,71 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     for (let i = 0; i < S.revealed; i++) { const k = S.order[i]; if (better(k, best)) best = k; }
     return best;
   }
+
+  // ---------- Töne: alles synthetisch über Web Audio, keine Dateien ----------
+  let actx = null, master = null, noiseBuf = null, soundOn = lsGet("hyd-sound") !== "0";
+  function audio() {
+    if (!soundOn) return null;
+    if (!actx) {
+      try {
+        actx = new (window.AudioContext || window.webkitAudioContext)();
+        master = actx.createGain(); master.gain.value = .5; master.connect(actx.destination);
+      } catch { return null; }
+    }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+  function tone(freq, dur, { type = "sine", vol = .2, at = 0, slide = 0, attack = .005 } = {}) {
+    const a = audio(); if (!a) return;
+    const t = a.currentTime + at, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(20, freq * slide), t + dur);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  function noise(dur, { vol = .2, at = 0, freq = 1200, q = 1, type = "bandpass", slide = 0 } = {}) {
+    const a = audio(); if (!a) return;
+    if (!noiseBuf) {
+      noiseBuf = a.createBuffer(1, a.sampleRate, a.sampleRate);
+      const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    const t = a.currentTime + at, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+    src.buffer = noiseBuf; f.type = type; f.frequency.setValueAtTime(freq, t); f.Q.value = q;
+    if (slide) f.frequency.exponentialRampToValueAtTime(Math.max(40, freq * slide), t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(master); src.start(t, Math.random() * .5); src.stop(t + dur + .02);
+  }
+  let lastPolishSnd = 0;
+  const SND = {
+    polish: () => { const t = performance.now(); if (t - lastPolishSnd < 70) return; lastPolishSnd = t;
+      noise(.09, { vol: .12, freq: rand(2500, 3800), q: 2.5, slide: .6 }); tone(rand(1300, 1700), .05, { type: "triangle", vol: .03, slide: 1.4 }); },
+    crit: () => [1568, 2093, 2637].forEach((f, i) => tone(f, .25, { type: "triangle", vol: .12, at: i * .05 })),
+    buy: () => { tone(988, .08, { type: "square", vol: .05 }); tone(1319, .22, { type: "square", vol: .05, at: .07 }); },
+    crate: () => { noise(.18, { vol: .35, freq: 300, q: .8, type: "lowpass" }); tone(110, .15, { type: "triangle", vol: .2, slide: .5 }); },
+    rare: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, { type: "triangle", vol: .13, at: i * .08 })),
+    epic: () => { [392, 523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, .45, { type: "sawtooth", vol: .05, at: i * .09 })); tone(196, 1.2, { type: "triangle", vol: .15, at: .1 }); },
+    event: () => { tone(880, .1, { vol: .1 }); tone(1175, .16, { vol: .1, at: .09 }); },
+    // Tatütata
+    siren: () => { for (let i = 0; i < 3; i++) { tone(440, .38, { type: "square", vol: .045, at: i * .8 }); tone(585, .38, { type: "square", vol: .045, at: i * .8 + .4 }); } },
+    splash: () => noise(.25, { vol: .25, freq: 900, q: .7, slide: 2.5 }),
+    burnt: () => { noise(.35, { vol: .25, freq: 200, type: "lowpass" }); tone(80, .3, { type: "sawtooth", vol: .06, slide: .6 }); },
+    click: () => tone(rand(1800, 2400), .03, { type: "square", vol: .03 }),
+    snap: () => { noise(.08, { vol: .35, freq: 3000, q: 4 }); tone(900, .1, { type: "square", vol: .05, slide: .3 }); },
+    unlock: () => { noise(.06, { vol: .3, freq: 1500, q: 3 }); tone(220, .2, { type: "triangle", vol: .15, at: .05, slide: 1.5 }); SND.rare(); },
+    level: () => { [262, 330, 392, 523].forEach((f, i) => tone(f, 1.4, { type: "triangle", vol: .09, at: i * .12 })); tone(131, 1.8, { vol: .14 }); },
+    ach: () => { tone(1047, .18, { type: "triangle", vol: .1 }); tone(1568, .35, { type: "triangle", vol: .1, at: .12 }); },
+    gold: () => { for (let i = 0; i < 6; i++) tone(rand(1800, 3200), .12, { vol: .07, at: i * .05 }); },
+    quest: () => [392, 494, 587, 784].forEach((f, i) => tone(f, .5, { type: "triangle", vol: .11, at: i * .13 })),
+    shout: () => { noise(.9, { vol: .5, freq: 400, q: .6, type: "lowpass", slide: .3 }); tone(90, .9, { type: "sawtooth", vol: .18, slide: .45 }); tone(60, 1.2, { vol: .25, slide: .7 }); },
+    send: () => { tone(330, .12, { type: "triangle", vol: .1 }); tone(247, .3, { type: "triangle", vol: .1, at: .1 }); noise(.4, { vol: .1, freq: 600, at: .2, slide: .4 }); },
+    perk: () => [523, 784, 1047, 1568].forEach((f, i) => tone(f, .9, { vol: .07, at: i * .07 }))
+  };
+  const sfx = name => { try { SND[name] && SND[name](); } catch {} };
+  const SPEAKER_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></svg>';
+  const SPEAKER_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
+  function renderSnd() { const b = $("snd"); b.innerHTML = soundOn ? SPEAKER_ON : SPEAKER_OFF; b.setAttribute("aria-label", soundOn ? "Ton ausschalten" : "Ton einschalten"); }
+  $("snd").onclick = () => { soundOn = !soundOn; lsSet("hyd-sound", soundOn ? "1" : "0"); renderSnd(); if (soundOn) sfx("ach"); };
+  renderSnd();
 
   // ---------- UI: toast & modal ----------
   let toastTimer;
@@ -1044,7 +1112,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     big.classList.add("squish"); setTimeout(() => big.classList.remove("squish"), 80);
     const r = zone.getBoundingClientRect();
     const x = (clientX || r.left + r.width / 2) - r.left, y = (clientY || r.top + r.height / 2) - r.top;
-    const f = document.createElement("div"); f.className = "float" + (crit ? " crit" : ""); f.textContent = (crit ? "KRITISCH! +" : "+") + fmt(v) + (combo > .05 && hasPerk("p3") ? ` ×${(1 + combo).toFixed(1)}` : "");
+    const f = document.createElement("div"); sfx(crit ? "crit" : "polish");
+    f.className = "float" + (crit ? " crit" : ""); f.textContent = (crit ? "KRITISCH! +" : "+") + fmt(v) + (combo > .05 && hasPerk("p3") ? ` ×${(1 + combo).toFixed(1)}` : "");
     f.style.left = x + "px"; f.style.top = (y - 20) + "px"; zone.appendChild(f); setTimeout(() => f.remove(), 900);
     for (let i = 0; i < 4; i++) {
       const d = document.createElement("div"); d.className = "drop";
@@ -1115,18 +1184,18 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (ub) {
       const u = UPGRADES.find(x => x.id === ub.dataset.up);
       if (!u || S.upg[u.id] || S.money < u.cost) return;
-      S.money -= u.cost; S.upg[u.id] = 1; toast(`«${u.n}» gekauft. ${GENS.find(x => x.id === u.gen).n} ×2!`);
+      S.money -= u.cost; S.upg[u.id] = 1; sfx("buy"); toast(`«${u.n}» gekauft. ${GENS.find(x => x.id === u.gen).n} ×2!`);
       renderAll(); return;
     }
     const b = e.target.closest("[data-buy]"); if (!b) return;
     const id = b.dataset.buy;
     if (id === "lappen") {
       const c = lappenCost(); if (S.money < c) return;
-      S.money -= c; S.lappen++; toast(`Polierlappen Stufe ${S.lappen}. Riecht noch nach Gidos Werkstatt.`);
+      S.money -= c; S.lappen++; sfx("buy"); toast(`Polierlappen Stufe ${S.lappen}. Riecht noch nach Gidos Werkstatt.`);
     } else {
       const g = GENS.find(x => x.id === id); const c = genCost(g, genCount(id), qty);
       if (S.money < c) return;
-      S.money -= c; S.gens[id] = genCount(id) + qty;
+      S.money -= c; S.gens[id] = genCount(id) + qty; sfx("buy");
       if (S.gens[id] === qty) toast(`Neu: ${g.n}!`);
     }
     renderAll();
@@ -1138,6 +1207,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const c = revealCost(); if (S.money < c) return;
     S.money -= c;
     const i = S.revealed++; const k = S.order[i];
+    sfx(TIER[k][0] >= 3 ? "epic" : TIER[k][0] >= 1 ? "rare" : "crate");
     if (Math.random() < .08 && k !== "U" && k !== "G" && k !== "D") toast("Dietrich abgebrochen. Du nimmst halt das Brecheisen.");
     showDetail(i);
     if (k === "U") {
@@ -1217,7 +1287,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (S.quest) S.quest.base = QUESTS[S.quest.i].steps[S.quest.step].v(S);
     $("detail").hidden = true; yardKey = "";
     saveLocal();
-    toast(`Erbschaft Nr. ${S.erbe} übernommen. ${S.medals} Medaillen glänzen an deiner Uniform.`);
+    sfx("epic"); toast(`Erbschaft Nr. ${S.erbe} übernommen. ${S.medals} Medaillen glänzen an deiner Uniform.`);
     showTab("p-hof");
   }
 
@@ -1260,7 +1330,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const sb = $("send");
     if (sb) sb.onclick = () => {
       const i = sendCandidate(), cost = porto(); if (i < 0 || S.money < cost) return;
-      S.money -= cost; S.gone[i] = "berlin"; S.sent++; S.sentAll++; S.coupon = false;
+      S.money -= cost; S.gone[i] = "berlin"; S.sent++; sfx("send"); S.sentAll++; S.coupon = false;
       const lines = [
         `${hydName(i)} ist unterwegs. Sendungsverfolgung: «Irgendwo bei Ulm».`,
         `Zugestellt. Filip musste ihn selbst in den 3. Stock tragen.`,
@@ -1732,7 +1802,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     // spätestens nach 5 Ereignissen ohne Mini-Spiel kommt garantiert eins
     const minis = pool.filter(e => e.mini);
     const e = (S.sinceMini || 0) >= 5 && minis.length ? minis[Math.floor(Math.random() * minis.length)] : pool[Math.floor(Math.random() * pool.length)];
-    S.sinceMini = e.mini ? 0 : (S.sinceMini || 0) + 1; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(Math.round(20 * (1 + (S.level - 1) * .15))); evCtx = true; e.run(); evCtx = false;
+    S.sinceMini = e.mini ? 0 : (S.sinceMini || 0) + 1; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(Math.round(20 * (1 + (S.level - 1) * .15))); sfx(/^(brand|alduin|s_august|s_silvester)$/.test(e.id) ? "siren" : "event"); evCtx = true; e.run(); evCtx = false;
   }
 
   // ---------- Golden hydrant ----------
@@ -1745,7 +1815,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     goldEl.style.left = rand(16, Math.max(17, innerWidth - 70)) + "px";
     goldEl.style.top = rand(110, Math.max(111, innerHeight - 180)) + "px";
     goldEl.onclick = () => {
-      S.goldClicks++; gainXP(15);
+      S.goldClicks++; gainXP(15); sfx("gold");
       const r = Math.random();
       if (r < .5) { const x = Math.max(30, cps() * 60, tapValue() * 20); earn(x); toast(`Goldener Hydrant, wie ein Daedra-Artefakt! +CHF ${fmt(x)}`); }
       else if (r < .8) { S.incBuff = 5; S.incBuffUntil = now() + 20000; toast("Hydranten-Rausch! Einkommen ×5 für 20 s."); }
@@ -1781,7 +1851,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       e.preventDefault();
       const i = +c.dataset.i;
       if (lvl[i] > 0) {
-        lvl[i] = 0; saved++; c.classList.remove("burning"); c.classList.add("saved");
+        lvl[i] = 0; saved++; sfx("splash"); c.classList.remove("burning"); c.classList.add("saved");
         setTimeout(() => c.classList.remove("saved"), 300); $("mg-saved").textContent = saved;
       }
     });
@@ -1795,7 +1865,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       for (let i = 0; i < 12; i++) if (lvl[i] > 0) {
         lvl[i] += .1 / ((opt.burn || 3.2) * (hasPerk("a2") ? 1.3 : 1));
         if (lvl[i] >= 1) {
-          lvl[i] = 0; burnt[i] = true; lost++;
+          lvl[i] = 0; burnt[i] = true; lost++; sfx("burnt");
           cells[i].classList.remove("burning"); cells[i].classList.add("burnt"); $("mg-lost").textContent = lost;
           const n = neighbours(i).filter(j => !burnt[j] && lvl[j] === 0);
           if (n.length) ignite(n[Math.floor(Math.random() * n.length)]);
@@ -1858,12 +1928,13 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       const maxRot = 90 * allowed;
       let stuck = false;
       if (holding) {
+        if (rot < maxRot && Math.random() < .25) sfx("click");
         rot = Math.min(maxRot, rot + 4);
-        if (allowed >= 1 && rot >= 89) return finish(true);
+        if (allowed >= 1 && rot >= 89) { sfx("unlock"); return finish(true); }
         if (rot >= maxRot - .5) {
           stuck = true; health -= hasPerk("a4") ? .015 : .03;
           if (health <= 0) {
-            picks--; health = 1; rot = 0; holding = false; bump("picksBroken");
+            picks--; health = 1; sfx("snap"); rot = 0; holding = false; bump("picksBroken");
             $("lk-msg").textContent = picks ? "Knack! Dietrich abgebrochen." : "";
             $("lk-picks").textContent = `Dietriche: ${picks}`;
             if (!picks) return finish(false);
@@ -1913,7 +1984,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const [q] = questStep();
     if (S.quest.step + 1 < q.steps.length) {
       beginStep(S.quest.i, S.quest.step + 1);
-      gainXP(Math.round(50 * (1 + (S.level - 1) * .25)));
+      sfx("ach"); gainXP(Math.round(50 * (1 + (S.level - 1) * .25)));
       toast(`Quest-Ziel erreicht! Weiter: ${fillNeed(questStep()[1].t)}`);
       return;
     }
@@ -1925,7 +1996,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     S.qbonus += r.bonus || 0;
     if (tap) S.extraTap += tap;
     if (r.coupon) S.coupon = true;
-    S.qdone++; S.quest = null; S.questNext = now() + 30000; gainXP(Math.round(200 * (1 + (S.level - 1) * .25)));
+    S.qdone++; S.quest = null; sfx("quest"); S.questNext = now() + 30000; gainXP(Math.round(200 * (1 + (S.level - 1) * .25)));
     const gains = [cash ? "CHF " + fmt(cash) : "", r.bonus ? `+${r.bonus} % Einkommen für immer` : "", tap ? `+${tap} pro Wisch` : "", r.coupon ? "Berlin-Coupon −50 %" : ""].filter(Boolean).join(", ");
     modal({ kicker: "QUEST ABGESCHLOSSEN", title: q.title, text: `${r.text} Belohnung (Stufe ${S.level}): ${gains}.`, acts: [{ label: "Ruhm und Ehre" }] });
   }
@@ -2019,7 +2090,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const b = e.target.closest(".shout"); if (!b || b.disabled) return;
     const sh = SHOUTS.find(x => x.id === b.dataset.shout);
     S.cd = S.cd || {}; S.cd[sh.id] = now() + shoutCd(sh); S.shouts++;
-    sh.run(); renderShouts();
+    sfx("shout"); sh.run(); renderShouts();
   });
 
   // ---------- Skills-Tab: Sternbilder zum Wischen ----------
@@ -2085,7 +2156,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const b = e.target.closest("[data-learn]"); if (!b || b.disabled) return;
     const id = b.dataset.learn;
     if (perkPoints() <= 0 || hasPerk(id) || (PERKS[id].prev && !hasPerk(PERKS[id].prev))) return;
-    S.perks[id] = 1;
+    S.perks[id] = 1; sfx("perk");
     toast(`Perk gelernt: ${perkInfo(id)[1]}`);
     skSel = null; renderSkills(); renderShouts();
   });
@@ -2163,7 +2234,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const r = rankIdx();
     if (r > S.rank) { S.rank = r; toast(promoted(r)); }
     for (const [id, n, , test] of ACH) if (!S.ach[id] && test(S)) {
-      S.ach[id] = 1; toast(`Erfolg: «${n}» (+1 % Einkommen)`);
+      S.ach[id] = 1; sfx("ach"); toast(`Erfolg: «${n}» (+1 % Einkommen)`);
       if (tab === "p-erfolge") renderErfolge();
     }
   }
