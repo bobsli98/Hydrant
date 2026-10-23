@@ -2105,17 +2105,20 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   };
 
   // ---------- Offline earnings & intro ----------
+  const OFFLINE_RATE = .15, OFFLINE_CAP = 2 * 3600;
   function applyOffline() {
-    const dt = Math.min(8 * 3600, Math.max(0, (now() - (S.lastSeen || now())) / 1000));
+    // offline: 15 % des Einkommens, höchstens 2 Stunden angerechnet
+    const away = Math.max(0, (now() - (S.lastSeen || now())) / 1000);
+    const dt = Math.min(OFFLINE_CAP, away);
     S.lastSeen = now();
     S.nextEvent = Math.max(S.nextEvent, now() + 40000); S.nextGold = Math.max(S.nextGold, now() + 30000);
     if (dt < 60 || !S.name) return;
-    const gain = baseCps() * multiplier(true) * dt * .5;
+    const gain = baseCps() * multiplier(true) * dt * OFFLINE_RATE;
     if (gain < 1) return;
     earn(gain);
-    const h = Math.floor(dt / 3600), m = Math.floor((dt % 3600) / 60);
-    if (dt > 4 * 3600) S.awake++;
-    modal({ kicker: "WILLKOMMEN ZURÜCK", title: "He, du. Endlich wach.", text: `Du warst ${h ? h + " Std. " : ""}${m} Min. weg. In der Zeit haben deine Leute weiterpoliert und die Dackel Eintritt bezahlt: CHF ${fmt(gain)}.`, acts: [{ label: "Einsacken" }] });
+    const h = Math.floor(away / 3600), m = Math.floor((away % 3600) / 60);
+    if (away > 4 * 3600) S.awake++;
+    modal({ kicker: "WILLKOMMEN ZURÜCK", title: "He, du. Endlich wach.", text: `Du warst ${h ? h + " Std. " : ""}${m} Min. weg. In der Zeit haben deine Leute weiterpoliert, aber ohne Chef nur gemütlich: CHF ${fmt(gain)}${away > OFFLINE_CAP ? " (mehr als 2 Stunden zählen nicht, dann machen auch die Pensionierten Feierabend)" : ""}.`, acts: [{ label: "Einsacken" }] });
   }
   function intro() {
     modal({
