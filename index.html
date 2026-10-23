@@ -6,7 +6,7 @@
 <title>Gidos Hydranten-Erbe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Cinzel:wght@600&display=swap">
 <meta name="description" content="Gido hat 100 Hydranten geerbt und dich zum Verwalter gemacht. Poliere, vermiete, sammle und schick einen nach Berlin. Das Porto ist absurd.">
 <meta name="theme-color" content="#d01f17">
 <meta property="og:type" content="website">
@@ -102,7 +102,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--water); out
 /* Panels */
 .panels { flex: 1; min-height: 0; position: relative; }
 .panel {
-  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior-x: none; touch-action: pan-y; -webkit-overflow-scrolling: touch;
+  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior-x: none; -webkit-overflow-scrolling: touch;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 24px;
   display: flex; flex-direction: column; gap: 12px;
 }
@@ -348,36 +348,54 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .big-hydrant .sea { display: none; }
 #p-hof[data-season="advent"] .sea-hat, #p-hof[data-season="halloween"] .sea-pumpkin, #p-hof[data-season="august"] .sea-flag { display: inline; }
 
-/* Skills */
-.lvl { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
-.lvl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-.lvl-n { font-family: var(--f-display); font-size: 20px; }
-.lvl-pts { font-family: var(--f-num); font-size: 13px; background: var(--signal); color: var(--signal-ink); border-radius: 6px; padding: 2px 8px; }
-.lvl-pts.none { background: var(--surface-2); color: var(--muted); }
-.xpbar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
-.xpbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--water), #8fd0ff); width: 0; transition: width .3s; }
+/* Skills: Sternenhimmel wie in Skyrim, ein Sternbild pro Seite */
+#p-skills {
+  --ink: #e9ecf5; --muted: #9aa5c4; --line: rgba(160,180,230,.18); color: var(--ink); gap: 10px;
+  background: radial-gradient(ellipse 120% 70% at 50% 0%, #1d2a55 0%, #0b1020 60%, #05070f 100%);
+  --cinzel: "Cinzel", "Trajan Pro", Georgia, serif;
+}
+#p-skills > * { position: relative; }
+.sk-top { display: flex; flex-direction: column; gap: 6px; }
+.sk-lvl { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+#lvl-n { font-family: var(--cinzel); font-weight: 600; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; }
+#lvl-pts { font-family: var(--cinzel); font-weight: 600; font-size: 13px; letter-spacing: .1em; color: #ffd56b; text-transform: uppercase; }
+#lvl-pts.none { color: var(--muted); }
+#p-skills .xpbar { height: 6px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; }
+#p-skills .xpbar i { display: block; height: 100%; background: linear-gradient(90deg, #6fb6ff, #c8e6ff); box-shadow: 0 0 8px #6fb6ff; width: 0; transition: width .3s; }
 .xp-txt { font-family: var(--f-num); font-size: 12px; color: var(--muted); }
-.trees { display: flex; flex-direction: column; gap: 12px; }
-.tree { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-.tree-sky { background: radial-gradient(ellipse at 50% 0%, #22305e, #0b1020 75%); padding: 12px 14px 4px; color: #e8edf8; }
-.tree-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-.tree-head b { font-family: var(--f-display); font-weight: 400; font-size: 16px; letter-spacing: .02em; }
-.tree-head span { font-family: var(--f-num); font-size: 12px; color: #a9b6d6; }
-.tree-sky p { margin: 4px 0 0; font-size: 12.5px; color: #a9b6d6; line-height: 1.4; }
-.tree-sky svg { width: 100%; height: auto; display: block; }
-.tree-sky .ln { stroke: #5a6a99; stroke-width: 1.5; }
-.tree-sky .ln.on { stroke: #ffd56b; }
-.tree-sky .st { fill: #3a466e; }
-.tree-sky .st.on { fill: #ffd56b; filter: drop-shadow(0 0 4px #ffd56b); }
-.tree-sky .st.next { fill: #fff; animation: twinkle 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-.perks { display: flex; flex-direction: column; }
-.perk { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); }
-.perk b { font-size: 14px; display: block; }
-.perk span { font-size: 12.5px; color: var(--muted); line-height: 1.35; display: block; }
-.perk.locked { opacity: .5; }
-.perk .done { font-family: var(--f-num); font-size: 13px; color: var(--good); font-weight: 600; }
-.perk .learn { border: 0; border-radius: 8px; padding: 8px 12px; background: var(--signal); color: var(--signal-ink); font-weight: 700; font-size: 13px; }
-.perk .learn:disabled { background: var(--surface-2); color: var(--muted); cursor: default; }
+.sk-car {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+}
+.sk-car::-webkit-scrollbar { display: none; }
+.sk-slide { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; padding-inline: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.sk-slide .kick { font-family: var(--cinzel); font-size: 11px; letter-spacing: .3em; color: var(--muted); }
+.sk-slide h3 { font-family: var(--cinzel); font-weight: 600; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; margin: 0; color: #f3ead2; text-shadow: 0 0 14px rgba(255,220,150,.35); }
+.sk-slide .cnt { font-family: var(--cinzel); font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+.sk-slide svg { width: 100%; max-width: 340px; height: 44vh; height: 44svh; max-height: 400px; display: block; }
+.fig { stroke: rgba(170,190,240,.24); stroke-width: 1; }
+.fig-pt { fill: rgba(200,215,255,.5); }
+.path { stroke: rgba(170,190,240,.35); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.path.on { stroke: #ffd56b; stroke-dasharray: none; stroke-width: 2.2; filter: drop-shadow(0 0 3px #ffd56b); }
+.pk { cursor: pointer; outline: none; }
+.pk .hit { fill: transparent; }
+.pk .ring { fill: none; stroke: transparent; stroke-width: 1.5; }
+.pk .core { fill: #6a7598; transition: fill .3s; }
+.pk.on .core { fill: #fff3c4; filter: drop-shadow(0 0 5px #ffd56b) drop-shadow(0 0 12px #ffb000); }
+.pk.next .core { fill: #dfe8ff; animation: pulse 1.6s ease-in-out infinite; }
+.pk.sel .ring, .pk:focus-visible .ring { stroke: #ffd56b; }
+@keyframes pulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+.sk-dots { display: flex; justify-content: center; gap: 10px; }
+.sk-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,.25); }
+.sk-dots button[aria-current="true"] { background: #ffd56b; box-shadow: 0 0 6px #ffd56b; }
+.sk-detail { background: rgba(10,14,30,.78); border: 1px solid rgba(255,213,107,.3); border-radius: 12px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; min-height: 84px; }
+.sk-detail b { font-family: var(--cinzel); font-weight: 600; font-size: 16px; letter-spacing: .06em; color: #f3ead2; }
+.sk-detail p { grid-column: 1; margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.sk-detail .learn, .sk-detail .status { grid-row: 1 / span 2; grid-column: 2; font-family: var(--cinzel); font-weight: 600; letter-spacing: .08em; }
+.sk-detail .learn { border: 1px solid #ffd56b; background: rgba(255,213,107,.15); color: #ffe7a3; border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+.sk-detail .learn:disabled { border-color: rgba(255,255,255,.2); background: transparent; color: var(--muted); cursor: default; }
+.sk-detail .status { font-size: 12px; color: #ffd56b; }
+.sk-hint { font-size: 12px; color: var(--muted); text-align: center; margin: 0; }
 
 /* Schreie im Hof */
 .shouts { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 2; }
@@ -508,14 +526,15 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     </section>
 
     <section class="panel" id="p-skills" role="tabpanel" hidden>
-      <h2>Skills</h2>
-      <div class="lvl">
-        <div class="lvl-top"><span class="lvl-n" id="lvl-n">Stufe 1</span><span class="lvl-pts" id="lvl-pts"></span></div>
+      <div class="sk-top">
+        <div class="sk-lvl"><span id="lvl-n">Stufe 1</span><span id="lvl-pts"></span></div>
         <div class="xpbar"><i id="xp-bar"></i></div>
         <div class="xp-txt" id="xp-txt"></div>
       </div>
-      <p class="sub">XP gibt es nur fürs eigene Polieren und für Ereignisse, Mini-Spiele und Quests. Die Pensionierten polieren für dich, lernen aber nichts dabei. Jede Stufe bringt einen Perkpunkt.</p>
-      <div class="trees" id="trees"></div>
+      <div class="sk-car" id="sk-car" aria-label="Sternbilder, zum Wechseln wischen"></div>
+      <div class="sk-dots" id="sk-dots"></div>
+      <div class="sk-detail" id="sk-detail" aria-live="polite"></div>
+      <p class="sk-hint">Wische, um das Sternbild zu wechseln. Tipp auf einen Stern. XP gibt es nur fürs eigene Polieren, für Ereignisse, Mini-Spiele und Quests.</p>
     </section>
 
     <section class="panel" id="p-erfolge" role="tabpanel" hidden>
@@ -728,7 +747,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
   // Skill-Tree: vier Sternbilder, jeder Perk setzt den vorherigen im selben Sternbild voraus
   const TREES = [
-    { id: "pol", n: "Sternbild des Polierers", d: "Für alle, die selbst Hand anlegen. Macht das eigene Polieren stärker.", perks: [
+    { id: "pol", nm: "Der Polierer",
+      fig: { pts: [[150, 38], [118, 78], [182, 78], [104, 104], [196, 104], [52, 160], [104, 160], [196, 160], [248, 160], [108, 290], [192, 290], [86, 318], [214, 318]],
+        lines: [[0, 1], [0, 2], [1, 3], [2, 4], [3, 4], [3, 6], [4, 7], [6, 5], [7, 8], [6, 9], [7, 10], [9, 11], [10, 12], [11, 12]] },
+      pos: [[150, 318], [108, 230], [52, 160], [150, 170], [248, 160], [150, 38]],
+      n: "Sternbild des Polierers", d: "Für alle, die selbst Hand anlegen. Macht das eigene Polieren stärker.", perks: [
       ["p1", "Rekrutenschule", "Jeder Wisch bringt 50 % mehr."],
       ["p2", "Kritischer Wisch", "5 % Chance auf einen Wisch ×10."],
       ["p3", "Combo-Wischer", "Schnelles Tippen baut eine Combo bis ×2 auf."],
@@ -736,21 +759,33 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       ["p5", "Meisterpolierer", "Kritische Wische: 12 % Chance, ×15."],
       ["p6", "Legendärer Lappen", "Jeder Wisch bringt zusätzlich 3 % deines Einkommens pro Sekunde."]
     ] },
-    { id: "atem", n: "Sternbild des Atemschutzes", d: "Ausbildung für den Ernstfall. Macht die Mini-Spiele leichter.", perks: [
+    { id: "atem", nm: "Der Atemschutz",
+      fig: { pts: [[150, 46], [96, 78], [204, 78], [70, 150], [230, 150], [96, 236], [204, 236], [150, 272], [150, 292], [124, 330], [176, 330], [100, 140], [200, 140], [150, 196]],
+        lines: [[0, 1], [0, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 7], [6, 7], [7, 8], [8, 9], [8, 10], [9, 10], [11, 12], [11, 13], [12, 13]] },
+      pos: [[150, 320], [96, 236], [70, 150], [150, 160], [150, 46]],
+      n: "Sternbild des Atemschutzes", d: "Ausbildung für den Ernstfall. Macht die Mini-Spiele leichter.", perks: [
       ["a1", "Grosse Flasche", "Der Löscheinsatz dauert 10 Sekunden länger."],
       ["a2", "Schnelles Kuppeln", "Brände wachsen 30 % langsamer."],
       ["a3", "Feingefühl", "Der richtige Winkel beim Schlossknacken ist fast doppelt so breit."],
       ["a4", "Ebenerz-Dietriche", "Dietriche brechen nur halb so schnell."],
       ["a5", "Gruppenführer", "Belohnungen aus Mini-Spielen ×2."]
     ] },
-    { id: "hand", n: "Sternbild des Händlers", d: "Verhandeln, feilschen, Glück haben. Macht Ereignisse besser.", perks: [
+    { id: "hand", nm: "Der Händler",
+      fig: { pts: [[150, 40], [56, 96], [244, 96], [30, 180], [82, 180], [218, 180], [270, 180], [150, 300], [100, 326], [200, 326], [150, 96]],
+        lines: [[0, 10], [10, 1], [10, 2], [1, 3], [1, 4], [3, 4], [2, 5], [2, 6], [5, 6], [10, 7], [7, 8], [7, 9], [8, 9]] },
+      pos: [[150, 326], [150, 210], [56, 182], [150, 40], [244, 182]],
+      n: "Sternbild des Händlers", d: "Verhandeln, feilschen, Glück haben. Macht Ereignisse besser.", perks: [
       ["h1", "Vereinsmitglied", "Ereignisse kommen häufiger."],
       ["h2", "Verhandlungsgeschick", "Geld aus Ereignissen ×1.5."],
       ["h3", "Goldgräber", "Der goldene Hydrant kommt öfter und bleibt länger."],
       ["h4", "Glückspilz", "Bescheuerte Business-Ideen klappen öfter (55 % statt 40 %)."],
       ["h5", "Stammkunde der Post", "Porto nach Berlin 25 % günstiger."]
     ] },
-    { id: "drache", n: "Sternbild des Drachenbluts", d: "Die Stimme der Hydranten. Schaltet Schreie frei, die du im Hof einsetzen kannst.", perks: [
+    { id: "drache", nm: "Das Drachenblut",
+      fig: { pts: [[150, 52], [186, 74], [126, 30], [150, 128], [34, 96], [86, 150], [70, 210], [266, 96], [214, 150], [230, 210], [150, 210], [128, 270], [172, 310], [140, 340]],
+        lines: [[2, 0], [0, 1], [0, 3], [3, 5], [5, 4], [4, 6], [6, 10], [3, 8], [8, 7], [7, 9], [9, 10], [3, 10], [10, 11], [11, 12], [12, 13]] },
+      pos: [[140, 340], [150, 210], [34, 96], [266, 96], [150, 52]],
+      n: "Sternbild des Drachenbluts", d: "Die Stimme der Hydranten. Schaltet Schreie frei, die du im Hof einsetzen kannst.", perks: [
       ["d1", "FUS", "Schrei: Einkommen ×3 für 20 s. Abklingzeit 5 Min."],
       ["d2", "FUS RO", "Der Schrei wird stärker: ×5 für 25 s."],
       ["d3", "WULD", "Schrei: Wirbelwind-Wischen, 10 Wische pro Sekunde für 10 s. Abklingzeit 4 Min."],
@@ -924,12 +959,13 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   // ---------- XP & Stufen ----------
   const xpNeed = l => Math.round(60 * Math.pow(l, 1.6));
   const perkPoints = () => S.level - 1 - Object.keys(S.perks || {}).length;
+  const lvlMult = () => 1 + (S.level - 1) * .08;
   function gainXP(n) {
     if (!S.name) return;
     S.xp += n;
     while (S.xp >= xpNeed(S.level)) {
       S.xp -= xpNeed(S.level); S.level++;
-      toast(`Stufenaufstieg! Stufe ${S.level}. Ein neuer Perkpunkt wartet im Skills-Tab.`);
+      toast(S.level === 2 && !hasPerk("d1") ? "Stufenaufstieg! Tipp: Im Skills-Tab, Sternbild «Drachenblut», lernst du deinen ersten Schrei: FUS." : `Stufenaufstieg! Stufe ${S.level}. Ein neuer Perkpunkt wartet im Skills-Tab.`);
     }
   }
   const isName = n => (S.name || "").toLowerCase() === n;
@@ -1490,20 +1526,20 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       ] });
     } },
     // ----- Mini-Spiele -----
-    { id: "brand", ok: () => S.revealed >= 2, run: () => {
+    { id: "brand", mini: true, w: 4, ok: () => S.revealed >= 1, run: () => {
       modal({ kicker: "ALARM", title: "Brand in Münchwilen!", text: "Die Sirene heult. In mehreren Häusern brennt es, und die Feuerwehr steht gerade im Schopf beim Polieren. Also ihr.", acts: [
         { label: "Ausrücken! (Mini-Spiel, 30 s)", run: () => setTimeout(() => fireGame(), 60) },
         { label: `${friend()} allein schicken`, run: () => toast(friend() === "Filip" ? "Soldat Filip fährt los. Aus Berlin. Er kommt nie an." : "Gefreiter Andrin löscht alles allein. Er wird es dir ewig vorhalten.") }
       ] });
     } },
-    { id: "truhe", ok: () => S.revealed >= 3, run: () => {
+    { id: "truhe", mini: true, w: 4, ok: () => S.revealed >= 2, run: () => {
       modal({ kicker: "IM SCHOPF", title: "Eine verschlossene Truhe", text: "Zwischen den Kisten steht eine alte Truhe mit Gidos Initialen. Schloss: Experte. Den Schlüssel hat Gido «irgendwo».", acts: [
         { label: "Knacken (Mini-Spiel, 3 Dietriche)", run: () => setTimeout(() => lockGame(), 60) },
         { label: "Gido fragen", run: () => toast("Gido sucht den Schlüssel. Er findet stattdessen einen Töff-Prospekt von 1978.") }
       ] });
     } },
     // ----- Nacht -----
-    { id: "nachtwache", when: "night", w: 2, ok: () => S.revealed >= 2, run: () => {
+    { id: "nachtwache", mini: true, when: "night", w: 2, ok: () => S.revealed >= 2, run: () => {
       modal({ kicker: "03:12 UHR", title: "Es rumpelt im Schopf", text: "Mitten in der Nacht macht sich eine Gestalt an einer verschlossenen Truhe zu schaffen. Als du das Licht anmachst, flieht sie. Die Truhe ist noch zu.", acts: [
         { label: "Selber knacken (Mini-Spiel)", run: () => setTimeout(() => lockGame({ kicker: "NACHTS IM SCHOPF", title: "Die verlassene Truhe" }), 60) },
         { label: "Wieder ins Bett", run: () => toast("Am Morgen ist die Truhe weg. Gido hat sie in die Garage gestellt, «zur Sicherheit».") }
@@ -1693,7 +1729,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     }
     S.nextEvent = now() + (hasPerk("h1") ? rand(40000, 85000) : rand(60000, 120000));
     if (!pool.length) return;
-    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(20); evCtx = true; e.run(); evCtx = false;
+    // spätestens nach 5 Ereignissen ohne Mini-Spiel kommt garantiert eins
+    const minis = pool.filter(e => e.mini);
+    const e = (S.sinceMini || 0) >= 5 && minis.length ? minis[Math.floor(Math.random() * minis.length)] : pool[Math.floor(Math.random() * pool.length)];
+    S.sinceMini = e.mini ? 0 : (S.sinceMini || 0) + 1; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(Math.round(20 * (1 + (S.level - 1) * .15))); evCtx = true; e.run(); evCtx = false;
   }
 
   // ---------- Golden hydrant ----------
@@ -1874,19 +1913,21 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const [q] = questStep();
     if (S.quest.step + 1 < q.steps.length) {
       beginStep(S.quest.i, S.quest.step + 1);
-      gainXP(50);
+      gainXP(Math.round(50 * (1 + (S.level - 1) * .25)));
       toast(`Quest-Ziel erreicht! Weiter: ${fillNeed(questStep()[1].t)}`);
       return;
     }
     const r = q.reward;
-    const cash = r.cash ? Math.max(r.cash[0], cps() * r.cash[1]) : 0;
+    const lm = lvlMult();
+    const cash = r.cash ? Math.max(r.cash[0], cps() * r.cash[1]) * lm : 0;
+    const tap = r.tap ? Math.round(r.tap * lm) : 0;
     if (cash) earn(cash);
     S.qbonus += r.bonus || 0;
-    if (r.tap) S.extraTap += r.tap;
+    if (tap) S.extraTap += tap;
     if (r.coupon) S.coupon = true;
-    S.qdone++; S.quest = null; S.questNext = now() + 30000; gainXP(200);
-    const gains = [cash ? "CHF " + fmt(cash) : "", r.bonus ? `+${r.bonus} % Einkommen für immer` : "", r.tap ? `+${r.tap} pro Wisch` : "", r.coupon ? "Berlin-Coupon −50 %" : ""].filter(Boolean).join(", ");
-    modal({ kicker: "QUEST ABGESCHLOSSEN", title: q.title, text: `${r.text} Belohnung: ${gains}.`, acts: [{ label: "Ruhm und Ehre" }] });
+    S.qdone++; S.quest = null; S.questNext = now() + 30000; gainXP(Math.round(200 * (1 + (S.level - 1) * .25)));
+    const gains = [cash ? "CHF " + fmt(cash) : "", r.bonus ? `+${r.bonus} % Einkommen für immer` : "", tap ? `+${tap} pro Wisch` : "", r.coupon ? "Berlin-Coupon −50 %" : ""].filter(Boolean).join(", ");
+    modal({ kicker: "QUEST ABGESCHLOSSEN", title: q.title, text: `${r.text} Belohnung (Stufe ${S.level}): ${gains}.`, acts: [{ label: "Ruhm und Ehre" }] });
   }
   function renderQuest() {
     const el = $("quest");
@@ -1981,38 +2022,72 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     sh.run(); renderShouts();
   });
 
-  // ---------- Skills-Tab ----------
+  // ---------- Skills-Tab: Sternbilder zum Wischen ----------
+  let skIdx = 0, skSel = null, skBuilt = false;
+  const perkInfo = id => TREES.flatMap(t => t.perks).find(p => p[0] === id);
+  function buildSkills() {
+    $("sk-car").innerHTML = TREES.map((t, ti) => {
+      const rnd = seeded(ti * 97 + 5);
+      const bg = Array.from({ length: 50 }, () => `<circle cx="${(rnd() * 300).toFixed(1)}" cy="${(rnd() * 360).toFixed(1)}" r="${(rnd() * 1.1 + .3).toFixed(2)}" fill="#fff" opacity="${(rnd() * .5 + .12).toFixed(2)}"/>`).join("");
+      const P = t.fig.pts;
+      const fig = t.fig.lines.map(([a, b]) => `<line class="fig" x1="${P[a][0]}" y1="${P[a][1]}" x2="${P[b][0]}" y2="${P[b][1]}"/>`).join("")
+        + P.map(([x, y]) => `<circle class="fig-pt" cx="${x}" cy="${y}" r="1.6"/>`).join("");
+      const path = t.pos.slice(1).map(([x, y], i) => `<line class="path" data-to="${t.perks[i + 1][0]}" x1="${t.pos[i][0]}" y1="${t.pos[i][1]}" x2="${x}" y2="${y}"/>`).join("");
+      const stars = t.perks.map(([id, name], i) => { const [x, y] = t.pos[i];
+        return `<g class="pk" data-perk="${id}" tabindex="0" role="button" aria-label="${esc(name)}"><circle class="hit" cx="${x}" cy="${y}" r="22"/><circle class="ring" cx="${x}" cy="${y}" r="12"/><circle class="core" cx="${x}" cy="${y}" r="6"/></g>`; }).join("");
+      return `<div class="sk-slide" data-i="${ti}"><span class="kick">STERNBILD</span><h3>${esc(t.nm)}</h3><span class="cnt" data-cnt="${t.id}"></span>
+        <svg viewBox="0 0 300 360" preserveAspectRatio="xMidYMid meet" role="group" aria-label="${esc(t.n)}">${bg}${fig}${path}${stars}</svg></div>`;
+    }).join("");
+    $("sk-dots").innerHTML = TREES.map((t, i) => `<button data-i="${i}" aria-label="${esc(t.nm)}"></button>`).join("");
+    skBuilt = true;
+  }
+  function defaultPerk(t) {
+    const open = t.perks.find(([id]) => !hasPerk(id));
+    return open ? open[0] : t.perks[t.perks.length - 1][0];
+  }
   function renderSkills() {
+    if (!skBuilt) buildSkills();
     const pts = perkPoints();
     $("lvl-n").textContent = `Stufe ${S.level}`;
-    const lp = $("lvl-pts"); lp.textContent = pts === 1 ? "1 Perkpunkt" : `${pts} Perkpunkte`; lp.classList.toggle("none", pts <= 0);
+    const lp = $("lvl-pts"); lp.textContent = pts === 1 ? "1 Perk" : `${pts} Perks`; lp.classList.toggle("none", pts <= 0);
     $("xp-bar").style.width = (100 * S.xp / xpNeed(S.level)).toFixed(1) + "%";
     $("xp-txt").textContent = `${grp(S.xp)} / ${grp(xpNeed(S.level))} XP bis Stufe ${S.level + 1}`;
-    $("trees").innerHTML = TREES.map(t => {
-      const n = t.perks.length, learned = t.perks.filter(([id]) => hasPerk(id)).length;
-      const pos = t.perks.map((_, i) => [20 + i * (260 / (n - 1)), i % 2 ? 22 : 52 + (i % 3) * 4]);
-      const lines = pos.slice(1).map(([x, y], i) => `<line class="ln${hasPerk(t.perks[i + 1][0]) ? " on" : ""}" x1="${pos[i][0]}" y1="${pos[i][1]}" x2="${x}" y2="${y}"/>`).join("");
-      const stars = pos.map(([x, y], i) => {
-        const id = t.perks[i][0], on = hasPerk(id), next = !on && (!PERKS[id].prev || hasPerk(PERKS[id].prev));
-        return `<circle class="st${on ? " on" : next ? " next" : ""}" cx="${x}" cy="${y}" r="${on ? 6 : 5}"/>`;
-      }).join("");
-      const rows = t.perks.map(([id, name, desc]) => {
-        const on = hasPerk(id), avail = !PERKS[id].prev || hasPerk(PERKS[id].prev);
-        const right = on ? `<span class="done">✓ gelernt</span>` : `<button class="learn" data-perk="${id}" ${avail && pts > 0 ? "" : "disabled"}>${avail ? "Lernen" : "Gesperrt"}</button>`;
-        return `<div class="perk${!on && !avail ? " locked" : ""}"><div><b>${esc(name)}</b><span>${esc(desc)}</span></div>${right}</div>`;
-      }).join("");
-      return `<div class="tree"><div class="tree-sky"><div class="tree-head"><b>${esc(t.n)}</b><span>${learned}/${n}</span></div><p>${esc(t.d)}</p>
-        <svg viewBox="0 0 300 74" aria-hidden="true">${lines}${stars}</svg></div><div class="perks">${rows}</div></div>`;
-    }).join("");
+    const tree = TREES[skIdx];
+    if (!skSel || PERKS[skSel].tree !== tree.id) skSel = defaultPerk(tree);
+    TREES.forEach(t => {
+      document.querySelector(`[data-cnt="${t.id}"]`).textContent = `${t.perks.filter(([id]) => hasPerk(id)).length} / ${t.perks.length}`;
+      t.perks.forEach(([id]) => {
+        const g = document.querySelector(`.pk[data-perk="${id}"]`), on = hasPerk(id);
+        g.classList.toggle("on", on);
+        g.classList.toggle("next", !on && (!PERKS[id].prev || hasPerk(PERKS[id].prev)));
+        g.classList.toggle("sel", id === skSel);
+      });
+    });
+    document.querySelectorAll("#sk-car .path").forEach(l => l.classList.toggle("on", hasPerk(l.dataset.to)));
+    document.querySelectorAll("#sk-dots button").forEach((b, i) => b.setAttribute("aria-current", String(i === skIdx)));
+    const [id, name, desc] = perkInfo(skSel), on = hasPerk(id), avail = !PERKS[id].prev || hasPerk(PERKS[id].prev);
+    const right = on ? `<span class="status">GELERNT</span>`
+      : `<button class="learn" data-learn="${id}" ${avail && pts > 0 ? "" : "disabled"}>${!avail ? "GESPERRT" : pts > 0 ? "LERNEN" : "KEIN PERK"}</button>`;
+    const lock = !on && !avail ? ` Zuerst «${perkInfo(PERKS[id].prev)[1]}» lernen.` : "";
+    $("sk-detail").innerHTML = `<b>${esc(name)}</b>${right}<p>${esc(desc + lock)}</p>`;
   }
-  $("trees").addEventListener("click", e => {
-    const b = e.target.closest("[data-perk]"); if (!b || b.disabled) return;
-    const id = b.dataset.perk;
+  $("sk-car").addEventListener("click", e => { const g = e.target.closest(".pk"); if (!g) return; skSel = g.dataset.perk; renderSkills(); });
+  $("sk-car").addEventListener("keydown", e => { const g = e.target.closest(".pk"); if (g && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); skSel = g.dataset.perk; renderSkills(); } });
+  $("sk-car").addEventListener("scroll", () => {
+    const c = $("sk-car"), i = Math.max(0, Math.min(TREES.length - 1, Math.round(c.scrollLeft / c.clientWidth)));
+    if (i !== skIdx) { skIdx = i; skSel = null; renderSkills(); }
+  }, { passive: true });
+  $("sk-dots").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("sk-car").scrollTo({ left: +b.dataset.i * $("sk-car").clientWidth, behavior: "smooth" });
+  });
+  $("sk-detail").addEventListener("click", e => {
+    const b = e.target.closest("[data-learn]"); if (!b || b.disabled) return;
+    const id = b.dataset.learn;
     if (perkPoints() <= 0 || hasPerk(id) || (PERKS[id].prev && !hasPerk(PERKS[id].prev))) return;
     S.perks[id] = 1;
-    const name = TREES.flatMap(t => t.perks).find(x => x[0] === id)[1];
-    toast(`Perk gelernt: ${name}`);
-    renderSkills(); renderShouts();
+    toast(`Perk gelernt: ${perkInfo(id)[1]}`);
+    skSel = null; renderSkills(); renderShouts();
   });
 
   // ---------- HUD & render ----------
