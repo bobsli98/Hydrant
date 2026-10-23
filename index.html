@@ -114,7 +114,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .sub { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.45; max-width: 60ch; }
 
 /* Hof */
-#p-hof { align-items: center; text-align: center; gap: 6px; }
+#p-hof { align-items: center; text-align: center; gap: 6px; padding-block: 12px 10px; }
 .yard-title { font-family: var(--f-display); font-size: 13px; color: var(--muted); letter-spacing: .08em; }
 #p-hof {
   --rc: var(--r-c); --glow: 10%;
@@ -127,10 +127,12 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 #p-hof[data-tier="3"] { --glow: 48%; }
 #p-hof[data-tier="4"] { --glow: 62%; }
 .tapzone {
-  position: relative; width: 100%; display: grid; place-items: center; padding-block: 4px; isolation: isolate;
-  /* hydrant width follows the screen height so the facts below stay visible on small phones */
-  --hw: min(44vw, 180px, 18vh); --hw: min(44vw, 180px, 18svh);
+  /* the yard takes whatever height is left after quest card and facts, so the page never needs to scroll */
+  position: relative; width: 100%; flex: 1 1 0; min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding-block: 4px; isolation: isolate;
 }
+/* the rays are much bigger than the yard: clip them in their own frame so they never add scroll room */
+.rays-wrap { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .rays {
   position: absolute; z-index: -1; left: 50%; top: 45%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
   background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--rc) 30%, transparent) 0deg 9deg, transparent 9deg 24deg);
@@ -157,17 +159,25 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .yard-name .nm { font-weight: 700; font-size: 15px; overflow-wrap: anywhere; }
 .yard-name .meta { font-size: 13px; color: var(--muted); }
 .big-hydrant {
-  background: none; border: 0; padding: 0; width: var(--hw); aspect-ratio: 120 / 200; max-width: 100%;
+  background: none; border: 0; padding: 0; flex: 1 1 0; min-height: 0; width: auto; max-height: 280px; max-width: 46vw; aspect-ratio: 120 / 200;
   color: var(--r-c); transition: transform .08s ease-out; touch-action: manipulation;
   filter: drop-shadow(0 10px 12px rgba(0,0,0,.18));
 }
 .big-hydrant svg { width: 100%; height: 100%; display: block; }
 .big-hydrant.squish { transform: scale(.94, .9) translateY(4px); }
-.puddle { width: calc(var(--hw) * 1.2); height: 16px; border-radius: 50%; background: var(--water); opacity: .18; margin-top: -10px; }
+.puddle { width: min(52vw, 200px); height: 14px; flex: none; border-radius: 50%; background: var(--water); opacity: .18; margin-top: -10px; }
 .tap-hint { font-size: 13px; color: var(--muted); }
+/* kompakt für niedrige Bildschirme (Handy mit Browser-Leisten): der Spruch bleibt immer ganz lesbar */
+@media (max-height: 760px) {
+  #p-hof { gap: 4px; }
+  .yard-name .meta, .rankline { display: none; }
+  .quest .q-s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ticker { min-height: 0; padding-block: 8px; }
+  .shouts { gap: 6px; }
+  .shout { width: 46px; height: 46px; font-size: 9px; }
+}
 @media (max-height: 620px) {
   .yard-title { display: none; }
-  .tapzone { --hw: min(44vw, 180px, 14vh); --hw: min(44vw, 180px, 14svh); }
   #p-hof { padding-block: 10px 12px; }
 }
 .tap-hint b { font-family: var(--f-num); color: var(--ink); }
@@ -460,7 +470,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       <div class="sky" id="sky" aria-hidden="true"></div>
       <div class="yard-title" id="yard-title">GIDOS SCHOPF, 100 HYDRANTEN</div>
       <div class="tapzone" id="tapzone">
-        <div class="rays" aria-hidden="true"></div>
+        <div class="rays-wrap" aria-hidden="true"><div class="rays"></div></div>
         <button class="big-hydrant" id="big" aria-label="Hydrant polieren">
           <svg viewBox="0 0 120 200">
             <use href="#hy"/>
