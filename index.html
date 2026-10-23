@@ -730,7 +730,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ], reward: { text: "Der Oldtimer läuft! Gido fährt eine Ehrenrunde um den Schopf und hupt 47 Mal.", bonus: 5, cash: [500, 300] } },
     { giver: "Die Graubärte", title: "Der Weg der Stimme", intro: "Ein Donnern hallt über Münchwilen: «HYDRANTEN-GEBORENER!» Die Graubärte rufen dich nach Hoch-Hrothgar.", steps: [
       { t: "Steig die 7000 Stufen hoch. Poliere {n} Mal.", v: s => s.taps, n: () => 700 },
-      { t: "Lerne ein Wort der Macht, von Paarthurnax oder an einer Wortwand.", v: s => s.words, n: () => 1, abs: true },
+      { t: "Lerne ein Wort der Macht. Paarthurnax meldet sich bald.", v: s => s.words, n: () => 1, abs: true, needs: "words" },
       { t: "Zeig, was du kannst: Erlebe {n} Ereignisse.", v: s => s.evCount, n: () => 4 }
     ], reward: { text: "«Hydranten-Geborener!», rufen die Graubärte. Der Berg bebt, der Hydrant wackelt.", bonus: 5, tap: 20 } },
     { giver: () => friend(), title: "Ein Paket nach Berlin", intro: () => `${friend()} schreibt: «Ich vermisse die Hydranten von Münchwilen. Schick mir einen. Bitte. Das Porto zahlst du.»`, steps: [
@@ -761,7 +761,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ], reward: { text: "Skoomius isst 14 Gänge, drei Tische und die Tischdecke. Zum Dank schenkt er dir sein Kochbuch «Alles schmeckt». Es hat eine Seite: «Mehr Butter».", bonus: 10, cash: [5e4, 1200] } },
     { giver: "Die Graubärte", title: "Der Weltenfresser", intro: "«Alduin ist zurück und will alle Hydranten der Welt verschlingen. Nur der vollständige Hydranten-Schrei kann ihn aufhalten.»", steps: [
       { t: "Öffne alle 100 Kisten.", v: s => s.revealed, n: () => 100, abs: true },
-      { t: "Lerne alle drei Wörter des Hydranten-Schreis.", v: s => s.words, n: () => 3, abs: true },
+      { t: "Lerne alle drei Wörter des Hydranten-Schreis. Die Wortwände melden sich bald.", v: s => s.words, n: () => 3, abs: true, needs: "words" },
       { t: "Verdiene CHF {n} für die letzte Schlacht.", v: s => s.total, n: () => Math.max(1e9, cps() * 3600) }
     ], reward: { text: "HYD RAN TEN! Alduin flüchtet nach Berlin. Filip meldet: Porto hat er keins bezahlt.", bonus: 20 } }
   ];
@@ -1515,13 +1515,13 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: "Höflich die Tür schliessen", run: () => toast("Er klopft. Er klopft weiter. Er klopft immer noch.") }
       ] });
     } },
-    { id: "paarthurnax", ok: () => S.words === 0 && S.revealed >= 10, run: () => {
+    { id: "paarthurnax", forQuest: "words", ok: () => S.words === 0, run: () => {
       modal({ kicker: "AUF DEM HALS DER WELT", title: "Paarthurnax", text: "Ein alter Drache bittet dich auf den Berg. «Hydranten-Hüter. Ich lehre dich ein Wort der Macht: HYD.»", acts: [
         { label: "Das Wort lernen (+5 % Einkommen)", run: () => { S.words = 1; S.bonus += 5; toast("HYD. Du spürst die Macht der Hydranten. Noch zwei Wörter fehlen."); } },
         { label: "Lieber Höhenangst haben", run: () => toast("Paarthurnax wartet. Drachen haben Zeit.") }
       ] });
     } },
-    { id: "wortwand", ok: () => S.words >= 1 && S.words < 3, run: () => {
+    { id: "wortwand", forQuest: "words", ok: () => S.words >= 1 && S.words < 3, run: () => {
       const word = S.words === 1 ? "RAN" : "TEN";
       modal({ kicker: "HINTER GIDOS SCHOPF", title: "Eine Wortwand", text: `In der Mauer hinter dem Schopf leuchten alte Drachenrunen. Ein Wort glüht: ${word}.`, acts: [
         { label: "Das Wort aufnehmen (+5 % Einkommen)", run: () => { S.words++; S.bonus += 5; toast(S.words === 3 ? "HYD RAN TEN! Der Schrei ist vollständig. Ganz Münchwilen bebt." : `${word}. Noch ein Wort fehlt.`); } }
@@ -1866,9 +1866,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     }
     S.nextEvent = now() + (hasPerk("h1") ? rand(40000, 85000) : rand(60000, 120000));
     if (!pool.length) return;
-    // spätestens nach 5 Ereignissen ohne Mini-Spiel kommt garantiert eins
+    // wartet eine Quest auf ein bestimmtes Ereignis, kommt das zuerst; sonst spätestens nach 5 Ereignissen ein Mini-Spiel
+    const need = questNeeds(), forced = need && EVENTS.find(e => e.forQuest === need && e.ok());
     const minis = pool.filter(e => e.mini);
-    const e = (S.sinceMini || 0) >= 5 && minis.length ? minis[Math.floor(Math.random() * minis.length)] : pool[Math.floor(Math.random() * pool.length)];
+    const e = forced || ((S.sinceMini || 0) >= 5 && minis.length ? minis[Math.floor(Math.random() * minis.length)] : pool[Math.floor(Math.random() * pool.length)]);
     S.sinceMini = e.mini ? 0 : (S.sinceMini || 0) + 1; lastEvent = e.id; S.evCount++; if (night) bump("night"); gainXP(Math.round(20 * (1 + (S.level - 1) * .15))); sfx(/^(brand|alduin|s_august|s_silvester)$/.test(e.id) ? "siren" : "event"); evCtx = true; e.run(); evCtx = false;
   }
 
@@ -2038,6 +2039,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   function questProg() { const [, st] = questStep(); const v = st.v(S); return Math.max(0, Math.min(S.quest.need, st.abs ? v : v - S.quest.base)); }
   function beginStep(i, step) { const st = QUESTS[i].steps[step]; S.quest = { i, step, base: st.v(S), need: Math.max(1, Math.round(st.n())) }; }
   const fillNeed = t => t.replace("{n}", fmt(S.quest.need));
+  const questNeeds = () => (S.quest ? QUESTS[S.quest.i].steps[S.quest.step].needs : null);
   function checkQuest() {
     if (!S.name || modalOpen || mgOpen) return;
     if (!S.quest) {
@@ -2047,7 +2049,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       modal({ kicker: "NEUE QUEST · " + val(q.giver).toUpperCase(), title: q.title, text: `${val(q.intro)} Erstes Ziel: ${fillNeed(q.steps[0].t)}`, acts: [{ label: "Quest annehmen" }] });
       return;
     }
-    if (questProg() < S.quest.need) return;
+    if (questProg() < S.quest.need) {
+      if (questNeeds() && !S.quest.nudged) { S.quest.nudged = true; S.nextEvent = Math.min(S.nextEvent, now() + 20000); }
+      return;
+    }
     const [q] = questStep();
     if (S.quest.step + 1 < q.steps.length) {
       beginStep(S.quest.i, S.quest.step + 1);
