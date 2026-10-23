@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gidos Hydranten-Erbe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<meta name="description" content="Gido hat dir 100 Hydranten vererbt. Poliere, vermiete, sammle und schick einen nach Berlin. Das Porto ist absurd.">
+<meta name="theme-color" content="#d01f17">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gidos Hydranten-Erbe">
+<meta property="og:title" content="Gidos Hydranten-Erbe 🚒">
+<meta property="og:description" content="100 Hydranten. Ein Erbe. Ein Paket nach Berlin. Das Porto ist absurd.">
+<meta property="og:url" content="https://bobsli98.github.io/Hydrant/">
+<meta property="og:image" content="https://bobsli98.github.io/Hydrant/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ein leuchtend roter Hydrant vor nächtlichem Himmel, darüber der Titel Gidos Hydranten-Erbe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bobsli98.github.io/Hydrant/og.jpg">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: one-screen phone app. Sticky money HUD on top, swipeable panel in the middle, tab bar like a fire-truck control panel at the bottom. */
+:root {
+  --bg: #e9edf1;
+  --surface: #ffffff;
+  --surface-2: #f4f6f8;
+  --ink: #1b2129;
+  --muted: #5a6572;
+  --line: #d3d9e0;
+  --red: #d01f17;
+  --red-deep: #9a140e;
+  --signal: #f2b705;
+  --signal-ink: #2a2100;
+  --water: #1f86d0;
+  --good: #1f8a4c;
+  --r-c: #d01f17;
+  --r-r: #9b5a2e;
+  --r-g: #ff3b30;
+  --r-a: #3f7461;
+  --r-b: #3b7f93;
+  --r-G: #d9a520;
+  --r-U: #f07800;
+  --crate: #b9a07a;
+  --shadow: 0 1px 0 rgba(20,30,40,.06), 0 6px 18px rgba(20,30,40,.08);
+  --f-display: "Bungee", "Arial Black", Impact, sans-serif;
+  --f-body: "Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151a; --surface: #1a2027; --surface-2: #222a33; --ink: #edf1f5; --muted: #9aa5b1; --line: #2c353f;
+    --red: #ff4b3e; --red-deep: #c7291f; --signal: #ffc933; --signal-ink: #2a2100; --water: #5ab3f0; --good: #45c27a;
+    --r-c: #ff4b3e; --r-r: #c27a46; --r-g: #ff6a5f; --r-a: #5fa58b; --r-b: #5fb0c6; --r-G: #f0c340; --r-U: #ff9a33; --crate: #8a7655;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151a; --surface: #1a2027; --surface-2: #222a33; --ink: #edf1f5; --muted: #9aa5b1; --line: #2c353f;
+  --red: #ff4b3e; --red-deep: #c7291f; --signal: #ffc933; --signal-ink: #2a2100; --water: #5ab3f0; --good: #45c27a;
+  --r-c: #ff4b3e; --r-r: #c27a46; --r-g: #ff6a5f; --r-a: #5fa58b; --r-b: #5fb0c6; --r-G: #f0c340; --r-U: #ff9a33; --crate: #8a7655;
+  --shadow: 0 1px 0 rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px;
+  overflow: hidden; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
+}
+button { font: inherit; color: inherit; touch-action: manipulation; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--water); outline-offset: 2px; }
+.app { height: 100%; display: flex; flex-direction: column; max-width: 560px; margin: 0 auto; }
+
+/* HUD */
+.hud {
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 12px 10px; background: var(--red); color: #fff;
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: end;
+  border-bottom: 4px solid var(--signal);
+}
+.hud-label { font-family: var(--f-display); font-size: 12px; letter-spacing: .06em; opacity: .9; grid-column: 1 / -1; display: flex; justify-content: space-between; }
+.hud-money { font-family: var(--f-num); font-weight: 600; font-size: clamp(26px, 8vw, 36px); font-variant-numeric: tabular-nums; line-height: 1.05; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-money small { font-size: .5em; opacity: .85; margin-right: 6px; }
+.hud-rate { font-family: var(--f-num); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; opacity: .95; line-height: 1.35; }
+.buff { display: inline-block; background: var(--signal); color: var(--signal-ink); border-radius: 4px; padding: 0 6px; font-weight: 600; margin-left: 4px; }
+
+/* Panels */
+.panels { flex: 1; min-height: 0; position: relative; }
+.panel {
+  position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+.sub { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.45; max-width: 60ch; }
+
+/* Hof */
+#p-hof { align-items: center; text-align: center; gap: 8px; }
+.yard-title { font-family: var(--f-display); font-size: 13px; color: var(--muted); letter-spacing: .08em; }
+.tapzone { position: relative; width: 100%; display: grid; place-items: center; padding-block: 8px; }
+.big-hydrant {
+  background: none; border: 0; padding: 0; width: min(52vw, 220px); aspect-ratio: 120 / 200; max-width: 100%;
+  color: var(--r-c); transition: transform .08s ease-out; touch-action: manipulation;
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,.18));
+}
+.big-hydrant svg { width: 100%; height: 100%; display: block; }
+.big-hydrant.squish { transform: scale(.94, .9) translateY(4px); }
+.puddle { width: min(60vw, 250px); height: 18px; border-radius: 50%; background: var(--water); opacity: .18; margin-top: -10px; }
+.tap-hint { font-size: 13px; color: var(--muted); }
+.tap-hint b { font-family: var(--f-num); color: var(--ink); }
+.float {
+  position: absolute; pointer-events: none; font-family: var(--f-num); font-weight: 600; color: var(--water);
+  font-size: 18px; animation: rise .9s ease-out forwards; white-space: nowrap; text-shadow: 0 1px 0 var(--bg);
+}
+.drop { position: absolute; width: 8px; height: 11px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--water); pointer-events: none; animation: splash .7s ease-out forwards; }
+@keyframes rise { from { transform: translate(-50%, 0); opacity: 1; } to { transform: translate(-50%, -80px); opacity: 0; } }
+@keyframes splash { from { transform: translate(0,0); opacity: .9; } to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+.ticker {
+  width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  font-size: 13.5px; line-height: 1.45; color: var(--muted); text-align: left; min-height: 3.2em;
+}
+.ticker b { color: var(--red); font-family: var(--f-display); font-weight: 400; font-size: 11px; letter-spacing: .06em; margin-right: 6px; }
+.rankline { font-size: 13px; color: var(--muted); }
+.rankline b { color: var(--ink); }
+
+/* Lists */
+.row {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+.row .ico { width: 44px; height: 44px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; font-family: var(--f-display); font-size: 18px; color: var(--red); }
+.row .txt { min-width: 0; }
+.row .nm { font-weight: 700; font-size: 15px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.row .cnt { font-family: var(--f-num); font-size: 13px; color: var(--muted); }
+.row .fl { font-size: 13px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.row .eff { font-family: var(--f-num); font-size: 12.5px; color: var(--good); margin-top: 3px; }
+.buy {
+  border: 0; border-radius: 10px; padding: 10px 12px; min-width: 92px; background: var(--signal); color: var(--signal-ink);
+  font-family: var(--f-num); font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; line-height: 1.2;
+  box-shadow: 0 3px 0 rgba(0,0,0,.18);
+}
+.buy:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+.buy:disabled { background: var(--surface-2); color: var(--muted); box-shadow: none; cursor: default; }
+.buy small { display: block; font-family: var(--f-body); font-weight: 500; font-size: 11px; opacity: .8; }
+.row.locked { opacity: .55; }
+.seg { display: flex; gap: 6px; align-self: flex-start; }
+.seg button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; font-family: var(--f-num); font-size: 13px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* Schopf */
+.big-btn {
+  border: 0; border-radius: 12px; padding: 14px 16px; background: var(--red); color: #fff; width: 100%;
+  font-family: var(--f-display); font-size: 16px; letter-spacing: .02em; box-shadow: 0 4px 0 var(--red-deep);
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left;
+}
+.big-btn .price { font-family: var(--f-num); font-size: 14px; background: rgba(0,0,0,.2); padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+.big-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--red-deep); }
+.big-btn:disabled { background: var(--surface-2); color: var(--muted); box-shadow: none; cursor: default; }
+.big-btn:disabled .price { background: transparent; }
+.grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+.cell { aspect-ratio: 3 / 4; border: 0; background: var(--surface-2); border-radius: 5px; padding: 2px; display: grid; place-items: center; position: relative; }
+.cell svg { width: 100%; height: 100%; }
+.cell.gone { opacity: .35; }
+.cell.gone::after { content: "✈"; position: absolute; font-size: 10px; right: 1px; top: 0; color: var(--ink); }
+.cell.sold::after { content: "¥"; }
+.legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 12px; font-size: 13px; }
+.legend div { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.legend span { color: var(--muted); font-family: var(--f-num); margin-left: auto; }
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.45; display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; }
+.detail svg { width: 40px; height: 66px; }
+
+/* Berlin */
+.parcel { background: var(--surface); border: 1px dashed var(--muted); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.parcel .addr { font-family: var(--f-num); font-size: 13px; line-height: 1.5; color: var(--muted); }
+.fees { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.fees td { padding: 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.fees td:last-child { text-align: right; font-family: var(--f-num); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 12px; }
+.fees tr.sum td { font-weight: 700; border-bottom: 0; border-top: 2px solid var(--ink); }
+.stamp { align-self: flex-end; font-family: var(--f-display); font-size: 12px; color: var(--red); border: 2px solid var(--red); border-radius: 6px; padding: 4px 8px; transform: rotate(-4deg); }
+
+/* Rangliste */
+.lb { display: flex; flex-direction: column; gap: 8px; }
+.lb-row { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.lb-row.me { border-color: var(--red); box-shadow: inset 4px 0 0 var(--red); }
+.lb-pos { font-family: var(--f-display); font-size: 20px; color: var(--muted); text-align: center; }
+.lb-row:first-child .lb-pos { color: var(--r-G); }
+.lb-name { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.lb-meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.lb-val { font-family: var(--f-num); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.lb-val small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+.note { font-size: 13px; color: var(--muted); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; line-height: 1.45; }
+.ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 12px; font-weight: 500; }
+
+/* Tabs */
+.tabs {
+  display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: 1px solid var(--line);
+  padding-left: max(4px, env(safe-area-inset-left, 0px)); padding-right: max(4px, env(safe-area-inset-right, 0px));
+}
+.tabs button { border: 0; background: none; padding: 8px 2px 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; color: var(--muted); position: relative; }
+.tabs button svg { width: 22px; height: 22px; }
+.tabs button[aria-selected="true"] { color: var(--red); font-weight: 700; }
+.tabs button[aria-selected="true"]::before { content: ""; position: absolute; top: 0; left: 20%; right: 20%; height: 3px; background: var(--red); border-radius: 0 0 3px 3px; }
+.tabs .dot { position: absolute; top: 6px; right: calc(50% - 18px); width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+
+/* Golden drop, modal, toast */
+.gold {
+  position: fixed; z-index: 30; width: 54px; height: 80px; border: 0; background: none; padding: 0; color: var(--r-G);
+  animation: bob 1.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 10px rgba(240,195,64,.8));
+}
+.gold svg { width: 100%; height: 100%; }
+@keyframes bob { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-10px) rotate(6deg); } }
+.modal-bg { position: fixed; inset: 0; z-index: 40; background: rgba(10,14,18,.55); display: grid; place-items: end center; padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
+.modal { width: 100%; max-width: 480px; background: var(--surface); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); border-top: 6px solid var(--signal); animation: up .22s ease-out; }
+.modal .kicker { font-family: var(--f-display); font-size: 11px; letter-spacing: .08em; color: var(--red); }
+.modal p { margin: 0; line-height: 1.5; color: var(--ink); }
+.modal .acts { display: flex; flex-direction: column; gap: 8px; }
+.modal .acts button { border: 0; border-radius: 10px; padding: 12px; font-weight: 700; background: var(--surface-2); text-align: left; }
+.modal .acts button.primary { background: var(--signal); color: var(--signal-ink); }
+.modal input { font: inherit; border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--surface-2); color: var(--ink); width: 100%; box-sizing: border-box; user-select: text; -webkit-user-select: text; }
+@keyframes up { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+.toast { position: fixed; z-index: 50; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 12px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 14px; border-radius: 10px; font-size: 14px; max-width: calc(100% - 32px); box-shadow: var(--shadow); animation: up .2s ease-out; text-align: center; }
+.sect { font-family: var(--f-display); font-size: 12px; letter-spacing: .06em; color: var(--muted); display: flex; justify-content: space-between; margin-top: 6px; }
+.sect span { font-family: var(--f-num); }
+.row.up { border-color: var(--signal); }
+.row.up .ico { background: var(--signal); color: var(--signal-ink); font-family: var(--f-num); font-weight: 600; font-size: 15px; }
+.prestige { margin-top: 8px; background: var(--surface); border: 2px solid var(--r-G); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.prestige .kicker { font-family: var(--f-display); font-size: 11px; letter-spacing: .08em; color: var(--r-G); }
+.achs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.ach { background: var(--surface-2); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 3px; min-width: 0; opacity: .6; }
+.ach b { font-size: 13.5px; }
+.ach span { font-size: 12px; color: var(--muted); line-height: 1.35; }
+.ach.on { opacity: 1; background: var(--surface); border: 1px solid var(--r-G); }
+.ach.on b { color: var(--r-G); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hy" viewBox="0 0 120 200">
+      <rect x="22" y="182" width="76" height="12" rx="3" fill="currentColor"/>
+      <rect x="22" y="182" width="76" height="12" rx="3" fill="#000" opacity=".32"/>
+      <rect x="52" y="14" width="16" height="16" rx="3" fill="currentColor"/>
+      <rect x="52" y="14" width="16" height="16" rx="3" fill="#000" opacity=".32"/>
+      <path d="M36 62 Q36 30 60 28 Q84 30 84 62 Z" fill="currentColor"/>
+      <rect x="36" y="66" width="48" height="118" rx="4" fill="currentColor"/>
+      <rect x="30" y="58" width="60" height="12" rx="4" fill="currentColor"/>
+      <rect x="30" y="58" width="60" height="12" rx="4" fill="#000" opacity=".24"/>
+      <rect x="30" y="168" width="60" height="14" rx="4" fill="currentColor"/>
+      <rect x="30" y="168" width="60" height="14" rx="4" fill="#000" opacity=".24"/>
+      <rect x="12" y="98" width="26" height="24" rx="4" fill="currentColor"/>
+      <rect x="82" y="98" width="26" height="24" rx="4" fill="currentColor"/>
+      <rect x="6" y="94" width="10" height="32" rx="3" fill="currentColor"/>
+      <rect x="6" y="94" width="10" height="32" rx="3" fill="#000" opacity=".3"/>
+      <rect x="104" y="94" width="10" height="32" rx="3" fill="currentColor"/>
+      <rect x="104" y="94" width="10" height="32" rx="3" fill="#000" opacity=".3"/>
+      <circle cx="60" cy="128" r="14" fill="#000" opacity=".22"/>
+      <circle cx="60" cy="128" r="6" fill="#000" opacity=".3"/>
+      <rect x="42" y="74" width="7" height="88" rx="3.5" fill="#fff" opacity=".3"/>
+      <path d="M44 54 Q46 40 58 35" stroke="#fff" stroke-width="5" opacity=".32" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="crate" viewBox="0 0 120 200">
+      <rect x="14" y="40" width="92" height="150" rx="6" fill="var(--crate)"/>
+      <path d="M14 40 L106 190 M106 40 L14 190" stroke="#000" stroke-opacity=".18" stroke-width="8"/>
+      <rect x="14" y="40" width="92" height="150" rx="6" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="6"/>
+      <text x="60" y="132" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="56" fill="#fff" fill-opacity=".7">?</text>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="app" id="app">
+  <header class="hud">
+    <div class="hud-label"><span>Gidos Erbe · Münchwilen</span><span id="hud-who"></span></div>
+    <div class="hud-money" id="hud-money"><small>CHF</small>0</div>
+    <div class="hud-rate"><span id="hud-rate">0 / s</span><br><span id="hud-mult">×1.00</span></div>
+  </header>
+
+  <main class="panels">
+    <section class="panel" id="p-hof" role="tabpanel" aria-labelledby="t-hof">
+      <div class="yard-title">GIDOS SCHOPF, 100 HYDRANTEN</div>
+      <div class="tapzone" id="tapzone">
+        <button class="big-hydrant" id="big" aria-label="Hydrant polieren">
+          <svg><use href="#hy"/></svg>
+        </button>
+        <div class="puddle"></div>
+      </div>
+      <div class="tap-hint">Tippen zum Polieren: <b id="tapval">1</b> pro Wisch</div>
+      <div class="rankline" id="rankline"></div>
+      <div class="ticker" id="ticker"></div>
+    </section>
+
+    <section class="panel" id="p-personal" role="tabpanel" hidden>
+      <h2>Personal &amp; Anlagen</h2>
+      <p class="sub">Wer poliert, wenn du schläfst? Diese Leute und Einrichtungen verdienen mit Gidos Hydranten weiter.</p>
+      <div class="seg" role="group" aria-label="Kaufmenge">
+        <button id="q1" aria-pressed="true">×1</button>
+        <button id="q10" aria-pressed="false">×10</button>
+      </div>
+      <div id="gens" style="display:flex;flex-direction:column;gap:8px"></div>
+    </section>
+
+    <section class="panel" id="p-schopf" role="tabpanel" hidden>
+      <h2>Der Schopf</h2>
+      <p class="sub">100 Kisten, jede mit einem Hydranten von Gido. Jeder ausgepackte Hydrant wird vermietet und erhöht dein Einkommen. Ein paar sind sehr selten.</p>
+      <button class="big-btn" id="reveal"><span>Nächste Kiste aufbrechen</span><span class="price" id="reveal-price"></span></button>
+      <div class="detail" id="detail" hidden></div>
+      <div class="grid" id="grid"></div>
+      <div class="legend" id="legend"></div>
+      <div class="prestige" id="prestige"></div>
+    </section>
+
+    <section class="panel" id="p-berlin" role="tabpanel" hidden>
+      <h2>Ein Hydrant nach Berlin</h2>
+      <p class="sub" id="berlin-sub"></p>
+      <div class="parcel" id="parcel"></div>
+    </section>
+
+    <section class="panel" id="p-rang" role="tabpanel" hidden>
+      <h2>Rangliste</h2>
+      <p class="sub">Wer verwaltet Gidos Erbe besser? Gezählt wird alles, was je verdient wurde.</p>
+      <div class="lb" id="lb"></div>
+      <div class="note" id="lb-note"></div>
+      <button class="ghost" id="copy-score">Meinen Stand als Text kopieren</button>
+      <h2 style="margin-top:12px">Erfolge <span class="cnt" id="ach-count" style="font-family:var(--f-num);font-size:14px;color:var(--muted)"></span></h2>
+      <p class="sub">Jeder Erfolg gibt dauerhaft +1 % Einkommen, auch nach einem neuen Erbe.</p>
+      <div class="achs" id="achs"></div>
+    </section>
+  </main>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="t-hof" data-p="p-hof" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 21h8M9 21V9h6v12M8 9h8M10 9V6a2 2 0 0 1 4 0v3M6 13h3M15 13h3"/></svg>Hof</button>
+    <button role="tab" id="t-personal" data-p="p-personal" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4a3 3 0 0 1 0 6M18 14c2 .7 3 2.8 3 6"/></svg>Personal<i class="dot" id="dot-personal" hidden></i></button>
+    <button role="tab" id="t-schopf" data-p="p-schopf" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10l9-6 9 6v10H3z"/><path d="M8 20v-6h8v6"/></svg>Schopf<i class="dot" id="dot-schopf" hidden></i></button>
+    <button role="tab" id="t-berlin" data-p="p-berlin" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8l9-4 9 4v9l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v9"/></svg>Berlin</button>
+    <button role="tab" id="t-rang" data-p="p-rang" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20V12h4v8M10 20V6h4v14M16 20v-5h4v5"/></svg>Rangliste</button>
+  </nav>
+</div>
+
+<script>
+(() => {
+  // ---------- Data ----------
+  const RAR = {
+    c: { n: "Gewöhnlich", pct: 1, count: 60, msg: "Ein ganz normaler Hydrant. Gido hat ihn trotzdem «Schätzli» genannt." },
+    r: { n: "Rostig", pct: 0.5, count: 20, msg: "Rostig wie ein alter Velo-Ständer. Herr Tanaka aus Osaka wird sich melden." },
+    g: { n: "Feuerrot poliert", pct: 3, count: 10, msg: "Glänzt so stark, dass die Nachbarin jetzt mit Sonnenbrille Wäsche aufhängt." },
+    a: { n: "Antik, Baujahr 1890", pct: 10, count: 5, msg: "Baujahr 1890. Hat schon Pferdekutschen nass gemacht." },
+    b: { n: "Berliner Strassenhydrant", pct: 20, count: 3, msg: "Ein echter Berliner. Wie der nach Münchwilen kam, weiss nur Gido." },
+    G: { n: "Goldener Gido-Hydrant", pct: 100, count: 1, unique: true, msg: "Der Goldene Gido-Hydrant! Gidos ganzer Stolz. Einkommen +100 %." },
+    U: { n: "Münchwiler Ur-Hydrant", pct: 50, count: 1, unique: true, msg: "" }
+  };
+  const RKEYS = ["c", "r", "g", "a", "b", "G", "U"];
+
+  const GENS = [
+    { id: "fw",  ico: "FW", n: "Pensionierter Feuerwehrmann", fl: "Poliert gratis, solange es Kafi gibt.", cost: 15, cps: 0.3 },
+    { id: "hund", ico: "🐕", n: "Hundeauslaufzone", fl: "Dackel zahlen 2 Franken Eintritt pro Hydrant.", cost: 120, cps: 2 },
+    { id: "werk", ico: "WS", n: "Gidos Werkstatt", fl: "Hier wird geölt, geschraubt und laut geflucht.", cost: 1100, cps: 9 },
+    { id: "mus", ico: "M", n: "Hydranten-Museum Münchwilen", fl: "Eintritt 12 Franken. Kinder unter 6 dürfen einen anfassen.", cost: 12000, cps: 50 },
+    { id: "infl", ico: "#", n: "Hydranten-Influencerin", fl: "«Get ready with me: Hydrant edition.» 2 Mio. Follower.", cost: 130000, cps: 260 },
+    { id: "osaka", ico: "大", n: "Sammlerclub Osaka", fl: "Herr Tanaka und 400 Freunde zahlen für Fotos.", cost: 1.4e6, cps: 1400 },
+    { id: "boerse", ico: "↗", n: "Hydranten-Börse Zürich", fl: "Der HYD-Index steigt. Niemand weiss warum.", cost: 2e7, cps: 7800 },
+    { id: "pipe", ico: "⇄", n: "Pipeline Münchwilen–Berlin", fl: "Endlich kein Porto mehr. Leider auch kein Wasser.", cost: 3.3e8, cps: 44000 },
+    { id: "park", ico: "🎢", n: "Freizeitpark Hydrolino", fl: "Achterbahn durch 40 Hydranten. Nasse Hosen garantiert.", cost: 5.1e9, cps: 260000 },
+    { id: "sat", ico: "🛰", n: "Hydranten-Satellit", fl: "Findet jeden Hydranten der Welt. Auch die, die sich verstecken.", cost: 7.5e10, cps: 1.6e6 },
+    { id: "stift", ico: "G", n: "Gido-Stiftung", fl: "Fördert junge Hydranten mit Talent.", cost: 1e12, cps: 1e7 },
+    { id: "mond", ico: "☾", n: "Hydranten auf dem Mond", fl: "Keine Hunde, keine Post, keine Nachbarin. Das Paradies.", cost: 1.4e13, cps: 6.5e7 }
+  ];
+
+  // five upgrades per stage, each doubles that stage; unlocked by how many you own
+  const TIER_AT = [10, 25, 50, 100, 150];
+  const TIER_COST = [15, 150, 3000, 3e5, 3e7];
+  const UPNAMES = {
+    fw: ["Neue Gummistiefel", "Thermoskanne XXL", "Feuerwehrfest-Gutschein", "Ehrenmitgliedschaft", "Goldener Helm"],
+    hund: ["Robidog-Spender", "Dackel-Rabattkarte", "Hunde-Wellness-Hydrant", "Bruno als Markenbotschafter", "Internationale Dackel-Tournee"],
+    werk: ["Neuer Schraubenschlüssel", "Gidos geheimes Ölrezept", "Hebebühne", "Zweite Werkstatt", "Werkstatt mit Kafimaschine"],
+    mus: ["Audioguide, gesprochen von Gido", "Museums-Shop mit Mini-Hydranten", "Sonderausstellung «Rost & Rührung»", "Nachtführung mit Taschenlampe", "Antrag Weltkulturerbe"],
+    infl: ["Ringlicht", "Hydranten-Tanz geht viral", "Deal mit Gummistiefel-Marke", "Parfum «Eau de Hydrant»", "Netflix-Doku"],
+    osaka: ["Gebrauchsanweisung auf Japanisch", "Hydranten-Manga", "Tanakas Neffe steigt ein", "Hydranten-Karaoke", "Shinkansen-Abo"],
+    boerse: ["HYD-ETF", "Hydranten-Optionen", "Bullenmarkt", "Insidertipp von Gido", "HydroCoin"],
+    pipe: ["Grössere Rohre", "Zwischenstation Ulm", "Gegenstrom-Turbine", "Pipeline-Maskottchen", "Zweite Pipeline"],
+    park: ["Wasserrutsche", "Hydranten-Karussell", "Jahresabo", "Halloween-Edition", "Hydrolino-Hotel"],
+    sat: ["Bessere Optik", "Zweiter Satellit", "Wetter-Modul", "Dackel-Erkennung per KI", "Satellit mit Kafimaschine"],
+    stift: ["Stipendium", "Gala-Abend", "Gido-Preis", "Ehrendoktor", "Stiftungsrat Andrin & Filip"],
+    mond: ["Mond-Gummistiefel", "Schwerelos polieren", "Mondhund Laika II", "Erde-Mond-Porto (absurd)", "Hydranten auf dem Mars"]
+  };
+  const UPGRADES = [];
+  GENS.forEach(g => TIER_AT.forEach((at, t) => UPGRADES.push({ id: g.id + t, gen: g.id, at, n: UPNAMES[g.id][t], cost: g.cost * TIER_COST[t] })));
+
+  // each achievement: +1 % income, forever
+  const ACH = [
+    ["tap1", "Erster Wisch", "Einmal poliert.", s => s.taps >= 1],
+    ["tap1k", "Polierprofi", "1’000 Mal poliert.", s => s.taps >= 1000],
+    ["tap10k", "Sehnenscheide", "10’000 Mal poliert.", s => s.taps >= 10000],
+    ["e3", "Znüni-Geld", "CHF 1’000 verdient.", s => s.total >= 1e3],
+    ["e6", "Hydranten-Millionär", "CHF 1 Mio. verdient.", s => s.total >= 1e6],
+    ["e9", "Milliarden-Hydrant", "CHF 1 Mrd. verdient.", s => s.total >= 1e9],
+    ["e12", "Billionen-Brunnen", "CHF 1 Bio. verdient.", s => s.total >= 1e12],
+    ["e15", "Mehr Geld als Wasser", "CHF 1 Brd. verdient.", s => s.total >= 1e15],
+    ["e18", "Gido ist sprachlos", "CHF 1 Trio. verdient.", s => s.total >= 1e18],
+    ["c1", "Brecheisen", "Die erste Kiste geöffnet.", s => s.revealed >= 1],
+    ["c25", "Viertel-Schopf", "25 Kisten offen.", s => s.revealed >= 25],
+    ["c50", "Halbzeit", "50 Kisten offen.", s => s.revealed >= 50],
+    ["c100", "Schopf leer", "Alle 100 Kisten offen.", s => s.revealed >= 100],
+    ["fU", "Treffpunkt", "Den Münchwiler Ur-Hydranten gefunden.", s => has(s, "U")],
+    ["fG", "Goldjunge", "Den Goldenen Gido-Hydranten gefunden.", s => has(s, "G")],
+    ["fb", "Berliner Luft", "Alle 3 Berliner Strassenhydranten gefunden.", s => has(s, "b", 3)],
+    ["fa", "Museumsreif", "Alle 5 antiken Hydranten gefunden.", s => has(s, "a", 5)],
+    ["s1", "Ab die Post", "Einen Hydranten nach Berlin geschickt.", s => s.sentAll >= 1],
+    ["s5", "Stammkunde der Post", "5 Hydranten nach Berlin.", s => s.sentAll >= 5],
+    ["s20", "Berlin hat jetzt genug", "20 Hydranten nach Berlin.", s => s.sentAll >= 20],
+    ["osaka", "Arigato", "Einen Hydranten nach Osaka verkauft.", s => s.sold >= 1],
+    ["zwerg", "Zwergenaufstand", "10 Gartenzwerge aufgestellt.", s => s.zwerg >= 30],
+    ["gold1", "Goldfinger", "Einen goldenen Hydranten erwischt.", s => s.goldClicks >= 1],
+    ["gold25", "Goldrausch", "25 goldene Hydranten erwischt.", s => s.goldClicks >= 25],
+    ["ev10", "Ereignisreich", "10 Ereignisse erlebt.", s => s.evCount >= 10],
+    ["b100", "Arbeitgeber", "100 Leute und Anlagen gekauft.", s => genTotal(s) >= 100],
+    ["b500", "Grosskonzern", "500 Leute und Anlagen gekauft.", s => genTotal(s) >= 500],
+    ["allg", "Vollbeschäftigung", "Von jeder Anlage mindestens eine.", s => GENS.every(g => (s.gens[g.id] || 0) > 0)],
+    ["moon", "Ein kleiner Schritt", "Hydranten auf dem Mond.", s => (s.gens.mond || 0) >= 1],
+    ["up10", "Aufrüster", "10 Verbesserungen gekauft.", s => Object.keys(s.upg).length >= 10],
+    ["up60", "Alles vom Feinsten", "Alle 60 Verbesserungen gekauft.", s => Object.keys(s.upg).length >= 60],
+    ["lap25", "Lappen-Legende", "Polierlappen Stufe 25.", s => s.lappen >= 25],
+    ["p1", "Testament, Teil 2", "Das zweite Erbe angetreten.", s => s.erbe >= 2],
+    ["p5", "Erbschaftsprofi", "Das fünfte Erbe angetreten.", s => s.erbe >= 5],
+    ["m100", "Ordensbrust", "100 Gido-Medaillen gesammelt.", s => s.medals >= 100]
+  ];
+  function has(s, k, n = 1) { let c = 0; for (let i = 0; i < s.revealed; i++) if (s.order[i] === k) c++; return c >= n; }
+  function genTotal(s) { let c = 0; for (const g of GENS) c += s.gens[g.id] || 0; return c; }
+  const LAPPEN = { cost: 20, grow: 1.6 };
+
+  const FIRST = ["Toni", "Vreni", "Ueli", "Heidi", "Sepp", "Ruedi", "Trudi", "Fritz", "Beat", "Hanspeter", "Margrit", "Kurt", "Röbi", "Elsbeth", "Housi", "Lotti", "Werni", "Susi", "Chrigu", "Bethli"];
+  const ADJ = ["der Tropfende", "die Schiefe", "der Stille", "die Eitle", "der Dackelgeplagte", "der Unverwüstliche", "die Quietschende", "der Frühaufsteher", "die Unterschätzte", "der Pensionierte", "die Glänzende", "der Grummlige", "die Heimwehkranke", "der Mutige", "die Verträumte"];
+
+  const FACTS = [
+    "Ein Überflurhydrant wiegt gut 100 Kilo. Gido hat dir also rund zehn Tonnen vererbt.",
+    "Ein Hydrant passt in keinen Briefkasten. Wir haben es versucht.",
+    "Münchwilen liegt im Thurgau. Der Thurgau liegt nicht in Berlin. Daher das Porto.",
+    "Hunde bewerten Hydranten nach Geruch, nicht nach Farbe.",
+    "Treffpunkt wie früher: am Hydranten. Wer zu spät kommt, poliert.",
+    "Feuerwehr-Regel Nr. 1: Erst den Hydranten finden, dann den Schlauch.",
+    "Gido hat jeden Hydranten mit Namen angesprochen. Auch die rostigen.",
+    "Hydranten tragen keine Socken. Bitte nicht nachfragen.",
+    "Ein Hydrant in Berlin ist ein Hydrant, der nicht mehr in Münchwilen steht.",
+    "Wer 100 Hydranten hat, braucht keinen Gartenzwerg. Sagt Gido."
+  ];
+
+  const TITLES = [
+    [0, "Hydranten-Lehrling"], [1e3, "Schopf-Verwalter"], [5e4, "Hydranten-Baron"],
+    [2e6, "Thurgauer Hydranten-Magnat"], [1e8, "Weltmarktführer für Hydranten"], [1e10, "Gidos würdiger Nachfolger"], [1e13, "Hydranten-Gottheit"]
+  ];
+
+  // ---------- Helpers ----------
+  const $ = id => document.getElementById(id);
+  const now = () => Date.now();
+  const rand = (a, b) => a + Math.random() * (b - a);
+  function seeded(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function grp(n) { return Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "’"); }
+  function fmt(n) {
+    if (!isFinite(n)) return "∞";
+    if (n < 10) return (Math.floor(n * 10) / 10).toString();
+    if (n < 1e6) return grp(n);
+    const units = [[1e18, "Trio."], [1e15, "Brd."], [1e12, "Bio."], [1e9, "Mrd."], [1e6, "Mio."]];
+    for (const [v, u] of units) if (n >= v) { const x = n / v; return (x >= 100 ? x.toFixed(0) : x >= 10 ? x.toFixed(1) : x.toFixed(2)) + " " + u; }
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const hySvg = (color, cls = "") => `<svg class="${cls}" style="color:${color}"><use href="#hy"/></svg>`;
+  const rcol = k => `var(--r-${k})`;
+
+  // ---------- State ----------
+  function freshState() {
+    const seed = Math.floor(Math.random() * 1e9);
+    const list = [];
+    for (const k of RKEYS) for (let i = 0; i < RAR[k].count; i++) list.push(k);
+    // shuffle, but keep the two uniques out of the first 25 crates so they feel earned
+    const rnd = seeded(seed);
+    for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+    for (const u of ["G", "U"]) {
+      let idx = list.indexOf(u);
+      if (idx < 25) { const j = 25 + Math.floor(rnd() * 75); [list[idx], list[j]] = [list[j], list[idx]]; }
+    }
+    return {
+      v: 1, name: "", seed, order: list, money: 0, total: 0, taps: 0, lappen: 0, extraTap: 0, gens: {},
+      revealed: 0, gone: {}, sent: 0, coupon: false, zwerg: 0,
+      upg: {}, ach: {}, sentAll: 0, sold: 0, goldClicks: 0, evCount: 0, medals: 0, erbe: 1, runTotal: 0,
+      tapBuff: 1, tapBuffUntil: 0, incBuff: 1, incBuffUntil: 0,
+      lastSeen: now(), savedAt: 0, nextEvent: now() + 45000, nextGold: now() + 50000, seen: {}
+    };
+  }
+  let S = freshState();
+  const SAVE_KEY = "gidos-hydranten-erbe-v1";
+
+  function loadLocal() {
+    const raw = lsGet(SAVE_KEY);
+    if (!raw) return null;
+    try { const s = JSON.parse(raw); return s && s.v === 1 ? s : null; } catch { return null; }
+  }
+  function saveLocal() { S.savedAt = now(); S.lastSeen = now(); lsSet(SAVE_KEY, JSON.stringify(S)); }
+
+  // ---------- Economy ----------
+  const genCount = id => S.gens[id] || 0;
+  const genCost = (g, k = genCount(g.id), n = 1) => Math.ceil(g.cost * Math.pow(1.15, k) * (Math.pow(1.15, n) - 1) / 0.15 - 1e-9);
+  const lappenCost = () => Math.ceil(LAPPEN.cost * Math.pow(LAPPEN.grow, S.lappen));
+  const revealCost = () => Math.floor(10 * Math.pow(1.16, S.revealed));
+  function activeSlots() { const out = []; for (let i = 0; i < S.revealed; i++) if (!S.gone[i]) out.push(i); return out; }
+  function hydPct() { let p = 0; for (const i of activeSlots()) p += RAR[S.order[i]].pct; return p; }
+  const achCount = () => Object.keys(S.ach).length;
+  function multiplier(noBuff) {
+    const t = now();
+    const buff = !noBuff && t < S.incBuffUntil ? S.incBuff : 1;
+    return (1 + hydPct() / 100 + S.zwerg / 100) * (1 + 0.15 * S.sent) * (1 + achCount() / 100) * (1 + S.medals / 10) * buff;
+  }
+  function genMult(id) { let m = 1; for (let t = 0; t < 5; t++) if (S.upg[id + t]) m *= 2; return m; }
+  function baseCps() { let c = activeSlots().length * 0.5; for (const g of GENS) c += genCount(g.id) * g.cps * genMult(g.id); return c; }
+  const cps = () => baseCps() * multiplier();
+  const upAvailable = () => UPGRADES.filter(u => !S.upg[u.id] && genCount(u.gen) >= u.at).sort((a, b) => a.cost - b.cost);
+  const medalsOnReset = () => Math.floor(Math.sqrt(S.runTotal / 1e8));
+  function tapValue() {
+    const buff = now() < S.tapBuffUntil ? S.tapBuff : 1;
+    return (1 + S.lappen + S.extraTap + cps() * 0.01 * S.lappen) * buff;
+  }
+  function earn(x) { S.money += x; S.total += x; S.runTotal += x; }
+  function title() { let t = TITLES[0][1]; for (const [v, n] of TITLES) if (S.total >= v) t = n; return t; }
+  const friend = () => (S.name.toLowerCase() === "filip" ? "Andrin" : "Filip");
+  function hydName(i) {
+    const r = seeded(S.seed + i * 7919);
+    return `Nr. ${i + 1} «${FIRST[Math.floor(r() * FIRST.length)]} ${ADJ[Math.floor(r() * ADJ.length)]}»`;
+  }
+  function rarest() {
+    let best = null;
+    for (let i = 0; i < S.revealed; i++) { const k = S.order[i]; if (!best || RKEYS.indexOf(k) > RKEYS.indexOf(best)) best = k; }
+    return best;
+  }
+
+  // ---------- UI: toast & modal ----------
+  let toastTimer;
+  function toast(msg) {
+    document.querySelectorAll(".toast").forEach(t => t.remove());
+    const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t);
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 2600);
+  }
+  let modalOpen = false;
+  function modal({ kicker, title, text, html, acts, input }) {
+    closeModal();
+    modalOpen = true;
+    const bg = document.createElement("div"); bg.className = "modal-bg"; bg.id = "modal-bg";
+    const m = document.createElement("div"); m.className = "modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+    m.innerHTML = `${kicker ? `<div class="kicker">${esc(kicker)}</div>` : ""}${title ? `<h2>${esc(title)}</h2>` : ""}${text ? `<p>${esc(text)}</p>` : ""}${html || ""}`;
+    let inp;
+    if (input) { inp = document.createElement("input"); inp.id = "modal-input"; inp.placeholder = input; inp.maxLength = 24; m.appendChild(inp); }
+    const box = document.createElement("div"); box.className = "acts";
+    acts.forEach((a, i) => {
+      const b = document.createElement("button"); b.textContent = a.label; if (i === 0) b.className = "primary";
+      b.onclick = () => { if (a.keep) { a.run && a.run(inp && inp.value); return; } closeModal(); a.run && a.run(inp && inp.value); renderAll(); };
+      box.appendChild(b);
+    });
+    m.appendChild(box); bg.appendChild(m); document.body.appendChild(bg);
+    setTimeout(() => (inp || box.querySelector("button")).focus(), 50);
+  }
+  function closeModal() { const b = $("modal-bg"); if (b) b.remove(); modalOpen = false; }
+
+  // ---------- Tabs ----------
+  let tab = "p-hof";
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => showTab(b.dataset.p)));
+  function showTab(p) {
+    tab = p;
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.p === p)));
+    document.querySelectorAll(".panel").forEach(s => (s.hidden = s.id !== p));
+    renderAll();
+  }
+
+  // ---------- Hof ----------
+  const big = $("big"), zone = $("tapzone");
+  big.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    const v = tapValue(); earn(v); S.taps++;
+    big.classList.add("squish"); setTimeout(() => big.classList.remove("squish"), 80);
+    const r = zone.getBoundingClientRect();
+    const x = (e.clientX || r.left + r.width / 2) - r.left, y = (e.clientY || r.top + r.height / 2) - r.top;
+    const f = document.createElement("div"); f.className = "float"; f.textContent = "+" + fmt(v);
+    f.style.left = x + "px"; f.style.top = (y - 20) + "px"; zone.appendChild(f); setTimeout(() => f.remove(), 900);
+    for (let i = 0; i < 4; i++) {
+      const d = document.createElement("div"); d.className = "drop";
+      d.style.left = x + "px"; d.style.top = y + "px";
+      d.style.setProperty("--dx", rand(-50, 50) + "px"); d.style.setProperty("--dy", rand(10, 60) + "px");
+      zone.appendChild(d); setTimeout(() => d.remove(), 700);
+    }
+    if (S.taps === 1) toast("Sauber! Gido wäre stolz.");
+    if (S.taps === 100) toast("100 Mal poliert. Dein Daumen hat jetzt Feuerwehr-Kondition.");
+    if (S.taps === 1000) toast("1000 Wische. Der Hydrant sieht dich jetzt als Familie.");
+  });
+  big.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); earn(tapValue()); S.taps++; } });
+
+  let factIdx = Math.floor(Math.random() * FACTS.length);
+  function nextFact() { factIdx = (factIdx + 1) % FACTS.length; $("ticker").innerHTML = `<b>HYDRANTEN-FAKT</b>${esc(FACTS[factIdx])}`; }
+  nextFact(); setInterval(nextFact, 9000);
+
+  // ---------- Personal ----------
+  let qty = 1;
+  $("q1").onclick = () => { qty = 1; $("q1").setAttribute("aria-pressed", "true"); $("q10").setAttribute("aria-pressed", "false"); renderGens(); };
+  $("q10").onclick = () => { qty = 10; $("q10").setAttribute("aria-pressed", "true"); $("q1").setAttribute("aria-pressed", "false"); renderGens(); };
+  function renderGens() {
+    const el = $("gens");
+    const lc = lappenCost();
+    let h = `<div class="row" data-k="lappen">
+      <div class="ico">✦</div>
+      <div class="txt"><div class="nm">Gidos Polierlappen <span class="cnt">Stufe ${S.lappen}</span></div>
+      <div class="fl">Original-Lappen aus Gidos Schublade. Jede Stufe: +1 pro Wisch und +1 % deines Einkommens pro Wisch.</div></div>
+      <button class="buy" data-buy="lappen" ${S.money < lc ? "disabled" : ""}>CHF ${fmt(lc)}<small>verbessern</small></button></div>`;
+    const ups = upAvailable();
+    if (ups.length) {
+      h += `<div class="sect">Verbesserungen <span>${Object.keys(S.upg).length}/${UPGRADES.length}</span></div>`;
+      ups.slice(0, 5).forEach(u => {
+        const g = GENS.find(x => x.id === u.gen);
+        h += `<div class="row up">
+          <div class="ico">×2</div>
+          <div class="txt"><div class="nm">${esc(u.n)}</div><div class="fl">${esc(g.n)} verdient doppelt so viel.</div></div>
+          <button class="buy" data-up="${u.id}" ${S.money < u.cost ? "disabled" : ""}>CHF ${fmt(u.cost)}<small>kaufen</small></button></div>`;
+      });
+      if (ups.length > 5) h += `<div class="fl" style="color:var(--muted);font-size:13px">+ ${ups.length - 5} weitere Verbesserungen bereit</div>`;
+      h += `<div class="sect">Personal &amp; Anlagen</div>`;
+    } else {
+      const next = UPGRADES.filter(u => !S.upg[u.id] && genCount(u.gen) > 0).sort((a, b) => (a.at - genCount(a.gen)) - (b.at - genCount(b.gen)))[0];
+      if (next) h += `<div class="sect">Nächste Verbesserung: «${esc(next.n)}» ab ${next.at}× ${esc(GENS.find(x => x.id === next.gen).n)}</div>`;
+    }
+    GENS.forEach((g, i) => {
+      const prevOwned = i === 0 || genCount(GENS[i - 1].id) > 0 || genCount(g.id) > 0;
+      const c = genCost(g, genCount(g.id), qty);
+      if (!prevOwned) {
+        h += `<div class="row locked"><div class="ico">?</div><div class="txt"><div class="nm">???</div><div class="fl">Kauf zuerst «${esc(GENS[i - 1].n)}».</div></div><span></span></div>`;
+        return;
+      }
+      h += `<div class="row">
+        <div class="ico">${esc(g.ico)}</div>
+        <div class="txt"><div class="nm">${esc(g.n)} <span class="cnt">${genCount(g.id)}×</span></div>
+        <div class="fl">${esc(g.fl)}</div>
+        <div class="eff">+${fmt(g.cps * genMult(g.id) * multiplier())} / s pro Stück${genMult(g.id) > 1 ? ` · ×${genMult(g.id)} verbessert` : ""}</div></div>
+        <button class="buy" data-buy="${g.id}" data-cost="${c}" ${S.money < c ? "disabled" : ""}>CHF ${fmt(c)}<small>${qty > 1 ? "10 kaufen" : "kaufen"}</small></button></div>`;
+    });
+    el.innerHTML = h;
+  }
+  $("gens").addEventListener("click", e => {
+    const ub = e.target.closest("[data-up]");
+    if (ub) {
+      const u = UPGRADES.find(x => x.id === ub.dataset.up);
+      if (!u || S.upg[u.id] || S.money < u.cost) return;
+      S.money -= u.cost; S.upg[u.id] = 1; toast(`«${u.n}» gekauft. ${GENS.find(x => x.id === u.gen).n} ×2!`);
+      renderAll(); return;
+    }
+    const b = e.target.closest("[data-buy]"); if (!b) return;
+    const id = b.dataset.buy;
+    if (id === "lappen") {
+      const c = lappenCost(); if (S.money < c) return;
+      S.money -= c; S.lappen++; toast(`Polierlappen Stufe ${S.lappen}. Riecht noch nach Gidos Werkstatt.`);
+    } else {
+      const g = GENS.find(x => x.id === id); const c = genCost(g, genCount(id), qty);
+      if (S.money < c) return;
+      S.money -= c; S.gens[id] = genCount(id) + qty;
+      if (S.gens[id] === qty) toast(`Neu: ${g.n}!`);
+    }
+    renderAll();
+  });
+
+  // ---------- Schopf ----------
+  $("reveal").onclick = () => {
+    if (S.revealed >= 100) return;
+    const c = revealCost(); if (S.money < c) return;
+    S.money -= c;
+    const i = S.revealed++; const k = S.order[i];
+    showDetail(i);
+    if (k === "U") {
+      modal({
+        kicker: "KISTE NR. " + (i + 1), title: "Der Münchwiler Ur-Hydrant",
+        text: `Moment. Den kennst du doch. Genau an diesem Hydranten haben sich Andrin und Filip als Kinder immer verabredet. Gido hat ihn gerettet, als die Gemeinde ihn ersetzen wollte. Einkommen +50 %.`,
+        acts: [{ label: `${friend()} sofort davon erzählen` , run: () => toast(`${friend()} wird es nicht glauben.`) }]
+      });
+    } else if (k === "G") {
+      modal({ kicker: "KISTE NR. " + (i + 1), title: "Gold!", text: RAR.G.msg, acts: [{ label: "Sonnenbrille aufsetzen" }] });
+    } else if (k === "b" || k === "a") {
+      toast(`${RAR[k].n}! ${RAR[k].msg}`);
+    }
+    if (S.revealed === 100) toast("Alle 100 Kisten offen. Der Schopf ist leer. Gido hätte geweint.");
+    renderAll();
+  };
+  function showDetail(i) {
+    const k = S.order[i]; const d = $("detail");
+    const state = S.gone[i] === "berlin" ? " · steht jetzt in Berlin" : S.gone[i] === "sold" ? " · nach Osaka verkauft" : "";
+    d.hidden = false;
+    d.innerHTML = `${hySvg(rcol(k))}<div><b>${esc(hydName(i))}</b><br><span style="color:${rcol(k)};font-weight:700">${esc(RAR[k].n)}</span> · +${RAR[k].pct} % Einkommen${esc(state)}<br><span style="color:var(--muted)">${esc(k === "U" ? "Euer Treffpunkt. Unverkäuflich." : RAR[k].msg)}</span></div>`;
+  }
+  $("grid").addEventListener("click", e => {
+    const c = e.target.closest(".cell"); if (!c) return;
+    const i = +c.dataset.i; if (i < S.revealed) showDetail(i); else toast("Diese Kiste ist noch zugenagelt.");
+  });
+  function renderSchopf() {
+    const c = revealCost();
+    const rb = $("reveal");
+    rb.disabled = S.revealed >= 100 || S.money < c;
+    $("reveal-price").textContent = S.revealed >= 100 ? "leer" : "CHF " + fmt(c);
+    let h = "";
+    for (let i = 0; i < 100; i++) {
+      if (i < S.revealed) {
+        const g = S.gone[i];
+        h += `<button class="cell ${g ? "gone" : ""} ${g === "sold" ? "sold" : ""}" data-i="${i}" aria-label="${esc(hydName(i))}">${hySvg(rcol(S.order[i]))}</button>`;
+      } else h += `<button class="cell" data-i="${i}" aria-label="Kiste ${i + 1}, zu"><svg><use href="#crate"/></svg></button>`;
+    }
+    $("grid").innerHTML = h;
+    const found = {}; for (let i = 0; i < S.revealed; i++) found[S.order[i]] = (found[S.order[i]] || 0) + 1;
+    $("legend").innerHTML = RKEYS.map(k => `<div><i style="background:${rcol(k)}"></i>${found[k] ? esc(RAR[k].n) : "???"}<span>${found[k] || 0}/${RAR[k].count}</span></div>`).join("");
+    renderPrestige();
+  }
+
+  // ---------- Prestige: Gidos Testament ----------
+  const PRESTIGE_MIN = 1e9;
+  function renderPrestige() {
+    const m = medalsOnReset();
+    const ready = S.revealed >= 100 && S.runTotal >= PRESTIGE_MIN && m > 0;
+    const medalsLine = S.medals ? `Du hast <b>${S.medals} Gido-Medaillen</b> (+${S.medals * 10} % Einkommen). ` : "";
+    $("prestige").innerHTML = `
+      <div class="kicker">ERBE NR. ${S.erbe}</div>
+      <h2>Gidos Testament, Teil ${S.erbe + 1}</h2>
+      <p class="sub">${medalsLine}Gerüchten zufolge hat Gido noch mehr Hydranten versteckt. Wer den Schopf leert und mindestens CHF ${fmt(PRESTIGE_MIN)} in diesem Erbe verdient, darf neu anfangen: mit neuen Kisten und Gido-Medaillen, die für immer je +10 % Einkommen geben.</p>
+      <p class="sub">Kisten: <b>${S.revealed}/100</b> · Verdient in diesem Erbe: <b>CHF ${fmt(S.runTotal)}</b> · Medaillen beim Neustart: <b>${m}</b></p>
+      <button class="big-btn" id="do-prestige" ${ready ? "" : "disabled"}><span>Neues Erbe antreten</span><span class="price">+${m} 🎖</span></button>`;
+    $("do-prestige").onclick = () => {
+      if (!ready) return;
+      modal({ kicker: "BRIEF VOM NOTAR", title: `Testament, Teil ${S.erbe + 1}`,
+        text: `In Gidos Garage stehen nochmals 100 Kisten. Wenn du das Erbe antrittst, beginnst du von vorn: Geld, Personal, Verbesserungen und Kisten sind weg. Du behältst Erfolge, Medaillen und deinen Platz in der Rangliste und bekommst ${m} neue Gido-Medaillen.`,
+        acts: [{ label: `Erbe antreten (+${m} Medaillen)`, run: doPrestige }, { label: "Noch nicht" }] });
+    };
+  }
+  function doPrestige() {
+    const m = medalsOnReset();
+    const keep = { name: S.name, total: S.total, taps: S.taps, ach: S.ach, medals: S.medals + m, erbe: S.erbe + 1,
+      sentAll: S.sentAll, sold: S.sold, goldClicks: S.goldClicks, evCount: S.evCount };
+    S = Object.assign(freshState(), keep);
+    $("detail").hidden = true;
+    saveLocal(); pushCloud();
+    toast(`Erbe Nr. ${S.erbe} angetreten. ${S.medals} Medaillen glänzen an deiner Brust.`);
+    showTab("p-hof");
+  }
+
+  // ---------- Berlin ----------
+  const FEES = [
+    ["Grundporto Paket Ausland, Sperrgut 1.20 m", .08],
+    ["Gewichtszuschlag (102 kg Gusseisen)", .14],
+    ["Gefahrgut-Pauschale «könnte spritzen»", .11],
+    ["Zollformular CN23, handschriftlich, dreifach", .09],
+    ["Express-Wasserschadenversicherung", .16],
+    ["Empfangsgebühr Bezirksamt Berlin", .12],
+    ["Hund-am-Zielort-Risikozuschlag", .1],
+    ["Gidos Sentimentalwert", .2]
+  ];
+  function sendCandidate() {
+    let best = -1;
+    for (const i of activeSlots()) {
+      const k = S.order[i]; if (RAR[k].unique) continue;
+      if (best < 0 || RAR[k].pct < RAR[S.order[best]].pct) best = i;
+    }
+    return best;
+  }
+  const porto = () => Math.ceil(Math.max(89, cps() * 120) * Math.pow(1.6, S.sent) * (S.coupon ? .5 : 1));
+  function renderBerlin() {
+    const isFilip = S.name.toLowerCase() === "filip";
+    $("berlin-sub").textContent = isFilip
+      ? "Andrin wollte dir schon immer einen schicken. Jetzt machst du es halt selbst. Jedes Paket gibt dauerhaft +15 % Einkommen (Freundschaftsbonus), kostet dich aber einen Hydranten."
+      : "Endlich: ein Hydrant für Filip. Jedes Paket gibt dauerhaft +15 % Einkommen (Freundschaftsbonus), kostet dich aber einen Hydranten und ein absurdes Porto.";
+    const cand = sendCandidate(); const p = porto();
+    let rows = FEES.map(([n, f]) => `<tr><td>${esc(n)}</td><td>CHF ${fmt(p * f)}</td></tr>`).join("");
+    if (S.coupon) rows += `<tr><td>Rabattcoupon «Hydrant im Herzen» −50 %</td><td>bereits abgezogen</td></tr>`;
+    $("parcel").innerHTML = `
+      <div class="addr">Absender: ${esc(S.name || "Du")}, Gidos Schopf, 9542 Münchwilen TG<br>Empfänger: ${isFilip ? "Filip (also du)" : "Filip"}, irgendwo in Berlin, Hinterhof, 3. Stock, kein Lift</div>
+      <div class="addr">Inhalt: ${cand >= 0 ? esc(hydName(cand)) + " (" + esc(RAR[S.order[cand]].n) + ")" : "nichts, du hast keinen versandbereiten Hydranten"}</div>
+      <div style="overflow-x:auto"><table class="fees"><tbody>${rows}<tr class="sum"><td>Total</td><td>CHF ${fmt(p)}</td></tr></tbody></table></div>
+      <button class="big-btn" id="send" ${cand < 0 || S.money < p ? "disabled" : ""}><span>Ab die Post</span><span class="price">CHF ${fmt(p)}</span></button>
+      <div class="addr">Bisher verschickt: <b>${S.sent}</b> · Freundschaftsbonus: <b>+${S.sent * 15} %</b>${cand < 0 ? "<br>Brich im Schopf zuerst eine Kiste auf." : ""}</div>
+      ${S.sent ? `<div class="stamp">${S.sent}× ZUGESTELLT</div>` : ""}`;
+    const sb = $("send");
+    if (sb) sb.onclick = () => {
+      const i = sendCandidate(), cost = porto(); if (i < 0 || S.money < cost) return;
+      S.money -= cost; S.gone[i] = "berlin"; S.sent++; S.sentAll++; S.coupon = false;
+      const lines = [
+        `${hydName(i)} ist unterwegs. Sendungsverfolgung: «Irgendwo bei Ulm».`,
+        `Zugestellt. Filip musste ihn selbst in den 3. Stock tragen.`,
+        `Der Pöstler hat gekündigt. Paket kam trotzdem an.`,
+        `Zoll in Weil am Rhein hat ihn 3 Tage verhört. Er hat nichts gesagt.`,
+        `Angekommen. Die Nachbarn in Berlin halten ihn für Kunst.`
+      ];
+      modal({ kicker: "PAKET NR. " + S.sent, title: "Ab nach Berlin!", text: lines[(S.sent - 1) % lines.length] + " Einkommen jetzt dauerhaft +" + S.sent * 15 + " %.", acts: [{ label: "Grossartig" }] });
+      renderAll();
+    };
+  }
+
+  // ---------- Events ----------
+  const EVENTS = [
+    { id: "dackel", ok: () => S.revealed > 0, run: () => {
+      const n = 1 + Math.floor(Math.random() * Math.max(1, S.revealed));
+      const cash = Math.max(20, cps() * 30);
+      modal({ kicker: "MELDUNG AUS DEM HOF", title: "Dackel-Alarm", text: `Ein Dackel namens Bruno hat Hydrant Nr. ${n} markiert. Sein Besitzer will dafür sogar bezahlen.`, acts: [
+        { label: `Eintritt kassieren (+CHF ${fmt(cash)})`, run: () => { earn(cash); toast("Bruno kommt morgen wieder. Mit Kollegen."); } },
+        { label: "Sofort putzen (Wischen ×3 für 30 s)", run: () => { S.tapBuff = 3; S.tapBuffUntil = now() + 30000; toast("Putzmodus! Jeder Wisch zählt dreifach."); } }
+      ] });
+    } },
+    { id: "post", ok: () => !S.coupon, run: () => {
+      modal({ kicker: "BRIEF VON DER POST", title: "Neue Tarife", text: "Die Post erhöht das Porto nach Berlin. Begründung: «Hydrantenzuschlag, eingeführt aus aktuellem Anlass.»", acts: [
+        { label: "Im Altpapier nach Coupons suchen", run: () => { if (Math.random() < .6) { S.coupon = true; toast("Coupon gefunden: nächstes Berlin-Paket −50 %!"); } else toast("Nur Migros-Werbung von 2009."); } },
+        { label: "Protestbrief schreiben", run: () => toast("Antwort in 6 bis 8 Wochen. Vielleicht.") }
+      ] });
+    } },
+    { id: "osaka", ok: () => activeSlots().some(i => S.order[i] === "r"), run: () => {
+      const offer = Math.max(500, cps() * 300);
+      modal({ kicker: "ANRUF AUS JAPAN", title: "Herr Tanaka aus Osaka", text: `«Ich biete CHF ${fmt(offer)} für einen rostigen Hydranten. Rost ist in Osaka sehr gefragt.»`, acts: [
+        { label: `Verkaufen (+CHF ${fmt(offer)})`, run: () => { const i = activeSlots().find(i => S.order[i] === "r"); S.gone[i] = "sold"; S.sold++; earn(offer); toast("Arigato! Der Hydrant fliegt Business."); } },
+        { label: "Behalten. Gido wäre traurig.", run: () => toast("Herr Tanaka respektiert das. Er ruft nächste Woche wieder an.") }
+      ] });
+    } },
+    { id: "gido", ok: () => true, run: () => {
+      modal({ kicker: "ANRUF VON GIDO", title: "Gido ist am Telefon", text: "«Hast du die Hydranten schon geölt? Die Nr. 12 quietscht, das höre ich bis hierher.»", acts: [
+        { label: "Sofort ölen! (Einkommen ×2 für 30 s)", run: () => { S.incBuff = 2; S.incBuffUntil = now() + 30000; toast("Frisch geölt. Alles läuft doppelt so schnell."); } },
+        { label: "«Ja, Papa.»", run: () => { earn(Math.max(10, cps() * 10)); toast("Gido schickt dir trotzdem ein Znüni-Geld."); } }
+      ] });
+    } },
+    { id: "uebung", ok: () => S.revealed >= 10, run: () => {
+      const cash = Math.max(50, cps() * 90);
+      modal({ kicker: "GEMEINDE MÜNCHWILEN", title: "Feuerwehrübung", text: "Die Feuerwehr übt am Samstag und möchte zehn deiner Hydranten mieten. Wie früher, nur mit Rechnung.", acts: [
+        { label: `Vermieten (+CHF ${fmt(cash)})`, run: () => { earn(cash); toast(`Die Feuerwehr lässt ${friend()} grüssen.`); } }
+      ] });
+    } },
+    { id: "brief", ok: () => S.revealed >= 3, run: () => {
+      modal({ kicker: "NACHRICHT AUS BERLIN", title: `${friend()} schreibt`, text: friend() === "Filip" ? "«Hier in Berlin gibt es keine schönen Hydranten. Nur so grüne Pumpen. Ich vermisse Münchwilen.»" : "«Na, schon reich? Ich bin dir in der Rangliste auf den Fersen.»", acts: [
+        { label: friend() === "Filip" ? "Paket vorbereiten" : "Rangliste ansehen", run: () => showTab(friend() === "Filip" ? "p-berlin" : "p-rang") },
+        { label: "Später", run: () => {} }
+      ] });
+    } },
+    { id: "notar", ok: () => S.taps > 50, run: () => {
+      modal({ kicker: "BRIEF VOM NOTAR", title: "Nachtrag zum Erbe", text: "In Gidos Keller stand noch eine Kiste mit 200 Hydrantenschlüsseln. Niemand weiss, wofür so viele.", acts: [
+        { label: "Mitnehmen (+3 pro Wisch, dauerhaft)", run: () => { S.extraTap += 3; toast("Du klimperst jetzt beim Gehen."); } }
+      ] });
+    } },
+    { id: "zwerg", ok: () => S.revealed >= 5 && S.zwerg < 30, run: () => {
+      const cost = Math.max(100, cps() * 60);
+      modal({ kicker: "NACHBARSCHAFT", title: "Beschwerde von nebenan", text: "Frau Hugentobler findet, 100 Hydranten im Garten seien «kein Ersatz für einen anständigen Gartenzwerg».", acts: [
+        { label: `Gartenzwerg aufstellen (CHF ${fmt(cost)}, +3 % dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.zwerg += 3; toast("Der Zwerg hält jetzt einen Mini-Schlauch. Frau Hugentobler ist besänftigt."); } else toast("Zu wenig Geld. Der Zwerg bleibt im Laden."); } },
+        { label: "Ignorieren", run: () => toast("Frau Hugentobler notiert sich das.") }
+      ] });
+    } }
+  ];
+  let lastEvent = "";
+  function maybeEvent() {
+    if (modalOpen || !S.name || now() < S.nextEvent) return;
+    const pool = EVENTS.filter(e => e.ok() && e.id !== lastEvent);
+    S.nextEvent = now() + rand(70000, 140000);
+    if (!pool.length) return;
+    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; e.run();
+  }
+
+  // ---------- Golden hydrant ----------
+  let goldEl = null;
+  function maybeGold() {
+    if (goldEl || !S.name || now() < S.nextGold) return;
+    S.nextGold = now() + rand(45000, 120000);
+    goldEl = document.createElement("button"); goldEl.className = "gold"; goldEl.setAttribute("aria-label", "Goldener Hydrant, schnell antippen");
+    goldEl.innerHTML = `<svg><use href="#hy"/></svg>`;
+    goldEl.style.left = rand(16, Math.max(17, innerWidth - 70)) + "px";
+    goldEl.style.top = rand(110, Math.max(111, innerHeight - 180)) + "px";
+    goldEl.onclick = () => {
+      S.goldClicks++;
+      const r = Math.random();
+      if (r < .5) { const x = Math.max(30, cps() * 60, tapValue() * 20); earn(x); toast(`Goldener Hydrant! +CHF ${fmt(x)}`); }
+      else if (r < .8) { S.incBuff = 5; S.incBuffUntil = now() + 20000; toast("Hydranten-Rausch! Einkommen ×5 für 20 s."); }
+      else { S.tapBuff = 10; S.tapBuffUntil = now() + 15000; toast("Goldene Hände! Wischen ×10 für 15 s."); }
+      goldEl.remove(); goldEl = null; renderAll();
+    };
+    document.body.appendChild(goldEl);
+    const me = goldEl; setTimeout(() => { if (goldEl === me) { me.remove(); goldEl = null; } }, 9000);
+  }
+
+  // ---------- HUD & render ----------
+  function renderHud() {
+    $("hud-money").innerHTML = `<small>CHF</small>${fmt(S.money)}`;
+    const t = now();
+    let buffs = "";
+    if (t < S.incBuffUntil) buffs += `<span class="buff">×${S.incBuff} ${Math.ceil((S.incBuffUntil - t) / 1000)}s</span>`;
+    if (t < S.tapBuffUntil) buffs += `<span class="buff">Wisch ×${S.tapBuff}</span>`;
+    $("hud-rate").textContent = `+${fmt(cps())} / s`;
+    $("hud-mult").innerHTML = `×${multiplier().toFixed(2)}${buffs}`;
+    $("hud-who").textContent = S.name ? S.name : "";
+    $("tapval").textContent = fmt(tapValue());
+    $("rankline").innerHTML = `${esc(S.name || "Du")}, <b>${esc(title())}</b> · ${S.revealed}/100 Kisten offen`;
+    big.style.color = S.revealed && rarest() ? rcol(rarest() === "U" ? "U" : rarest()) : "var(--r-c)";
+  }
+  let lastAfford = "";
+  function refreshAffordance() {
+    // cheap check: only re-render lists when what you can afford changes
+    const key = [upAvailable().filter(u => S.money >= u.cost).length, S.money >= lappenCost(), ...GENS.map(g => S.money >= genCost(g, genCount(g.id), qty)), S.money >= revealCost(), S.money >= porto()].join("");
+    $("dot-personal").hidden = !GENS.some((g, i) => (i === 0 || genCount(GENS[i - 1].id) > 0) && S.money >= genCost(g)) && S.money < lappenCost() && !upAvailable().some(u => S.money >= u.cost);
+    $("dot-schopf").hidden = !((S.revealed < 100 && S.money >= revealCost()) || (S.revealed >= 100 && S.runTotal >= PRESTIGE_MIN));
+    if (key !== lastAfford) { lastAfford = key; renderPanel(); }
+  }
+  function renderPanel() {
+    if (tab === "p-personal") renderGens();
+    else if (tab === "p-schopf") renderSchopf();
+    else if (tab === "p-berlin") renderBerlin();
+    else if (tab === "p-rang") renderBoard();
+  }
+  function renderAll() { lastAfford = ""; renderHud(); refreshAffordance(); renderPanel(); }
+
+  // ---------- Leaderboard (shared db) ----------
+  let db = null, uid = null, board = [], cloudState = "connecting", writable = true;
+  function myEntry() {
+    return { player: S.name || "Unbekannt", total: Math.floor(S.total), revealed: S.revealed, sent: S.sentAll, erbe: S.erbe, medals: S.medals, ach: achCount(), best: rarest() || "", title: title(), updatedAt: now() };
+  }
+  function renderBoard() {
+    let rows = board.slice();
+    if (!uid) {
+      // offline: show only the local player
+      rows = [{ id: "local", ...myEntry() }];
+    } else {
+      const mine = { id: uid, ...myEntry() };
+      rows = rows.filter(r => r.id !== uid).concat([mine]);
+    }
+    rows.sort((a, b) => (b.total || 0) - (a.total || 0));
+    $("lb").innerHTML = rows.map((r, i) => {
+      const me = r.id === uid || r.id === "local";
+      const best = r.best && RAR[r.best] ? RAR[r.best].n : "noch nichts";
+      return `<div class="lb-row ${me ? "me" : ""}"><div class="lb-pos">${i + 1}</div>
+        <div style="min-width:0"><div class="lb-name">${esc(String(r.player || "Unbekannt").slice(0, 24))}${me ? " (du)" : ""}</div>
+        <div class="lb-meta">${esc(String(r.title || ""))} · Erbe ${+r.erbe || 1} · ${+r.revealed || 0}/100 Kisten · ${+r.sent || 0} nach Berlin · ${+r.ach || 0} Erfolge · Bester Fund: ${esc(best)}</div></div>
+        <div class="lb-val">CHF ${fmt(+r.total || 0)}<small>verdient</small></div></div>`;
+    }).join("");
+    const notes = {
+      connecting: "Verbinde mit der Rangliste …",
+      live: `Live: Sobald ${friend()} spielt, erscheint der Stand hier. Dein Stand wird alle 30 Sekunden hochgeladen.`,
+      readonly: "Du kannst die Rangliste sehen, aber nicht eintragen. Andrin muss dich in den Freigabe-Einstellungen per E-Mail als «Editor» einladen.",
+      offline: "Die gemeinsame Rangliste ist noch nicht verbunden. Dein Spielstand wird auf diesem Gerät gespeichert. Kopiere deinen Stand und schick ihn per WhatsApp."
+    };
+    $("lb-note").textContent = notes[cloudState] || notes.offline;
+    renderAch();
+  }
+  function checkAch() {
+    if (!S.name) return;
+    for (const [id, n] of ACH) if (!S.ach[id] && ACH.find(a => a[0] === id)[3](S)) {
+      S.ach[id] = 1; toast(`Erfolg: «${n}» (+1 % Einkommen)`);
+      if (tab === "p-rang") renderBoard();
+    }
+  }
+  function renderAch() {
+    $("ach-count").textContent = `${achCount()}/${ACH.length}`;
+    $("achs").innerHTML = ACH.map(([id, n, d]) => S.ach[id]
+      ? `<div class="ach on"><b>${esc(n)}</b><span>${esc(d)}</span></div>`
+      : `<div class="ach"><b>???</b><span>${esc(d)}</span></div>`).join("");
+  }
+  $("copy-score").onclick = () => {
+    const txt = `${S.name || "Ich"} in Gidos Hydranten-Erbe: CHF ${fmt(S.total)} verdient, Erbe Nr. ${S.erbe}, ${S.revealed}/100 Kisten offen, ${S.sentAll} Hydranten nach Berlin verschickt, ${achCount()}/${ACH.length} Erfolge. Titel: ${title()}.`;
+    const done = () => toast("Kopiert. Ab in den Chat damit.");
+    try { navigator.clipboard.writeText(txt).then(done, () => toast(txt)); } catch { toast(txt); }
+  };
+
+  let pushing = false, lastPushed = -1, savePushing = false;
+  async function pushCloud() {
+    if (!db || !uid || !S.name) return;
+    if (writable && !pushing && Math.floor(S.total) !== lastPushed) {
+      pushing = true;
+      try { await db.doc("leaderboard/" + uid).set(myEntry()); lastPushed = Math.floor(S.total); }
+      catch (e) { if (e && e.code === "invalid_argument") { writable = false; cloudState = "readonly"; if (tab === "p-rang") renderBoard(); } }
+      pushing = false;
+    }
+    if (!savePushing) {
+      savePushing = true;
+      try { S.savedAt = now(); await db.doc("data/users/" + uid + "/save").set({ json: JSON.stringify(S), savedAt: S.savedAt }); } catch {}
+      savePushing = false;
+    }
+  }
+  async function initCloud() {
+    try {
+      if (!window.claude || !window.claude.use) { cloudState = "offline"; return; }
+      const [d, u] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+      const id = u ? await u.id() : null;
+      if (!d || !id) { cloudState = "offline"; if (tab === "p-rang") renderBoard(); return; }
+      db = d; uid = id;
+      // pull a newer save from another device
+      try {
+        const snap = await db.doc("data/users/" + uid + "/save").get();
+        if (snap.exists) {
+          const remote = JSON.parse(snap.data().json);
+          if (remote && remote.v === 1 && (remote.savedAt || 0) > (S.savedAt || 0) + 5000) {
+            S = Object.assign(freshState(), remote); applyOffline(); renderAll(); toast("Spielstand von einem anderen Gerät geladen.");
+          }
+        }
+      } catch {}
+      if (u.can) { const w = await u.can("data.write"); if (w === false) { writable = false; } }
+      cloudState = writable ? "live" : "readonly";
+      db.collection("leaderboard").orderBy("total", "desc").limit(30).onSnapshot(
+        s => { board = s.docs.map(x => ({ id: x.id, ...x.data() })); if (tab === "p-rang") renderBoard(); },
+        () => { cloudState = "offline"; if (tab === "p-rang") renderBoard(); }
+      );
+      pushCloud();
+      setInterval(pushCloud, 30000);
+    } catch { cloudState = "offline"; }
+    if (tab === "p-rang") renderBoard();
+  }
+
+  // ---------- Offline earnings & intro ----------
+  function applyOffline() {
+    const dt = Math.min(8 * 3600, Math.max(0, (now() - (S.lastSeen || now())) / 1000));
+    S.lastSeen = now();
+    S.nextEvent = Math.max(S.nextEvent, now() + 40000); S.nextGold = Math.max(S.nextGold, now() + 30000);
+    if (dt < 60 || !S.name) return;
+    const gain = baseCps() * multiplier(true) * dt * .5;
+    if (gain < 1) return;
+    earn(gain);
+    const h = Math.floor(dt / 3600), m = Math.floor((dt % 3600) / 60);
+    modal({ kicker: "WILLKOMMEN ZURÜCK", title: `Grüezi ${S.name}`, text: `Du warst ${h ? h + " Std. " : ""}${m} Min. weg. In der Zeit haben deine Leute weiterpoliert und die Dackel Eintritt bezahlt: CHF ${fmt(gain)}.`, acts: [{ label: "Einsacken" }] });
+  }
+  function intro() {
+    modal({
+      kicker: "EIN BRIEF VOM NOTAR", title: "Gidos Hydranten-Erbe",
+      text: "Gido hinterlässt dir 100 Hydranten. Sie stehen in Kisten in seinem Schopf in Münchwilen. Mach etwas daraus. Und schick vielleicht einen nach Berlin. Wer bist du?",
+      acts: [
+        { label: "Ich bin Andrin", run: () => setName("Andrin") },
+        { label: "Ich bin Filip", run: () => setName("Filip") },
+        { label: "Jemand anderes", run: () => setTimeout(askName, 50) }
+      ]
+    });
+  }
+  function askName() {
+    modal({ kicker: "NAME", title: "Wie heisst du?", input: "Dein Name", acts: [
+      { label: "Los geht's", keep: true, run: v => { v = (v || "").trim(); if (!v) { toast("Ohne Namen gibt's keine Hydranten."); return; } closeModal(); setName(v.slice(0, 24)); } },
+      { label: "Zurück", run: () => setTimeout(intro, 50) }
+    ] });
+  }
+  function setName(n) {
+    S.name = n; S.lastSeen = now(); S.nextEvent = now() + 45000; S.nextGold = now() + 40000;
+    saveLocal(); renderAll(); pushCloud();
+    toast(`Willkommen, ${n}. Tipp auf den Hydranten.`);
+  }
+
+  // ---------- Loop ----------
+  let last = performance.now(), hudT = 0, affT = 0;
+  function frame(t) {
+    const dt = Math.min(1, (t - last) / 1000); last = t;
+    if (S.name) earn(cps() * dt);
+    hudT += dt; affT += dt;
+    if (hudT > .1) { hudT = 0; renderHud(); }
+    if (affT > .4) { affT = 0; refreshAffordance(); maybeEvent(); maybeGold(); checkAch(); }
+    requestAnimationFrame(frame);
+  }
+  setInterval(saveLocal, 5000);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { saveLocal(); pushCloud(); } else applyOffline(); });
+
+  function start(data) {
+    const hot = data && data.state;
+    const local = hot || loadLocal();
+    if (local) { S = Object.assign(freshState(), local); if (!hot) applyOffline(); }
+    renderAll();
+    if (!S.name) intro();
+    requestAnimationFrame(frame);
+    initCloud();
+  }
+  const hot = window.claude && window.claude.hot;
+  if (hot && hot.snapshot) hot.snapshot(() => ({ state: S }));
+  if (hot && hot.ready) hot.ready(start); else start((hot && hot.data) || {});
+})();
+</script>
+
+</body>
+</html>
