@@ -102,7 +102,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--water); out
 /* Panels */
 .panels { flex: 1; min-height: 0; position: relative; }
 .panel {
-  position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior-x: none; touch-action: pan-y; -webkit-overflow-scrolling: touch;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 24px;
   display: flex; flex-direction: column; gap: 12px;
 }
@@ -138,6 +138,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 #p-hof[data-tier="3"] .rays, #p-hof[data-tier="4"] .rays { opacity: 1; }
 #p-hof[data-tier="4"] .rays { animation-duration: 18s; }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* the rays are wider than the phone: clip them sideways so the yard never scrolls horizontally */
+@supports (overflow: clip) { .tapzone { overflow-x: clip; } }
 .big-hydrant .ov { display: none; }
 .look-r .ov-r, .look-a .ov-a, .look-b .ov-b, .look-D .ov-D, .look-D .horns, .look-U .ov-U,
 .look-g .sparkles, .look-G .sparkles, .look-D .sparkles { display: inline; }
