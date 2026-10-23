@@ -126,7 +126,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .tapzone {
   position: relative; width: 100%; display: grid; place-items: center; padding-block: 4px; isolation: isolate;
   /* hydrant width follows the screen height so the facts below stay visible on small phones */
-  --hw: min(44vw, 190px, 20vh); --hw: min(44vw, 190px, 20svh);
+  --hw: min(44vw, 180px, 18vh); --hw: min(44vw, 180px, 18svh);
 }
 .rays {
   position: absolute; z-index: -1; left: 50%; top: 45%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
@@ -164,7 +164,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .tap-hint { font-size: 13px; color: var(--muted); }
 @media (max-height: 620px) {
   .yard-title { display: none; }
-  .tapzone { --hw: min(44vw, 190px, 16vh); --hw: min(44vw, 190px, 16svh); }
+  .tapzone { --hw: min(44vw, 180px, 14vh); --hw: min(44vw, 180px, 14svh); }
   #p-hof { padding-block: 10px 12px; }
 }
 .tap-hint b { font-family: var(--f-num); color: var(--ink); }
@@ -287,6 +287,66 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .ach span { font-size: 12px; color: var(--muted); line-height: 1.35; }
 .ach.on { opacity: 1; background: var(--surface); border: 1px solid var(--r-G); }
 .ach.on b { color: var(--r-G); }
+
+/* Quest-Karte im Hof */
+.quest { width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--red); border-radius: 10px; padding: 7px 10px; display: grid; grid-template-columns: 1fr auto; gap: 1px 8px; align-items: baseline; }
+.quest .q-k { grid-column: 1 / -1; font-family: var(--f-display); font-size: 10px; letter-spacing: .08em; color: var(--red); }
+.quest .q-t { font-weight: 700; font-size: 14px; min-width: 0; }
+.quest .q-n { font-family: var(--f-num); font-size: 12px; color: var(--muted); }
+.quest .q-s { grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.quest .q-bar { grid-column: 1 / -1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin-top: 4px; }
+.quest .q-bar i { display: block; height: 100%; background: var(--red); width: 0; transition: width .3s; }
+.qlog { display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.4; }
+.qlog .done { color: var(--muted); text-decoration: line-through; }
+.qlog .cur { font-weight: 700; }
+
+/* Mini-Spiele */
+.mg-bg { position: fixed; inset: 0; z-index: 45; background: rgba(8,10,14,.8); display: grid; place-items: center; padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px)); overflow-y: auto; -webkit-touch-callout: none; }
+.mg { width: 100%; max-width: 420px; background: var(--surface); color: var(--ink); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; border-top: 6px solid var(--red); box-shadow: var(--shadow); }
+.mg .kicker { font-family: var(--f-display); font-size: 11px; letter-spacing: .08em; color: var(--red); }
+.mg-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--f-num); font-size: 14px; }
+.mg-head h2 { font-size: 18px; }
+.mg .sub { font-size: 13px; }
+.fire-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; touch-action: manipulation; }
+.house { position: relative; aspect-ratio: 1; border: 0; border-radius: 10px; background: var(--surface-2); padding: 0; display: grid; place-items: center; overflow: hidden; transition: background .2s; }
+.house svg { width: 62%; height: 62%; color: var(--muted); }
+.house .flame { position: absolute; left: 12%; right: 12%; bottom: 6%; height: 88%; border-radius: 50% 50% 42% 42% / 62% 62% 38% 38%; background: radial-gradient(circle at 50% 72%, #fff6b0 0 14%, #ffb000 34%, #ff4b1f 58%, rgba(255,75,31,0) 72%); transform-origin: 50% 100%; transform: scale(0); pointer-events: none; }
+.house.burning .flame { transform: scale(calc(.25 + var(--lvl, 0) * .85)); animation: flicker .18s infinite alternate; }
+.house.burning { background: color-mix(in srgb, #ff4b1f calc(var(--lvl, 0) * 35%), var(--surface-2)); }
+.house.saved { background: color-mix(in srgb, var(--water) 45%, var(--surface-2)); }
+.house.burnt { background: #2b2420; }
+.house.burnt svg { color: #0c0a09; }
+@keyframes flicker { from { filter: brightness(1); } to { filter: brightness(1.3) saturate(1.2); } }
+.lock { width: min(56vw, 210px); align-self: center; }
+.lk-ring { fill: var(--surface-2); stroke: var(--line); stroke-width: 4; }
+.lk-plate { fill: #b39b62; stroke: #6e5a2c; stroke-width: 3; }
+.lk-hole { fill: #241a0e; }
+.lk-pick { stroke: #8f99a5; stroke-width: 5; stroke-linecap: round; }
+#lk-plate, #lk-pick { transform-box: view-box; transform-origin: 100px 100px; }
+.lk-health { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.lk-health i { display: block; height: 100%; width: 100%; background: var(--good); transition: width .1s; }
+.mg input[type=range] { width: 100%; accent-color: var(--red); height: 32px; }
+.lk-msg { min-height: 1.3em; font-weight: 700; color: var(--red); text-align: center; font-size: 14px; }
+#lk-turn { touch-action: none; user-select: none; -webkit-user-select: none; }
+
+/* Tageszeit und Kalender im Hof */
+.sky { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.sky::before { content: ""; position: absolute; inset: 0; }
+#p-hof > :not(.sky) { position: relative; }
+#p-hof[data-phase="night"] { --bg: #0b1120; --ink: #e8edf5; --muted: #98a4b8; --surface: #151d33; --surface-2: #1c2541; --line: #28324f; color: var(--ink); }
+#p-hof[data-phase="night"] .sky { background-image: radial-gradient(1.5px 1.5px at 8% 10%, #fff, transparent), radial-gradient(1px 1px at 22% 26%, #fff, transparent), radial-gradient(1.5px 1.5px at 35% 6%, #fff, transparent), radial-gradient(1px 1px at 52% 18%, #fff, transparent), radial-gradient(1.5px 1.5px at 68% 9%, #fff, transparent), radial-gradient(1px 1px at 80% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 92% 14%, #fff, transparent), radial-gradient(1px 1px at 14% 40%, #fff, transparent), radial-gradient(1px 1px at 88% 44%, #fff, transparent), radial-gradient(1px 1px at 44% 36%, #fff, transparent); }
+#p-hof[data-phase="night"] .sky::after { content: ""; position: absolute; right: 10%; top: 4%; width: 30px; height: 30px; border-radius: 50%; box-shadow: -7px 4px 0 0 #f3e9c6; }
+#p-hof[data-phase="dusk"] .sky { background: linear-gradient(180deg, rgba(255,128,48,.28), rgba(255,128,48,0) 50%); }
+#p-hof[data-season="halloween"] .sky::before { background: linear-gradient(180deg, rgba(128,60,190,.32), rgba(240,120,0,.14) 45%, transparent 75%); }
+#p-hof[data-season="advent"] .sky::before { background-image: radial-gradient(2.5px 2.5px at 10% 20%, rgba(170,190,215,.95), transparent), radial-gradient(2px 2px at 30% 60%, rgba(170,190,215,.9), transparent), radial-gradient(3px 3px at 55% 35%, rgba(170,190,215,.95), transparent), radial-gradient(2px 2px at 75% 75%, rgba(170,190,215,.9), transparent), radial-gradient(2.5px 2.5px at 90% 10%, rgba(170,190,215,.95), transparent), radial-gradient(2px 2px at 45% 90%, rgba(170,190,215,.9), transparent); background-size: 140px 140px; animation: fall 9s linear infinite; }
+#p-hof[data-season="fasnacht"] .sky::before { background-image: radial-gradient(3px 3px at 10% 20%, #ff4b3e, transparent), radial-gradient(3px 3px at 40% 50%, #ffc933, transparent), radial-gradient(3px 3px at 70% 10%, #45c27a, transparent), radial-gradient(3px 3px at 85% 70%, #5ab3f0, transparent), radial-gradient(3px 3px at 25% 85%, #a58cf0, transparent); background-size: 140px 140px; animation: fall 7s linear infinite; }
+@keyframes fall { from { background-position: 0 0; } to { background-position: 20px 140px; } }
+.fw { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--fc); box-shadow: 0 -26px 0 var(--fc), 18px -18px 0 var(--fc), 26px 0 0 var(--fc), 18px 18px 0 var(--fc), 0 26px 0 var(--fc), -18px 18px 0 var(--fc), -26px 0 0 var(--fc), -18px -18px 0 var(--fc); opacity: 0; animation: burst 2.6s ease-out infinite; }
+@keyframes burst { 0% { transform: scale(.1); opacity: 0; } 12% { opacity: 1; } 70% { transform: scale(1.3); opacity: .85; } 100% { transform: scale(1.5); opacity: 0; } }
+.bat { position: absolute; font-size: 18px; animation: flap 3.2s ease-in-out infinite alternate; }
+@keyframes flap { from { transform: translate(0, 0) rotate(-8deg); } to { transform: translate(40px, 14px) rotate(8deg); } }
+.big-hydrant .sea { display: none; }
+#p-hof[data-season="advent"] .sea-hat, #p-hof[data-season="halloween"] .sea-pumpkin, #p-hof[data-season="august"] .sea-flag { display: inline; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
 }
@@ -337,7 +397,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
   <main class="panels">
     <section class="panel" id="p-hof" role="tabpanel" aria-labelledby="t-hof">
-      <div class="yard-title">GIDOS SCHOPF, 100 HYDRANTEN</div>
+      <div class="sky" id="sky" aria-hidden="true"></div>
+      <div class="yard-title" id="yard-title">GIDOS SCHOPF, 100 HYDRANTEN</div>
       <div class="tapzone" id="tapzone">
         <div class="rays" aria-hidden="true"></div>
         <button class="big-hydrant" id="big" aria-label="Hydrant polieren">
@@ -361,6 +422,9 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
               <rect x="26" y="140" width="68" height="18" rx="3" fill="#3b2a12" opacity=".85"/>
               <text x="60" y="153" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="8.5" fill="#ffd58a">TREFFPUNKT</text>
             </g>
+            <g class="sea sea-hat"><path d="M40 34 Q58 -6 88 14 L80 34 Z" fill="#d01f17"/><rect x="36" y="28" width="50" height="10" rx="5" fill="#fff"/><circle cx="89" cy="15" r="6" fill="#fff"/></g>
+            <g class="sea sea-pumpkin"><ellipse cx="18" cy="182" rx="15" ry="12" fill="#f07800"/><rect x="16" y="166" width="4" height="6" fill="#3f7a2a"/><path d="M10 180 l4 -5 l4 5 z M20 180 l4 -5 l4 5 z" fill="#2a1500"/><path d="M10 186 q8 6 16 0" stroke="#2a1500" stroke-width="2" fill="none"/></g>
+            <g class="sea sea-flag"><line x1="98" y1="96" x2="98" y2="40" stroke="#666" stroke-width="2"/><rect x="98" y="40" width="20" height="20" fill="#d52b1e"/><path d="M106 44h4v4h4v4h-4v4h-4v-4h-4v-4h4z" fill="#fff"/></g>
             <g class="ov sparkles" fill="#fff">
               <path class="sp" d="M22 50 l3 9 l9 3 l-9 3 l-3 9 l-3 -9 l-9 -3 l9 -3 z"/>
               <path class="sp" d="M98 66 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z"/>
@@ -372,8 +436,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         <div class="puddle"></div>
       </div>
       <div class="yard-name" id="yard-name"></div>
-      <div class="tap-hint">Tippen zum Polieren: <b id="tapval">1</b> pro Wisch</div>
       <div class="rankline" id="rankline"></div>
+      <button class="quest" id="quest" hidden><span class="q-k" id="q-k"></span><span class="q-t" id="q-t"></span><span class="q-n" id="q-n"></span><span class="q-s" id="q-s"></span><span class="q-bar"><i id="q-bar"></i></span></button>
       <div class="ticker" id="ticker"></div>
     </section>
 
@@ -546,9 +610,63 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["push", "Anschieben!", "Gidos Töff zum Laufen gebracht.", s => fc(s, "push") >= 1],
     ["saurer", "Mit Blaulicht", "Mit dem Saurer am Feuerwehrfest vorgefahren.", s => fc(s, "saurer") >= 1],
     ["mfk", "MFK bestanden", "Drei Töffs auf einmal durch die Kontrolle gebracht.", s => fc(s, "mfk") >= 1],
-    ["garage", "Gidos Fuhrpark", "10 Mal in Gidos Garage geholfen.", s => fc(s, "garage") >= 10]
+    ["garage", "Gidos Fuhrpark", "10 Mal in Gidos Garage geholfen.", s => fc(s, "garage") >= 10],
+    ["fire1", "Ausgerückt", "Einen Löscheinsatz gefahren.", s => fc(s, "fireRuns") >= 1],
+    ["fireP", "Brandmeister", "Ein Löscheinsatz ohne verlorenes Haus.", s => fc(s, "firePerfect") >= 1],
+    ["fire5", "Löschzug", "5 Löscheinsätze gefahren.", s => fc(s, "fireRuns") >= 5],
+    ["lock1", "Meisterdieb", "Ein Schloss geknackt.", s => fc(s, "locks") >= 1],
+    ["pick10", "Dietrich-Friedhof", "10 Dietriche abgebrochen.", s => fc(s, "picksBroken") >= 10],
+    ["q1", "Abenteurer", "Eine Quest abgeschlossen.", s => s.qdone >= 1],
+    ["qall", "Held von Himmelsrand", "Alle Quests abgeschlossen.", s => s.qdone >= QUESTS.length],
+    ["night5", "Nachteule", "5 Ereignisse in der Nacht erlebt.", s => fc(s, "night") >= 5],
+    ["season2", "Durchs Jahr", "2 Feiertags-Ereignisse erlebt.", s => fc(s, "seasons") >= 2],
+    ["storm", "Sturmmantel", "Im Bürgerkrieg für Ulfric.", s => s.side === "storm"],
+    ["empire", "Legionär", "Im Bürgerkrieg fürs Kaiserreich.", s => s.side === "empire"],
+    ["than", "Than von Weisslauf", "Vom Jarl zum Than ernannt.", s => fc(s, "c_than") >= 1],
+    ["tanaka", "Tanakas Respekt", "Herrn Tanaka viermal abgewiesen.", s => fc(s, "tanakaRespect") >= 1]
   ];
   const fc = (s, k) => (s.f && s.f[k]) || 0;
+
+  // Questketten: jeder Schritt misst einen Zähler, als Zuwachs seit Schrittbeginn (abs: absolut)
+  const QUESTS = [
+    { giver: "Gido", title: "Der verschwundene Vergaser", intro: "«Mein Oldtimer läuft nicht. Der Vergaser ist weg, irgendwo zwischen den Hydranten. Hilfst du mir?»", steps: [
+      { t: "Gidos Werkzeugkiste liegt irgendwo unter dem Polierzeug. Poliere {n} Mal.", v: s => s.taps, n: () => 150 },
+      { t: "Der Vergaser muss in einer Kiste sein. Öffne {n} Kisten.", v: s => s.revealed, n: () => 2 },
+      { t: "Der Mechaniker will Geld. Verdiene CHF {n}.", v: s => s.total, n: () => Math.max(500, cps() * 300) },
+      { t: "Allein geht's nicht. Stelle {n} Leute oder Anlagen ein.", v: s => genTotal(s), n: () => 3 }
+    ], reward: { text: "Der Oldtimer läuft! Gido fährt eine Ehrenrunde um den Schopf und hupt 47 Mal.", bonus: 5, cash: [500, 300] } },
+    { giver: "Die Graubärte", title: "Der Weg der Stimme", intro: "Ein Donnern hallt über Münchwilen: «HYDRANTEN-GEBORENER!» Die Graubärte rufen dich nach Hoch-Hrothgar.", steps: [
+      { t: "Steig die 7000 Stufen hoch. Poliere {n} Mal.", v: s => s.taps, n: () => 700 },
+      { t: "Lerne ein Wort der Macht, von Paarthurnax oder an einer Wortwand.", v: s => s.words, n: () => 1, abs: true },
+      { t: "Zeig, was du kannst: Erlebe {n} Ereignisse.", v: s => s.evCount, n: () => 4 }
+    ], reward: { text: "«Hydranten-Geborener!», rufen die Graubärte. Der Berg bebt, der Hydrant wackelt.", bonus: 5, tap: 20 } },
+    { giver: () => friend(), title: "Ein Paket nach Berlin", intro: () => `${friend()} schreibt: «Ich vermisse die Hydranten von Münchwilen. Schick mir einen. Bitte. Das Porto zahlst du.»`, steps: [
+      { t: "Spar fürs Porto: Verdiene CHF {n}.", v: s => s.total, n: () => porto() },
+      { t: "Schick einen Hydranten nach Berlin.", v: s => s.sentAll, n: () => 1 },
+      { t: "Der Hydrant muss in den 3. Stock. Feuere ihn an: Poliere {n} Mal.", v: s => s.taps, n: () => 300 }
+    ], reward: { text: "Der Hydrant steht jetzt im Wohnzimmer in Berlin. Die Mitbewohner sind «sprachlos».", bonus: 5, coupon: true } },
+    { giver: "Brynjolf", title: "Die Diebesgilde von Münchwilen", intro: "«Kumpel, ich hab da was im Auge: Gidos Notgroschen, versteckt in einer der Kisten. Bist du dabei?»", steps: [
+      { t: "Öffne {n} Kisten und such nach dem Versteck.", v: s => s.revealed, n: () => 5 },
+      { t: "Leise arbeiten: Verbessere den Polierlappen {n} Mal.", v: s => s.lappen, n: () => 3 },
+      { t: "Verdiene CHF {n}, ohne erwischt zu werden.", v: s => s.total, n: () => Math.max(2000, cps() * 900) }
+    ], reward: { text: "Der Notgroschen war ein Zettel: «Netter Versuch. Gido.» Brynjolf lacht und zahlt dich trotzdem aus.", bonus: 5, cash: [2000, 900] } },
+    { giver: "Der Kommandant", title: "Ehrenmitglied der Feuerwehr", intro: "«Die Feuerwehr Münchwilen sucht Ehrenmitglieder. Wer 100 Hydranten pflegt, ist schon fast dabei.»", steps: [
+      { t: "Lass dich einmal befördern.", v: s => s.rank, n: () => 1 },
+      { t: "Stelle insgesamt {n} pensionierte Feuerwehrleute ein.", v: s => s.gens.fw || 0, n: () => 25, abs: true },
+      { t: "Kaufe {n} Verbesserungen.", v: s => Object.keys(s.upg).length, n: () => 5 }
+    ], reward: { text: "Ehrenmitglied! Du bekommst einen Helm mit Hydranten-Aufkleber und am Feuerwehrfest gratis Bratwurst.", bonus: 10 } },
+    { giver: "Gido", title: "Gidos grosse Ausfahrt", intro: "«Ich will mit allen Töffs gleichzeitig ausfahren. Dafür brauche ich Platz in der Garage, Benzin und Fahrer.»", steps: [
+      { t: "Öffne {n} Kisten, damit Platz wird.", v: s => s.revealed, n: () => 15 },
+      { t: "Verdiene CHF {n} fürs Benzin.", v: s => s.total, n: () => Math.max(1e5, cps() * 1800) },
+      { t: "Schick {n} Hydranten nach Berlin. Weniger Hydranten, mehr Garage.", v: s => s.sentAll, n: () => 2 }
+    ], reward: { text: "23 Töffs, ein Seitenwagen, ein Gido. Die Ausfahrt geht bis zum Bodensee. Zwölf Töffs kommen zurück.", bonus: 10, cash: [1e5, 1800] } },
+    { giver: "Die Graubärte", title: "Der Weltenfresser", intro: "«Alduin ist zurück und will alle Hydranten der Welt verschlingen. Nur der vollständige Hydranten-Schrei kann ihn aufhalten.»", steps: [
+      { t: "Öffne alle 100 Kisten.", v: s => s.revealed, n: () => 100, abs: true },
+      { t: "Lerne alle drei Wörter des Hydranten-Schreis.", v: s => s.words, n: () => 3, abs: true },
+      { t: "Verdiene CHF {n} für die letzte Schlacht.", v: s => s.total, n: () => Math.max(1e9, cps() * 3600) }
+    ], reward: { text: "HYD RAN TEN! Alduin flüchtet nach Berlin. Filip meldet: Porto hat er keins bezahlt.", bonus: 20 } }
+  ];
+  const val = x => (typeof x === "function" ? x() : x);
   function has(s, k, n = 1) { let c = 0; for (let i = 0; i < s.revealed; i++) if (s.order[i] === k) c++; return c >= n; }
   function genTotal(s) { let c = 0; for (const g of GENS) c += s.gens[g.id] || 0; return c; }
   const LAPPEN = { cost: 20, grow: 1.6 };
@@ -631,6 +749,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       upg: {}, ach: {}, sentAll: 0, sold: 0, goldClicks: 0, evCount: 0, medals: 0, erbe: 1, runTotal: 0,
       rank: 0, skill: 15, atemCount: 0, shouts: 0, quests: 0, play: 0, bizIn: 0, bizWin: 0, bizLoss: 0, bonus: 0, buffLabel: "",
       lydia: false, sweetroll: 0, nazeem: 0, knee: 0, awake: 0, f: {}, words: 0,
+      quest: null, qdone: 0, qbonus: 0, questNext: 0, side: "", lydiaPlus: false,
       tapBuff: 1, tapBuffUntil: 0, incBuff: 1, incBuffUntil: 0,
       lastSeen: now(), savedAt: 0, nextEvent: now() + 45000, nextGold: now() + 50000, seen: {}
     };
@@ -656,7 +775,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   function multiplier(noBuff) {
     const t = now();
     const buff = !noBuff && t < S.incBuffUntil ? S.incBuff : 1;
-    return (1 + hydPct() / 100 + S.zwerg / 100 + S.bonus / 100) * (1 + 0.15 * S.sent) * (1 + achCount() / 100) * (1 + S.medals / 10) * buff;
+    return (1 + hydPct() / 100 + S.zwerg / 100 + S.bonus / 100 + S.qbonus / 100) * (1 + 0.15 * S.sent) * (1 + achCount() / 100) * (1 + S.medals / 10) * buff;
   }
   function genMult(id) { let m = 1; for (let t = 0; t < 5; t++) if (S.upg[id + t]) m *= 2; return m; }
   function baseCps() { let c = activeSlots().length * 0.5; for (const g of GENS) c += genCount(g.id) * g.cps * genMult(g.id); return c; }
@@ -665,7 +784,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   const medalsOnReset = () => Math.floor(Math.sqrt(S.runTotal / 1e8));
   function tapValue() {
     const buff = now() < S.tapBuffUntil ? S.tapBuff : 1;
-    return (1 + S.lappen + S.extraTap + (S.lydia ? 10 : 0) + cps() * 0.01 * S.lappen) * buff * (S.lydia ? 1.25 : 1);
+    return (1 + S.lappen + S.extraTap + (S.lydia ? 10 : 0) + cps() * 0.01 * S.lappen) * buff * (S.lydia ? (S.lydiaPlus ? 1.5 : 1.25) : 1);
   }
   function earn(x) { S.money += x; S.total += x; S.runTotal += x; }
   const isName = n => (S.name || "").toLowerCase() === n;
@@ -903,8 +1022,10 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const keep = { name: S.name, total: S.total, taps: S.taps, ach: S.ach, medals: S.medals + m, erbe: S.erbe + 1,
       sentAll: S.sentAll, sold: S.sold, goldClicks: S.goldClicks, evCount: S.evCount, rank: S.rank, skill: S.skill,
       atemCount: S.atemCount, shouts: S.shouts, quests: S.quests, play: S.play, bizIn: S.bizIn, bizWin: S.bizWin, bizLoss: S.bizLoss,
-      sweetroll: S.sweetroll, nazeem: S.nazeem, knee: S.knee, awake: S.awake, f: S.f, words: S.words };
+      sweetroll: S.sweetroll, nazeem: S.nazeem, knee: S.knee, awake: S.awake, f: S.f, words: S.words,
+      quest: S.quest, qdone: S.qdone, qbonus: S.qbonus, questNext: S.questNext, side: S.side };
     S = Object.assign(freshState(), keep);
+    if (S.quest) S.quest.base = QUESTS[S.quest.i].steps[S.quest.step].v(S);
     $("detail").hidden = true; yardKey = "";
     saveLocal();
     toast(`Erbschaft Nr. ${S.erbe} übernommen. ${S.medals} Medaillen glänzen an deiner Uniform.`);
@@ -965,6 +1086,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 
   // ---------- Events ----------
   const bump = k => { S.f = S.f || {}; S.f[k] = (S.f[k] || 0) + 1; };
+  const once = id => !fc(S, "c_" + id);
+  const mark = id => bump("c_" + id);
+  const seasonKey = () => "season_" + season() + new Date().getFullYear();
+  const seasonOnce = () => !fc(S, seasonKey());
+  const markSeason = () => { bump(seasonKey()); bump("seasons"); };
   const EVENTS = [
     { id: "dackel", ok: () => S.revealed > 0, run: () => {
       const n = 1 + Math.floor(Math.random() * Math.max(1, S.revealed));
@@ -984,7 +1110,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       const offer = Math.max(500, cps() * 300);
       modal({ kicker: "ANRUF AUS JAPAN", title: "Herr Tanaka aus Osaka", text: `«Ich biete CHF ${fmt(offer)} für einen rostigen Hydranten. Rost ist in Osaka sehr gefragt.»`, acts: [
         { label: `Verkaufen (+CHF ${fmt(offer)})`, run: () => { const i = activeSlots().find(i => S.order[i] === "r"); S.gone[i] = "sold"; S.sold++; earn(offer); toast("Arigato! Der Hydrant fliegt Business."); } },
-        { label: "Behalten. Gido wäre traurig.", run: () => toast("Herr Tanaka respektiert das. Er ruft nächste Woche wieder an.") }
+        { label: "Behalten. Gido wäre traurig.", run: () => { bump("tanakaNo"); toast("Herr Tanaka respektiert das. Er ruft nächste Woche wieder an."); } }
       ] });
     } },
     { id: "gido", ok: () => true, run: () => {
@@ -1014,7 +1140,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       const cost = Math.max(100, cps() * 60);
       modal({ kicker: "NACHBARSCHAFT", title: "Beschwerde von nebenan", text: "Frau Hugentobler findet, 100 Hydranten im Garten seien «kein Ersatz für einen anständigen Gartenzwerg».", acts: [
         { label: `Gartenzwerg aufstellen (CHF ${fmt(cost)}, +3 % dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.zwerg += 3; toast("Der Zwerg hält jetzt einen Mini-Schlauch. Frau Hugentobler ist besänftigt."); } else toast("Zu wenig Geld. Der Zwerg bleibt im Laden."); } },
-        { label: "Ignorieren", run: () => toast("Frau Hugentobler notiert sich das.") }
+        { label: "Ignorieren", run: () => { bump("zwergNo"); toast("Frau Hugentobler notiert sich das."); } }
       ] });
     } },
     { id: "atem", ok: () => S.taps > 20, run: () => {
@@ -1052,8 +1178,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     } },
     { id: "nazeem", ok: () => S.revealed >= 3, run: () => {
       modal({ kicker: "BESUCH AUS WEISSLAUF", title: "Nazeem", text: "Ein Mann in edlen Kleidern rümpft die Nase über deine Hydranten: «Kommst du oft in den Wolkenbezirk? Ach, was frage ich, natürlich nicht.»", acts: [
-        { label: "FUS RO DAH!", run: () => { S.nazeem++; S.shouts++; toast("Nazeem landet in Gidos Komposthaufen. Ganz Münchwilen applaudiert."); } },
-        { label: "Ihm einen Hydranten verkaufen", run: () => { const c = Math.max(30, cps() * 30); earn(c); S.nazeem++; toast(`Er zahlt CHF ${fmt(c)} und erzählt allen, er habe ihn selbst gefunden.`); } }
+        { label: "FUS RO DAH!", run: () => { S.nazeem++; S.shouts++; bump("nazeemFus"); toast("Nazeem landet in Gidos Komposthaufen. Ganz Münchwilen applaudiert."); } },
+        { label: "Ihm einen Hydranten verkaufen", run: () => { const c = Math.max(30, cps() * 30); earn(c); S.nazeem++; bump("nazeemSell"); toast(`Er zahlt CHF ${fmt(c)} und erzählt allen, er habe ihn selbst gefunden.`); } }
       ] });
     } },
     { id: "suessrolle", ok: () => S.taps > 50, run: () => {
@@ -1070,11 +1196,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       ] });
     } },
     // ----- Skyrim -----
-    { id: "ulfric", ok: () => S.revealed >= 5, run: () => {
+    { id: "ulfric", ok: () => S.revealed >= 5 && !S.side, run: () => {
       const cash = Math.max(40, cps() * 60);
       modal({ kicker: "BÜRGERKRIEG IN HIMMELSRAND", title: "Ulfric Sturmmantel", text: "Ulfric steht im Hof und will Gidos Hydranten für die Sturmmäntel beschlagnahmen. Ein kaiserlicher Legionär hinter ihm will sie auch.", acts: [
-        { label: `Für Himmelsrand! (Hydranten verleihen, +CHF ${fmt(cash)})`, run: () => { earn(cash); bump("ulfric"); toast("Die Sturmmäntel löschen Windhelm. Ulfric schickt eine Dankeskarte."); } },
-        { label: "Für das Kaiserreich! (Wischen ×4 für 30 s)", run: () => { S.tapBuff = 4; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; bump("empire"); toast("Die Legion poliert im Gleichschritt mit."); } }
+        { label: `Für Himmelsrand! (Hydranten verleihen, +CHF ${fmt(cash)})`, run: () => { earn(cash); bump("ulfric"); S.side = "storm"; toast("Die Sturmmäntel löschen Windhelm. Ulfric schickt eine Dankeskarte."); } },
+        { label: "Für das Kaiserreich! (Wischen ×4 für 30 s)", run: () => { S.tapBuff = 4; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; bump("empire"); S.side = "empire"; toast("Die Legion poliert im Gleichschritt mit."); } }
       ] });
     } },
     { id: "riese", ok: () => S.revealed >= 3, run: () => {
@@ -1090,7 +1216,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: "Alle wieder aufstapeln", run: () => { bump("cheese"); toast("Nach drei Stunden steht der Stapel. Ein Huhn stösst ihn um."); } }
       ] });
     } },
-    { id: "draugr", ok: () => S.revealed < 100 && S.revealed >= 2, run: () => {
+    { id: "draugr", when: "night", w: 2, ok: () => S.revealed < 100 && S.revealed >= 2, run: () => {
       modal({ kicker: "IM HINTERSTEN KISTENSTAPEL", title: "Ein Draugr", text: `Zwischen den Kisten rührt sich etwas. Ein Draugr bewacht Kiste Nr. ${S.revealed + 1} und hat sehr schlechte Laune.`, acts: [
         { label: "Kiste trotzdem öffnen (gratis)", run: () => { bump("draugr"); S.money += revealCost(); $("reveal").onclick(); toast("Der Draugr zerfällt zu Staub. Die Kiste gehört dir."); } },
         { label: "Leise rückwärts gehen", run: () => toast("Gute Entscheidung. Draugr hassen Hydranten-Polierer.") }
@@ -1132,11 +1258,11 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: "Brief verbrennen", run: () => toast("Ein Narr mit Schellenkappe kichert im Gebüsch.") }
       ] });
     } },
-    { id: "diebesgilde", ok: () => S.money >= 30, run: () => {
+    { id: "diebesgilde", when: "night", w: 2, ok: () => S.money >= 30, run: () => {
       const win = Math.max(80, cps() * 120), fine = Math.min(S.money, Math.max(30, cps() * 40));
       modal({ kicker: "IN DER TAVERNE", title: "Brynjolf", text: "Ein Rothaariger zwinkert dir zu: «Ein Hydrant pro Nacht aus dem Rathaus von Rifton. Keiner merkt's.»", acts: [
-        { label: "Mitmachen (Glücksspiel)", run: () => { bump("thief"); if (Math.random() < .5) { earn(win); toast(`Hat geklappt. Beute: CHF ${fmt(win)}. Gido darf das nie erfahren.`); } else { S.money -= fine; toast(`Erwischt! Busse CHF ${fmt(fine)}. Die Wache hat ein Auge auf dich.`); } } },
-        { label: "Ehrlich bleiben", run: () => toast("Brynjolf zuckt mit den Schultern. «Dein Verlust, Kumpel.»") }
+        { label: "Mitmachen (Glücksspiel)", run: () => { bump("thief"); if (Math.random() < .5) { earn(win); bump("thiefWin"); toast(`Hat geklappt. Beute: CHF ${fmt(win)}. Gido darf das nie erfahren.`); } else { S.money -= fine; toast(`Erwischt! Busse CHF ${fmt(fine)}. Die Wache hat ein Auge auf dich.`); } } },
+        { label: "Ehrlich bleiben", run: () => { bump("honest"); toast("Brynjolf zuckt mit den Schultern. «Dein Verlust, Kumpel.»"); } }
       ] });
     } },
     { id: "pferd", ok: () => !S.coupon, run: () => {
@@ -1177,21 +1303,21 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: "Vorschlagen, ihn zu verkaufen", run: () => { bump("garage"); toast("Gido schaut dich an, als hättest du einen Hydranten beleidigt."); } }
       ] });
     } },
-    { id: "saurer", ok: () => S.revealed >= 5, run: () => {
+    { id: "saurer", when: "day", ok: () => S.revealed >= 5, run: () => {
       const cash = Math.max(60, cps() * 120);
       modal({ kicker: "FEUERWEHRFEST MÜNCHWILEN", title: "Das alte Saurer-Feuerwehrauto", text: "In Gidos Sammlung steht ein Saurer-Feuerwehrauto von 1958. Die Feuerwehr fragt, ob ihr damit am Fest vorfahrt. Gefreiter und Soldat am Steuer.", acts: [
         { label: `Mit Blaulicht vorfahren (+CHF ${fmt(cash)})`, run: () => { earn(cash); bump("garage"); bump("saurer"); toast(`Ganz Münchwilen jubelt. ${friend() === "Filip" ? "Soldat Filip" : "Gefreiter Andrin"} darf die Sirene bedienen.`); } },
         { label: "Lieber zu Fuss", run: () => { bump("garage"); toast("Gido fährt allein. Mit Blaulicht. Bis nach Wil."); } }
       ] });
     } },
-    { id: "kaefer", ok: () => true, run: () => {
+    { id: "kaefer", when: "day", ok: () => true, run: () => {
       const cash = Math.max(40, cps() * 70);
       modal({ kicker: "ANFRAGE", title: "Oldtimer-Club Frauenfeld", text: "Ein Oldtimer-Club will Gidos VW Käfer von 1963 für eine Hochzeit mieten. Gido will dafür einen Hydranten als Kühlerfigur.", acts: [
         { label: `Vermieten (+CHF ${fmt(cash)})`, run: () => { earn(cash); bump("garage"); toast("Die Braut findet die Hydranten-Kühlerfigur «sehr speziell»."); } },
         { label: "Gido fragen", run: () => { bump("garage"); toast("Gido sagt nein. Dann ja. Dann nein. Der Club mietet ein anderes Auto."); } }
       ] });
     } },
-    { id: "ausfahrt", ok: () => S.revealed >= 3, run: () => {
+    { id: "ausfahrt", when: "day", ok: () => S.revealed >= 3, run: () => {
       modal({ kicker: "SONNTAG", title: "Töff-Ausfahrt", text: "Gido, Andrin und Filip auf drei alten Töffs, einer mit Seitenwagen voller Hydranten. Ziel: der Hörnli.", acts: [
         { label: "Mitfahren (Einkommen ×3 für 30 s)", run: () => { S.incBuff = 3; S.incBuffUntil = now() + 30000; bump("garage"); bump("ride"); toast("Nach vier Kilometern bleibt Filips Töff stehen. Trotzdem ein schöner Tag."); } },
         { label: "Lieber Skyrim spielen", run: () => { S.quests++; bump("garage"); toast("Gido fährt allein. Er schickt ein Foto vom Hörnli. Mit Hydrant im Seitenwagen."); } }
@@ -1208,6 +1334,160 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       modal({ kicker: "STRASSENVERKEHRSAMT", title: "MFK-Aufgebot", text: "Drei von Gidos Töffs müssen zur Motorfahrzeugkontrolle. Gleichzeitig. Am selben Morgen.", acts: [
         { label: `Gido helfen (CHF ${fmt(cost)}, +3 % Einkommen dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.bonus += 3; bump("garage"); bump("mfk"); toast("Alle drei bestanden! Der Experte will jetzt auch einen Hydranten."); } else toast("Zu wenig Geld. Gido fährt allein und verliert unterwegs den Auspuff."); } },
         { label: "Viel Glück wünschen", run: () => { bump("garage"); toast("Zwei bestehen. Der dritte verliert unterwegs den Auspuff."); } }
+      ] });
+    } },
+    // ----- Mini-Spiele -----
+    { id: "brand", ok: () => S.revealed >= 2, run: () => {
+      modal({ kicker: "ALARM", title: "Brand in Münchwilen!", text: "Die Sirene heult. In mehreren Häusern brennt es, und die Feuerwehr steht gerade im Schopf beim Polieren. Also ihr.", acts: [
+        { label: "Ausrücken! (Mini-Spiel, 30 s)", run: () => setTimeout(() => fireGame(), 60) },
+        { label: `${friend()} allein schicken`, run: () => toast(friend() === "Filip" ? "Soldat Filip fährt los. Aus Berlin. Er kommt nie an." : "Gefreiter Andrin löscht alles allein. Er wird es dir ewig vorhalten.") }
+      ] });
+    } },
+    { id: "truhe", ok: () => S.revealed >= 3, run: () => {
+      modal({ kicker: "IM SCHOPF", title: "Eine verschlossene Truhe", text: "Zwischen den Kisten steht eine alte Truhe mit Gidos Initialen. Schloss: Experte. Den Schlüssel hat Gido «irgendwo».", acts: [
+        { label: "Knacken (Mini-Spiel, 3 Dietriche)", run: () => setTimeout(() => lockGame(), 60) },
+        { label: "Gido fragen", run: () => toast("Gido sucht den Schlüssel. Er findet stattdessen einen Töff-Prospekt von 1978.") }
+      ] });
+    } },
+    // ----- Nacht -----
+    { id: "nachtwache", when: "night", w: 2, ok: () => S.revealed >= 2, run: () => {
+      modal({ kicker: "03:12 UHR", title: "Es rumpelt im Schopf", text: "Mitten in der Nacht macht sich eine Gestalt an einer verschlossenen Truhe zu schaffen. Als du das Licht anmachst, flieht sie. Die Truhe ist noch zu.", acts: [
+        { label: "Selber knacken (Mini-Spiel)", run: () => setTimeout(() => lockGame({ kicker: "NACHTS IM SCHOPF", title: "Die verlassene Truhe" }), 60) },
+        { label: "Wieder ins Bett", run: () => toast("Am Morgen ist die Truhe weg. Gido hat sie in die Garage gestellt, «zur Sicherheit».") }
+      ] });
+    } },
+    { id: "sternschnuppe", when: "night", ok: () => true, run: () => {
+      modal({ kicker: "ÜBER MÜNCHWILEN", title: "Eine Sternschnuppe", text: "Über dem Schopf zieht eine Sternschnuppe vorbei. Du darfst dir etwas wünschen.", acts: [
+        { label: "Mehr Geld (Einkommen ×3 für 60 s)", run: () => { S.incBuff = 3; S.incBuffUntil = now() + 60000; toast("Wunsch erfüllt. Fürs Erste."); } },
+        { label: "Stärkere Arme (+5 pro Wisch, für immer)", run: () => { S.extraTap += 5; toast("Deine Arme fühlen sich an wie die eines Nord."); } }
+      ] });
+    } },
+    // ----- Kalender -----
+    { id: "s_august", w: 4, ok: () => season() === "august" && seasonOnce(), run: () => { markSeason();
+      modal({ kicker: "1. AUGUST", title: "Bundesfeier-Grosseinsatz", text: "Höhenfeuer, Raketen, Vulkane. Die halbe Schweiz brennt ein bisschen, und die Feuerwehr Münchwilen ist im Grosseinsatz.", acts: [
+        { label: "Ausrücken! (Mini-Spiel, Belohnung ×3)", run: () => setTimeout(() => fireGame({ kicker: "1. AUGUST", title: "Raketen über Münchwilen", spawn: .9, secs: 35, mult: 3 }), 60) }
+      ] });
+    } },
+    { id: "s_silvester", w: 4, ok: () => season() === "silvester" && seasonOnce(), run: () => { markSeason();
+      modal({ kicker: "SILVESTER", title: "Gidos Raketen von 1987", text: "Gido hat in der Garage Raketen von 1987 gefunden und zündet alle gleichzeitig an. Neben den Töffs.", acts: [
+        { label: "Ausrücken! (Mini-Spiel, Belohnung ×3)", run: () => setTimeout(() => fireGame({ kicker: "SILVESTER", title: "Gidos Feuerwerk", spawn: .9, secs: 35, mult: 3 }), 60) }
+      ] });
+    } },
+    { id: "s_halloween", w: 4, ok: () => season() === "halloween" && seasonOnce(), run: () => { markSeason();
+      modal({ kicker: "HALLOWEEN", title: "Süsses oder Saures", text: "Ein Draugr in Verkleidung klopft an den Schopf. «Süsses oder Saures!» Er ist als Hydrant verkleidet.", acts: [
+        { label: "Süssrolle geben (+CHF)", run: () => { const c = Math.max(50, cps() * 90); earn(c); S.sweetroll++; toast(`Der Draugr freut sich und lässt CHF ${fmt(c)} in alten Münzen da.`); } },
+        { label: "Saures: FUS RO DAH!", run: () => { S.shouts++; S.incBuff = 3; S.incBuffUntil = now() + 45000; toast("Der Draugr fliegt in den Kürbisstapel. Einkommen ×3 für 45 s."); } }
+      ] });
+    } },
+    { id: "s_advent", w: 4, ok: () => season() === "advent" && seasonOnce(), run: () => { markSeason();
+      modal({ kicker: "ADVENT", title: "Der Samichlaus kommt", text: "Samichlaus und Schmutzli stehen im Schopf. «Bist du dieses Jahr brav gewesen?»", acts: [
+        { label: "Ja, sehr! (Grittibänz: Wischen ×5 für 30 s)", run: () => { S.tapBuff = 5; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; toast("Der Grittibänz hält einen Mini-Hydranten. Gido isst ihn trotzdem."); } },
+        { label: "Ehrlich: Ich habe eine Süssrolle geklaut", run: () => { const c = Math.max(50, cps() * 90); earn(c); toast(`Der Schmutzli schaut streng. Der Samichlaus lacht und schenkt dir Nüssli im Wert von CHF ${fmt(c)}.`); } }
+      ] });
+    } },
+    { id: "s_fasnacht", w: 4, ok: () => season() === "fasnacht" && seasonOnce(), run: () => { markSeason();
+      modal({ kicker: "FASNACHT", title: "Guggenmusik im Hof", text: "Eine Guggenmusik zieht durch Münchwilen und spielt vor dem Schopf. Auf Hydranten. Schief, aber laut.", acts: [
+        { label: "Mitfeiern (Einkommen ×3 für 60 s)", run: () => { S.incBuff = 3; S.incBuffUntil = now() + 60000; toast("Konfetti in jedem Hydranten. Für die nächsten zwei Jahre."); } }
+      ] });
+    } },
+    // ----- Folgen von Entscheidungen -----
+    { id: "sturm_dank", w: 3, ok: () => S.side === "storm" && once("sturm_dank"), run: () => { mark("sturm_dank");
+      modal({ kicker: "BOTE AUS WINDHELM", title: "Ulfric erinnert sich", text: "Ulfric hat nicht vergessen, dass du den Sturmmänteln Hydranten geliehen hast. Er schickt zehn Soldaten zum Polieren. Laut, aber gründlich.", acts: [
+        { label: "Willkommen! (+10 pro Wisch, für immer)", run: () => { S.extraTap += 10; toast("Die Sturmmäntel polieren und singen dabei Kampflieder."); } }
+      ] });
+    } },
+    { id: "legion_strafe", w: 3, ok: () => S.side === "storm" && !once("sturm_dank") && once("legion_strafe"), run: () => { mark("legion_strafe");
+      const fine = Math.max(50, Math.floor(S.money * .1));
+      modal({ kicker: "KAISERLICHE LEGION", title: "Ein Hauptmann im Hof", text: `Die Legion weiss, dass du Ulfric geholfen hast. Der Hauptmann verlangt CHF ${fmt(fine)} Strafe. Sonst nimmt er dich mit nach Helgen.`, acts: [
+        { label: "Zahlen", run: () => { S.money = Math.max(0, S.money - fine); toast("Der Hauptmann quittiert. Mit kaiserlichem Siegel."); } },
+        { label: "FUS RO DAH!", run: () => { S.shouts++; if (Math.random() < .5) toast("Der Hauptmann landet im Gartenteich. Die Legion zieht ab."); else { S.money = Math.max(0, S.money - fine * 2); toast(`Er war vorbereitet. Doppelte Strafe: CHF ${fmt(fine * 2)}.`); } } }
+      ] });
+    } },
+    { id: "legion_dank", w: 3, ok: () => S.side === "empire" && once("legion_dank"), run: () => { mark("legion_dank");
+      modal({ kicker: "AUS EINSAMKEIT", title: "General Tullius", text: "General Tullius verleiht dir für deine Treue zum Kaiserreich eine Medaille. Echtes Messing, passt perfekt zu den Gido-Medaillen.", acts: [
+        { label: "Anstecken (+1 Gido-Medaille, +10 %)", run: () => { S.medals++; toast("Eine Medaille mehr. +10 % Einkommen für immer."); } }
+      ] });
+    } },
+    { id: "sturm_rache", w: 3, ok: () => S.side === "empire" && !once("legion_dank") && once("sturm_rache"), run: () => { mark("sturm_rache");
+      modal({ kicker: "ÜBER NACHT", title: "Blaue Hydranten", text: "Die Sturmmäntel haben sich gerächt: Alle deine Hydranten sind über Nacht blau angemalt.", acts: [
+        { label: "Blau lassen (Einkommen ×2 für 60 s)", run: () => { S.incBuff = 2; S.incBuffUntil = now() + 60000; toast("Touristen fotografieren die «Sturmhydranten». Gute Einnahmen."); } },
+        { label: "Wieder rot streichen (Wischen ×4 für 30 s)", run: () => { S.tapBuff = 4; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; toast("Rot, wie es sich gehört. Gido nickt zufrieden."); } }
+      ] });
+    } },
+    { id: "tanaka_besuch", w: 3, ok: () => fc(S, "tanakaNo") >= 3 && once("tanaka"), run: () => { mark("tanaka");
+      const offer = Math.max(5000, cps() * 1500);
+      modal({ kicker: "BESUCH AUS OSAKA", title: "Herr Tanaka persönlich", text: `Dreimal hast du Nein gesagt. Jetzt steht Herr Tanaka selbst vor dem Schopf, mit Übersetzer und 40 Rosen. «CHF ${fmt(offer)}. Für einen einzigen Hydranten. Irgendeinen.»`, acts: [
+        { label: `Einen gewöhnlichen verkaufen (+CHF ${fmt(offer)})`, run: () => { const i = activeSlots().find(i => S.order[i] === "c" || S.order[i] === "r"); if (i !== undefined) S.gone[i] = "sold"; S.sold++; earn(offer); toast("Herr Tanaka weint vor Glück. Der Übersetzer auch."); } },
+        { label: "Wieder Nein (Tanakas Respekt: +10 % für immer)", run: () => { S.qbonus += 10; bump("tanakaRespect"); toast("Herr Tanaka verneigt sich tief. «Ehre.» Er wird dein grösster Fan."); } }
+      ] });
+    } },
+    { id: "tanaka_museum", w: 2, ok: () => S.sold >= 3 && once("tanaka_museum"), run: () => { mark("tanaka_museum");
+      modal({ kicker: "POST AUS JAPAN", title: "Ein Museum in Osaka", text: `Herr Tanaka hat in Osaka ein Hydranten-Museum eröffnet: «${S.name}-san und Gido-san». Lauter Hydranten aus Münchwilen.`, acts: [
+        { label: "Geehrt sein (+5 % für immer)", run: () => { S.qbonus += 5; toast("Ihr seid in Japan berühmt. Filip will sofort hinfliegen."); } }
+      ] });
+    } },
+    { id: "nazeem_klage", w: 3, ok: () => fc(S, "nazeemFus") >= 2 && once("nazeem_klage"), run: () => { mark("nazeem_klage");
+      const fine = Math.max(100, Math.floor(S.money * .15));
+      modal({ kicker: "GERICHT VON WEISSLAUF", title: "Nazeem klagt", text: `Zweimal im Kompost gelandet. Nazeem verklagt dich auf CHF ${fmt(fine)} Schadenersatz «für seine edlen Kleider».`, acts: [
+        { label: "Zahlen", run: () => { S.money = Math.max(0, S.money - fine); toast("Nazeem kauft sich neue Kleider. Noch edlere."); } },
+        S.lydia ? { label: "Lydia regelt das", run: () => toast("Lydia schaut Nazeem nur an. Er zieht die Klage zurück.") }
+                : { label: "Vor Gericht gehen", run: () => { if (Math.random() < .5) toast("Der Richter war auch schon im Kompost. Freispruch!"); else { S.money = Math.max(0, S.money - fine * 2); toast(`Verloren. Doppelt: CHF ${fmt(fine * 2)}.`); } } }
+      ] });
+    } },
+    { id: "nazeem_kunde", w: 3, ok: () => fc(S, "nazeemSell") >= 2 && once("nazeem_kunde"), run: () => { mark("nazeem_kunde");
+      modal({ kicker: "AUS DEM WOLKENBEZIRK", title: "Nazeem wirbt für dich", text: "Nazeem erzählt im ganzen Wolkenbezirk von seinen Hydranten. Jetzt wollen alle einen. Er fragt, ob du oft in den Wolkenbezirk kommst. Diesmal mit Einladung.", acts: [
+        { label: "Einladung annehmen (+5 % für immer)", run: () => { S.qbonus += 5; toast("Der Wolkenbezirk ist enttäuschend. Aber die Kundschaft zahlt gut."); } }
+      ] });
+    } },
+    { id: "kopfgeld", w: 3, ok: () => fc(S, "thiefWin") >= 2 && once("kopfgeld"), run: () => { mark("kopfgeld");
+      const b = Math.max(100, Math.floor(S.money * .15));
+      modal({ kicker: "STECKBRIEF", title: "Kopfgeld auf dich", text: `Die Wache von Rifton hat CHF ${fmt(b)} Kopfgeld auf dich ausgesetzt. Ein Wachmann steht im Hof: «Halt! Du hast das Gesetz gebrochen!»`, acts: [
+        { label: "Kopfgeld zahlen", run: () => { S.money = Math.max(0, S.money - b); toast("Bezahlt. Die gestohlenen Sachen sind auch weg."); } },
+        { label: "Atemschutz auf und unerkannt weiterpolieren", run: () => { S.tapBuff = 7; S.buffLabel = "Atemschutz"; S.tapBuffUntil = now() + 15000; S.atemCount++; showTab("p-hof"); toast("Mit Maske erkennt dich keiner. Die Wache sucht weiter."); } }
+      ] });
+    } },
+    { id: "than", w: 3, ok: () => fc(S, "honest") >= 2 && once("than"), run: () => { mark("than");
+      modal({ kicker: "AUS DRACHENSREICH", title: "Than von Weisslauf", text: "Der Jarl hat von deiner Ehrlichkeit gehört und ernennt dich zum Than von Weisslauf. Dazu gehört eine Hauskerlin. Sie seufzt schon.", acts: [
+        { label: "Titel annehmen (+5 % und Lydia)", run: () => { S.qbonus += 5; S.lydia = true; toast("Lydia: «Ich bin geschworen, deine Hydranten zu tragen.» Wieder."); } }
+      ] });
+    } },
+    { id: "db_auftrag", w: 3, ok: () => fc(S, "brotherhood") >= 1 && S.nazeem >= 1 && once("db_auftrag"), run: () => { mark("db_auftrag");
+      const c = Math.max(200, cps() * 200);
+      modal({ kicker: "EIN BRIEF MIT SCHWARZER HAND", title: "Ein Auftrag", text: "Die Bruderschaft hat einen Auftrag für dich: Nazeem soll nie wieder fragen, ob du oft in den Wolkenbezirk kommst.", acts: [
+        { label: `Annehmen (+CHF ${fmt(c)})`, run: () => { earn(c); toast("Du schenkst Nazeem eine Wohnung in Rifton. Er zieht um. Weisslauf atmet auf."); } },
+        { label: "Ablehnen", run: () => toast("Ein Narr mit Schellenkappe hinterlässt eine Notiz: «Wir behalten dich im Auge.»") }
+      ] });
+    } },
+    { id: "lydia_ferien", w: 2, ok: () => S.lydia && !S.lydiaPlus && S.taps > 400 && once("lydia_ferien"), run: () => { mark("lydia_ferien");
+      const c = Math.max(200, cps() * 120);
+      modal({ kicker: "LYDIA", title: "Lydia will Ferien", text: "Lydia stellt die Hydranten ab: «Ich bin geschworen, Eure Lasten zu tragen. Aber hundert Hydranten?» Sie will zwei Wochen nach Drachenfels.", acts: [
+        { label: `Ferien geben (CHF ${fmt(c)})`, run: () => { if (S.money >= c) { S.money -= c; S.lydiaPlus = true; toast("Lydia kommt erholt zurück und poliert motivierter. Wischen ×1.5."); } else { S.lydia = false; toast("Zu wenig Geld. Lydia geht trotzdem. Für immer."); } } },
+        { label: "«Trag weiter.»", run: () => { S.lydia = false; toast("Lydia kündigt. Die Hydranten stehen jetzt da, wo sie sie abgestellt hat. Mitten im Weg."); } }
+      ] });
+    } },
+    { id: "hugentobler", w: 3, ok: () => fc(S, "zwergNo") >= 2 && once("hugentobler"), run: () => { mark("hugentobler");
+      const fine = Math.max(80, Math.floor(S.money * .1));
+      modal({ kicker: "GEMEINDE MÜNCHWILEN", title: "Frau Hugentobler hat angerufen", text: `Ein Beamter misst die Hydranten im Garten aus. «Ohne Bewilligung. Das kostet CHF ${fmt(fine)}.»`, acts: [
+        { label: "Zahlen", run: () => { S.money = Math.max(0, S.money - fine); toast("Frau Hugentobler winkt zufrieden aus dem Fenster."); } },
+        { label: "Gido anrufen", run: () => { if (Math.random() < .6) toast("Gido kennt den Beamten vom Turnverein. Die Busse ist vergessen."); else { S.money = Math.max(0, S.money - fine * 2); toast(`Gido redet zwei Stunden mit ihm über Töffs. Die Busse verdoppelt sich: CHF ${fmt(fine * 2)}.`); } } }
+      ] });
+    } },
+    { id: "zwergverein", w: 3, ok: () => S.zwerg >= 15 && once("zwergverein"), run: () => { mark("zwergverein");
+      modal({ kicker: "POST", title: "Gartenzwerg-Verein Münchwilen", text: "Fünf Gartenzwerge mit Mini-Schlauch haben den Verein beeindruckt. Du wirst zum Präsidenten gewählt. Frau Hugentobler ist Vize.", acts: [
+        { label: "Wahl annehmen (+5 % für immer)", run: () => { S.qbonus += 5; toast("Erste Amtshandlung: Gartenzwerge dürfen jetzt Hydranten tragen."); } }
+      ] });
+    } },
+    { id: "investoren", w: 3, ok: () => S.bizWin >= 2 && once("investoren"), run: () => { mark("investoren");
+      const c = Math.max(500, cps() * 600);
+      modal({ kicker: "AUS ZÜRICH", title: "Investoren", text: "Zwei Ideen haben funktioniert. Jetzt wollen Investoren aus Zürich in die «Andrin & Filip Hydranten AG» einsteigen.", acts: [
+        { label: `Anteile verkaufen (+CHF ${fmt(c)})`, run: () => { earn(c); toast("Die Investoren wollen ein Pitch-Deck. Ihr schickt ein Foto vom Schopf."); } },
+        { label: "Unabhängig bleiben (+5 % für immer)", run: () => { S.qbonus += 5; toast("Gido ist stolz. «Nur keine Zürcher.»"); } }
+      ] });
+    } },
+    { id: "gido_sperre", w: 3, ok: () => S.bizLoss >= 3 && once("gido_sperre"), run: () => { mark("gido_sperre");
+      modal({ kicker: "ANRUF VON GIDO", title: "Gido hat von den Pleiten gehört", text: "«Drei Pleiten? Ab jetzt keine Geschäftsideen mehr vor dem Znüni.»", acts: [
+        { label: "Versprechen (Einkommen ×2 für 60 s)", run: () => { S.incBuff = 2; S.incBuffUntil = now() + 60000; toast("Ihr haltet euch dran. Etwa eine Stunde lang."); } },
+        { label: "Sofort eine neue Idee pitchen", run: () => setTimeout(() => EVENTS.find(e => e.id === "biz").run(), 60) }
       ] });
     } },
     { id: "biz", w: 3, ok: () => S.money >= 50, run: () => {
@@ -1251,18 +1531,22 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   ];
   let lastEvent = "";
   function maybeEvent() {
-    if (modalOpen || !S.name || now() < S.nextEvent) return;
+    if (modalOpen || mgOpen || !S.name || now() < S.nextEvent) return;
+    const night = phase() === "night";
     const pool = [];
-    for (const e of EVENTS) if (e.ok() && e.id !== lastEvent) for (let i = 0; i < (e.w || 1); i++) pool.push(e);
+    for (const e of EVENTS) {
+      if ((e.when === "night" && !night) || (e.when === "day" && night)) continue;
+      if (e.ok() && e.id !== lastEvent) for (let i = 0; i < (e.w || 1); i++) pool.push(e);
+    }
     S.nextEvent = now() + rand(60000, 120000);
     if (!pool.length) return;
-    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; e.run();
+    const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; if (night) bump("night"); e.run();
   }
 
   // ---------- Golden hydrant ----------
   let goldEl = null;
   function maybeGold() {
-    if (goldEl || !S.name || now() < S.nextGold) return;
+    if (goldEl || mgOpen || !S.name || now() < S.nextGold) return;
     S.nextGold = now() + rand(45000, 120000);
     goldEl = document.createElement("button"); goldEl.className = "gold"; goldEl.setAttribute("aria-label", "Goldener Hydrant, schnell antippen");
     goldEl.innerHTML = `<svg><use href="#hy"/></svg>`;
@@ -1280,6 +1564,231 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const me = goldEl; setTimeout(() => { if (goldEl === me) { me.remove(); goldEl = null; } }, 9000);
   }
 
+  // ---------- Mini-Spiel: Löscheinsatz ----------
+  let mgOpen = false;
+  const HOUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-5H9v5H3z"/></svg>';
+  function fireGame(opt = {}) {
+    const secs = opt.secs || 30, mult = opt.mult || 1;
+    mgOpen = true;
+    const bg = document.createElement("div"); bg.className = "mg-bg";
+    bg.innerHTML = `<div class="mg" role="dialog" aria-modal="true">
+      <div class="kicker">${esc(opt.kicker || "ALARM")}</div>
+      <div class="mg-head"><h2>${esc(opt.title || "Brand in Münchwilen!")}</h2><span id="mg-time">${secs}s</span></div>
+      <p class="sub">Tipp auf die Flammen, bevor sie ein Haus erwischen. Brennende Häuser stecken die Nachbarn an.</p>
+      <div class="fire-board" id="fire-board">${Array.from({ length: 12 }, (_, i) => `<button class="house" data-i="${i}" aria-label="Haus ${i + 1}">${HOUSE}<span class="flame"></span></button>`).join("")}</div>
+      <div class="mg-head"><span>Gelöscht: <b id="mg-saved">0</b></span><span>Verloren: <b id="mg-lost">0</b></span></div>
+    </div>`;
+    document.body.appendChild(bg);
+    const cells = [...bg.querySelectorAll(".house")];
+    const lvl = new Array(12).fill(0), burnt = new Array(12).fill(false);
+    let t = 0, nextSpawn = .6, saved = 0, lost = 0, done = false;
+    const ignite = i => { lvl[i] = .05; cells[i].classList.add("burning"); };
+    const neighbours = i => [i - 4, i + 4, i % 4 ? i - 1 : -1, i % 4 < 3 ? i + 1 : -1].filter(j => j >= 0 && j < 12);
+    bg.querySelector("#fire-board").addEventListener("pointerdown", e => {
+      const c = e.target.closest(".house"); if (!c || done) return;
+      e.preventDefault();
+      const i = +c.dataset.i;
+      if (lvl[i] > 0) {
+        lvl[i] = 0; saved++; c.classList.remove("burning"); c.classList.add("saved");
+        setTimeout(() => c.classList.remove("saved"), 300); $("mg-saved").textContent = saved;
+      }
+    });
+    const tick = setInterval(() => {
+      t += .1; nextSpawn -= .1;
+      if (nextSpawn <= 0) {
+        const free = cells.map((_, i) => i).filter(i => !burnt[i] && lvl[i] === 0);
+        if (free.length) ignite(free[Math.floor(Math.random() * free.length)]);
+        nextSpawn = Math.max(.45, (opt.spawn || 1.2) - t * .02);
+      }
+      for (let i = 0; i < 12; i++) if (lvl[i] > 0) {
+        lvl[i] += .1 / (opt.burn || 3.2);
+        if (lvl[i] >= 1) {
+          lvl[i] = 0; burnt[i] = true; lost++;
+          cells[i].classList.remove("burning"); cells[i].classList.add("burnt"); $("mg-lost").textContent = lost;
+          const n = neighbours(i).filter(j => !burnt[j] && lvl[j] === 0);
+          if (n.length) ignite(n[Math.floor(Math.random() * n.length)]);
+        }
+      }
+      cells.forEach((c, i) => c.style.setProperty("--lvl", lvl[i].toFixed(2)));
+      $("mg-time").textContent = Math.max(0, Math.ceil(secs - t)) + "s";
+      if (t >= secs || burnt.every(Boolean)) finish();
+    }, 100);
+    function finish() {
+      if (done) return;
+      done = true; clearInterval(tick); bg.remove(); mgOpen = false;
+      bump("fireRuns"); if (lost === 0 && saved > 0) bump("firePerfect");
+      const reward = Math.max(30, cps() * 6) * saved * (lost === 0 ? 2 : 1) * mult;
+      earn(reward);
+      const verdict = lost === 0 ? "Kein einziges Haus verloren. Der Kommandant salutiert."
+        : lost <= 2 ? "Ein paar Dächer sind schwarz, aber Münchwilen steht."
+        : lost <= 5 ? "Na ja. Gido hat schon besser gelöscht. Mit dem Gartenschlauch."
+        : "Halb Münchwilen ist verkohlt. Filip fragt, ob er die Versicherung anrufen soll.";
+      modal({ kicker: "EINSATZBERICHT", title: lost === 0 ? "Brand aus!" : "Einsatz beendet", text: `${saved} Brände gelöscht, ${lost} Häuser verloren. ${verdict} ${saved ? `Die Gemeinde zahlt CHF ${fmt(reward)}.` : "Die Gemeinde schickt eine Rechnung. Gido bezahlt sie, murrend."}`, acts: [{ label: "Zurück in den Schopf" }] });
+      renderAll();
+    }
+  }
+
+  // ---------- Mini-Spiel: Schlossknacken ----------
+  function lockGame(opt = {}) {
+    mgOpen = true;
+    const sweet = opt.sweet ?? rand(20, 160);
+    let picks = 3, health = 1, rot = 0, holding = false, done = false;
+    const bg = document.createElement("div"); bg.className = "mg-bg";
+    bg.innerHTML = `<div class="mg" role="dialog" aria-modal="true">
+      <div class="kicker">${esc(opt.kicker || "SCHLOSS: EXPERTE")}</div>
+      <div class="mg-head"><h2>${esc(opt.title || "Verschlossene Truhe")}</h2><span id="lk-picks">Dietriche: 3</span></div>
+      <p class="sub">Stell den Dietrich mit dem Regler ein und halte «Drehen». Dreht sich das Schloss nur ein Stück, liegst du daneben. Klemmt es, loslassen, sonst bricht der Dietrich.</p>
+      <svg class="lock" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="92" class="lk-ring"/>
+        <g id="lk-plate"><circle cx="100" cy="100" r="54" class="lk-plate"/><path d="M100 76a12 12 0 0 1 7 22l5 26h-24l5-26a12 12 0 0 1 7-22z" class="lk-hole"/></g>
+        <g id="lk-pick"><line x1="100" y1="100" x2="100" y2="6" class="lk-pick"/></g>
+      </svg>
+      <div class="lk-health"><i id="lk-health"></i></div>
+      <div class="lk-msg" id="lk-msg"></div>
+      <input type="range" id="lk-angle" min="0" max="180" value="90" aria-label="Winkel des Dietrichs">
+      <button class="big-btn" id="lk-turn"><span>Halten zum Drehen</span><span class="price">⟳</span></button>
+      <button class="ghost" id="lk-quit">Aufgeben</button>
+    </div>`;
+    document.body.appendChild(bg);
+    const angleEl = $("lk-angle"), plate = $("lk-plate"), pick = $("lk-pick"), turn = $("lk-turn");
+    const press = e => { e.preventDefault(); holding = true; };
+    const release = () => { holding = false; };
+    turn.addEventListener("pointerdown", press);
+    ["pointerup", "pointercancel", "pointerleave"].forEach(ev => turn.addEventListener(ev, release));
+    turn.addEventListener("contextmenu", e => e.preventDefault());
+    turn.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") press(e); });
+    turn.addEventListener("keyup", release);
+    $("lk-quit").onclick = () => finish(false, true);
+    const loop = setInterval(() => {
+      const a = +angleEl.value;
+      const allowed = Math.max(0, Math.min(1, 1 - Math.max(0, Math.abs(a - sweet) - 7) / 45));
+      const maxRot = 90 * allowed;
+      let stuck = false;
+      if (holding) {
+        rot = Math.min(maxRot, rot + 4);
+        if (allowed >= 1 && rot >= 89) return finish(true);
+        if (rot >= maxRot - .5) {
+          stuck = true; health -= .03;
+          if (health <= 0) {
+            picks--; health = 1; rot = 0; holding = false; bump("picksBroken");
+            $("lk-msg").textContent = picks ? "Knack! Dietrich abgebrochen." : "";
+            $("lk-picks").textContent = `Dietriche: ${picks}`;
+            if (!picks) return finish(false);
+          }
+        }
+      } else rot = Math.max(0, rot - 8);
+      plate.style.transform = `rotate(${rot}deg)`;
+      pick.style.transform = `rotate(${a - 90 + (stuck ? rand(-3, 3) : 0)}deg)`;
+      $("lk-health").style.width = (health * 100).toFixed(0) + "%";
+    }, 30);
+    function finish(ok, quit) {
+      if (done) return;
+      done = true; clearInterval(loop); bg.remove(); mgOpen = false;
+      if (!ok) {
+        modal({ kicker: "SCHLOSS", title: quit ? "Aufgegeben" : "Alle Dietriche abgebrochen", text: "Die Truhe bleibt zu. Lydia seufzt. Gido sagt, den Schlüssel habe er sowieso irgendwo.", acts: [{ label: "Nächstes Mal" }] });
+        return;
+      }
+      bump("locks");
+      const loot = [
+        () => { const c = Math.max(200, cps() * 300); earn(c); return `Gidos Notgroschen: CHF ${fmt(c)}.`; },
+        () => { S.extraTap += 15; return "Ein Polierlappen aus Mammut-Elfenbein: +15 pro Wisch, für immer."; },
+        () => { S.bonus += 4; return "Eine Schatzkarte von Gidos Grossvater: +4 % Einkommen."; },
+        () => { const c = Math.max(revealCost(), cps() * 120); earn(c); return `Ein Beutel Septime. Gido wechselt sie in CHF ${fmt(c)}.`; }
+      ];
+      const text = loot[Math.floor(Math.random() * loot.length)]();
+      modal({ kicker: "KLICK!", title: "Schloss geknackt", text: `In der Truhe: ${text}`, acts: [{ label: "Einstecken" }] });
+      renderAll();
+    }
+  }
+
+  // ---------- Quests ----------
+  const questStep = () => { const q = QUESTS[S.quest.i]; return [q, q.steps[S.quest.step]]; };
+  function questProg() { const [, st] = questStep(); const v = st.v(S); return Math.max(0, Math.min(S.quest.need, st.abs ? v : v - S.quest.base)); }
+  function beginStep(i, step) { const st = QUESTS[i].steps[step]; S.quest = { i, step, base: st.v(S), need: Math.max(1, Math.round(st.n())) }; }
+  const fillNeed = t => t.replace("{n}", fmt(S.quest.need));
+  function checkQuest() {
+    if (!S.name || modalOpen || mgOpen) return;
+    if (!S.quest) {
+      if (S.qdone >= QUESTS.length || now() < (S.questNext || 0)) return;
+      beginStep(S.qdone, 0);
+      const q = QUESTS[S.qdone];
+      modal({ kicker: "NEUE QUEST · " + val(q.giver).toUpperCase(), title: q.title, text: `${val(q.intro)} Erstes Ziel: ${fillNeed(q.steps[0].t)}`, acts: [{ label: "Quest annehmen" }] });
+      return;
+    }
+    if (questProg() < S.quest.need) return;
+    const [q] = questStep();
+    if (S.quest.step + 1 < q.steps.length) {
+      beginStep(S.quest.i, S.quest.step + 1);
+      toast(`Quest-Ziel erreicht! Weiter: ${fillNeed(questStep()[1].t)}`);
+      return;
+    }
+    const r = q.reward;
+    const cash = r.cash ? Math.max(r.cash[0], cps() * r.cash[1]) : 0;
+    if (cash) earn(cash);
+    S.qbonus += r.bonus || 0;
+    if (r.tap) S.extraTap += r.tap;
+    if (r.coupon) S.coupon = true;
+    S.qdone++; S.quest = null; S.questNext = now() + 30000;
+    const gains = [cash ? "CHF " + fmt(cash) : "", r.bonus ? `+${r.bonus} % Einkommen für immer` : "", r.tap ? `+${r.tap} pro Wisch` : "", r.coupon ? "Berlin-Coupon −50 %" : ""].filter(Boolean).join(", ");
+    modal({ kicker: "QUEST ABGESCHLOSSEN", title: q.title, text: `${r.text} Belohnung: ${gains}.`, acts: [{ label: "Ruhm und Ehre" }] });
+  }
+  function renderQuest() {
+    const el = $("quest");
+    if (!S.quest) { el.hidden = true; return; }
+    el.hidden = false;
+    const [q, st] = questStep(), p = questProg(), n = S.quest.need;
+    $("q-k").textContent = `QUEST · ${val(q.giver)} · Ziel ${S.quest.step + 1}/${q.steps.length}`;
+    $("q-t").textContent = q.title;
+    $("q-n").textContent = `${fmt(p)} / ${fmt(n)}`;
+    $("q-s").textContent = fillNeed(st.t);
+    $("q-bar").style.width = (100 * p / n).toFixed(1) + "%";
+  }
+  $("quest").onclick = () => {
+    if (!S.quest) return;
+    const [q] = questStep();
+    const steps = q.steps.map((st, k) => k < S.quest.step ? `<div class="done">✓ ${esc(st.t.replace("{n}", "…"))}</div>`
+      : k === S.quest.step ? `<div class="cur">▶ ${esc(fillNeed(st.t))}</div>` : `<div>· ${esc(st.t.replace("{n}", "…"))}</div>`).join("");
+    modal({ kicker: `QUEST ${S.qdone + 1} VON ${QUESTS.length} · ${val(q.giver).toUpperCase()}`, title: q.title, html: `<p>${esc(val(q.intro))}</p><div class="qlog">${steps}</div>`, acts: [{ label: "Weiter polieren" }] });
+  };
+
+  // ---------- Tageszeit & Kalender ----------
+  let phaseOverride = null, seasonOverride = null;
+  function phase() {
+    if (phaseOverride) return phaseOverride;
+    const h = new Date().getHours();
+    return h >= 21 || h < 6 ? "night" : h >= 18 ? "dusk" : "day";
+  }
+  function season() {
+    if (seasonOverride !== null) return seasonOverride;
+    const d = new Date(), m = d.getMonth() + 1, day = d.getDate();
+    if ((m === 7 && day === 31) || (m === 8 && day === 1)) return "august";
+    if ((m === 12 && day === 31) || (m === 1 && day === 1)) return "silvester";
+    if ((m === 10 && day >= 24) || (m === 11 && day === 1)) return "halloween";
+    if (m === 12 && day <= 26) return "advent";
+    if (m === 2) return "fasnacht";
+    return "";
+  }
+  const SEASON_TITLE = { august: "1. AUGUST IM SCHOPF", silvester: "SILVESTER IM SCHOPF", halloween: "HALLOWEEN IM SCHOPF", advent: "ADVENT IM SCHOPF", fasnacht: "FASNACHT IM SCHOPF" };
+  let envKey = "";
+  function renderEnv() {
+    const p = phase(), s = season(), key = p + s;
+    if (key === envKey) return;
+    envKey = key;
+    const hof = $("p-hof"); hof.dataset.phase = p; hof.dataset.season = s;
+    $("yard-title").textContent = SEASON_TITLE[s] || (p === "night" ? "GIDOS SCHOPF BEI NACHT" : p === "dusk" ? "GIDOS SCHOPF AM ABEND" : "GIDOS SCHOPF, 100 HYDRANTEN");
+    const sky = $("sky"); sky.innerHTML = "";
+    if (s === "august" || s === "silvester") ["#ff4b3e", "#ffc933", "#5ab3f0", "#ffffff", "#a58cf0", "#45c27a"].forEach(c => {
+      const f = document.createElement("span"); f.className = "fw";
+      f.style.left = rand(5, 90) + "%"; f.style.top = rand(3, 35) + "%"; f.style.animationDelay = rand(0, 2.4).toFixed(2) + "s"; f.style.setProperty("--fc", c);
+      sky.appendChild(f);
+    });
+    if (s === "halloween") for (let i = 0; i < 4; i++) {
+      const b = document.createElement("span"); b.className = "bat"; b.textContent = "🦇";
+      b.style.left = rand(5, 80) + "%"; b.style.top = rand(4, 30) + "%"; b.style.animationDelay = rand(0, 3).toFixed(2) + "s";
+      sky.appendChild(b);
+    }
+  }
+
   // ---------- HUD & render ----------
   function renderHud() {
     $("hud-money").innerHTML = `<small>CHF</small>${fmt(S.money)}`;
@@ -1293,9 +1802,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     $("hud-mult").textContent = `×${multiplier().toFixed(2)}`;
     const hb = $("hud-buffs"); hb.hidden = !buffs; if (hb.innerHTML !== buffs) hb.innerHTML = buffs;
     $("hud-who").textContent = S.name ? `${RANKS[rankIdx()][2]} ${S.name}` : "";
-    $("tapval").textContent = fmt(tapValue());
-    $("rankline").innerHTML = `<b>${esc(title())} ${esc(S.name || "")}</b> · Polieren ${polishSkill()} · ${S.revealed}/100 Kisten offen`;
-    renderYard();
+    $("rankline").innerHTML = `<b>${esc(title())} ${esc(S.name || "")}</b> · Polieren ${polishSkill()} · ${fmt(tapValue())} pro Wisch`;
+    renderYard(); renderQuest(); renderEnv();
   }
   let yardKey = "";
   function renderYard() {
@@ -1334,7 +1842,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const stats = [
       ["Insgesamt verdient", "CHF " + fmt(S.total)], ["Titel", title()], ["Erbschaft Nr.", S.erbe],
       ["Gido-Medaillen", S.medals], ["Kisten offen", S.revealed + "/100"], ["Nach Berlin verschickt", S.sentAll],
-      ["Bester Fund", best], ["Gewischt", grp(S.taps) + "×"]
+      ["Bester Fund", best], ["Gewischt", grp(S.taps) + "×"],
+      ["Quests", `${S.qdone}/${QUESTS.length}`], ["Bürgerkrieg", S.side === "storm" ? "Sturmmantel" : S.side === "empire" ? "Kaiserreich" : "neutral"]
     ];
     $("stats").innerHTML = stats.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");
     renderAch();
@@ -1410,7 +1919,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (S.name) { earn(cps() * dt); if (!document.hidden) S.play += dt; }
     hudT += dt; affT += dt;
     if (hudT > .1) { hudT = 0; renderHud(); }
-    if (affT > .4) { affT = 0; refreshAffordance(); maybeEvent(); maybeGold(); checkAch(); }
+    if (affT > .4) { affT = 0; refreshAffordance(); maybeEvent(); maybeGold(); checkAch(); checkQuest(); }
     requestAnimationFrame(frame);
   }
   setInterval(saveLocal, 5000);
@@ -1425,7 +1934,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     requestAnimationFrame(frame);
   }
   // test hook, only on a local dev server
-  if (location.hostname === "localhost") window.__hyd = { state: () => S, events: EVENTS, render: renderAll };
+  if (location.hostname === "localhost") window.__hyd = { state: () => S, events: EVENTS, render: renderAll, fireGame, lockGame, checkQuest,
+    setPhase: p => { phaseOverride = p; envKey = ""; renderEnv(); }, setSeason: v => { seasonOverride = v; envKey = ""; renderEnv(); } };
   const hot = window.claude && window.claude.hot;
   if (hot && hot.snapshot) hot.snapshot(() => ({ state: S }));
   if (hot && hot.ready) hot.ready(start); else start((hot && hot.data) || {});
