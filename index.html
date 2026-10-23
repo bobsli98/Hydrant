@@ -533,8 +533,22 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     ["play100", "Mehr als in Skyrim", "100 Stunden gespielt.", s => s.play >= 360000],
     ["biz10", "Serienunternehmer", "In 10 bescheuerte Ideen investiert.", s => s.bizIn >= 10],
     ["bizwin", "Einhorn", "Eine bescheuerte Idee hat funktioniert.", s => s.bizWin >= 1],
-    ["bizloss", "Bescheuert, aber konsequent", "5 Pleiten hingelegt.", s => s.bizLoss >= 5]
+    ["bizloss", "Bescheuert, aber konsequent", "5 Pleiten hingelegt.", s => s.bizLoss >= 5],
+    ["words", "HYD RAN TEN", "Alle drei Wörter des Hydranten-Schreis gelernt.", s => s.words >= 3],
+    ["giant", "Raumfahrtprogramm", "Einen Riesen angegriffen.", s => fc(s, "giant") >= 1],
+    ["draugr", "Grabräuber", "Einem Draugr eine Kiste abgenommen.", s => fc(s, "draugr") >= 1],
+    ["sheo", "Wahnsinnig gut", "Sheogorath getroffen.", s => fc(s, "sheo") >= 1],
+    ["chicken", "Das Huhn von Flusswald", "Ein Huhn gestreift. Nie wieder.", s => fc(s, "chicken") >= 1],
+    ["cheese", "Käse-Physik", "Käselaibe ins Rollen gebracht.", s => fc(s, "cheese") >= 1],
+    ["side", "Partei ergriffen", "Im Bürgerkrieg Stellung bezogen.", s => fc(s, "ulfric") + fc(s, "empire") >= 1],
+    ["alduin", "Weltenfresser verjagt", "Alduin vom Schopf vertrieben.", s => fc(s, "alduin") >= 1],
+    ["thief", "Diebesgilde", "Mit Brynjolf einen Bruch gewagt.", s => fc(s, "thief") >= 1],
+    ["push", "Anschieben!", "Gidos Töff zum Laufen gebracht.", s => fc(s, "push") >= 1],
+    ["saurer", "Mit Blaulicht", "Mit dem Saurer am Feuerwehrfest vorgefahren.", s => fc(s, "saurer") >= 1],
+    ["mfk", "MFK bestanden", "Drei Töffs auf einmal durch die Kontrolle gebracht.", s => fc(s, "mfk") >= 1],
+    ["garage", "Gidos Fuhrpark", "10 Mal in Gidos Garage geholfen.", s => fc(s, "garage") >= 10]
   ];
+  const fc = (s, k) => (s.f && s.f[k]) || 0;
   function has(s, k, n = 1) { let c = 0; for (let i = 0; i < s.revealed; i++) if (s.order[i] === k) c++; return c >= n; }
   function genTotal(s) { let c = 0; for (const g of GENS) c += s.gens[g.id] || 0; return c; }
   const LAPPEN = { cost: 20, grow: 1.6 };
@@ -563,7 +577,14 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     "Ein Hydrant ist wie ein Drachenwort: Wer ihn einmal gefunden hat, vergisst ihn nie.",
     "Wer 100 Hydranten tragen will, braucht keine Lydia. Nur einen sehr guten Rücken.",
     "Statistik: 9 von 10 Geschäftsideen von Andrin und Filip drehen sich um Hydranten.",
-    "Gido hat 100 Hydranten geerbt und euch die Verwaltung übergeben. Mutig von ihm."
+    "Gido hat 100 Hydranten geerbt und euch die Verwaltung übergeben. Mutig von ihm.",
+    "Gido hat mehr Töffs als Hydranten. Fast.",
+    "Ein Oldtimer ist ein Auto, das Gido noch nicht verkauft hat. Also alle.",
+    "Gido hat gefragt, ob man in Skyrim auch Töff fahren kann. Nur Pferde. Er war enttäuscht.",
+    "In Himmelsrand rollt Käse bergauf. In Münchwilen nur bergab.",
+    "Riesen schicken Leute ins All. Die Post schickt Hydranten nach Berlin. Beides ist teuer.",
+    "Auch ein Draugr hat mal klein angefangen. Mit einem Hydranten, vermutlich.",
+    "Ein Pferd in Himmelsrand klettert jede Wand hoch. Ein Hydrant in Münchwilen nicht."
   ];
 
   // Feuerwehr-Ränge statt Titel. Andrin war Gefreiter, Filip Soldat.
@@ -609,7 +630,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
       revealed: 0, gone: {}, sent: 0, coupon: false, zwerg: 0,
       upg: {}, ach: {}, sentAll: 0, sold: 0, goldClicks: 0, evCount: 0, medals: 0, erbe: 1, runTotal: 0,
       rank: 0, skill: 15, atemCount: 0, shouts: 0, quests: 0, play: 0, bizIn: 0, bizWin: 0, bizLoss: 0, bonus: 0, buffLabel: "",
-      lydia: false, sweetroll: 0, nazeem: 0, knee: 0, awake: 0,
+      lydia: false, sweetroll: 0, nazeem: 0, knee: 0, awake: 0, f: {}, words: 0,
       tapBuff: 1, tapBuffUntil: 0, incBuff: 1, incBuffUntil: 0,
       lastSeen: now(), savedAt: 0, nextEvent: now() + 45000, nextGold: now() + 50000, seen: {}
     };
@@ -830,7 +851,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   };
   function showDetail(i) {
     const k = S.order[i]; const d = $("detail");
-    const state = S.gone[i] === "berlin" ? " · steht jetzt in Berlin" : S.gone[i] === "sold" ? " · nach Osaka verkauft" : "";
+    const state = S.gone[i] === "berlin" ? " · steht jetzt in Berlin" : S.gone[i] === "sold" ? " · nach Osaka verkauft" : S.gone[i] === "traded" ? " · gegen ein Töff-Ersatzteil getauscht" : "";
     d.hidden = false;
     d.innerHTML = `${hySvg(rcol(k))}<div><b>${esc(hydName(i))}</b><br><span style="color:${rcol(k)};font-weight:700">${esc(RAR[k].n)}</span> · +${RAR[k].pct} % Einkommen${esc(state)}<br><span style="color:var(--muted)">${esc(k === "U" ? "Euer Treffpunkt. Unverkäuflich." : RAR[k].msg)}</span></div>`;
   }
@@ -882,7 +903,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     const keep = { name: S.name, total: S.total, taps: S.taps, ach: S.ach, medals: S.medals + m, erbe: S.erbe + 1,
       sentAll: S.sentAll, sold: S.sold, goldClicks: S.goldClicks, evCount: S.evCount, rank: S.rank, skill: S.skill,
       atemCount: S.atemCount, shouts: S.shouts, quests: S.quests, play: S.play, bizIn: S.bizIn, bizWin: S.bizWin, bizLoss: S.bizLoss,
-      sweetroll: S.sweetroll, nazeem: S.nazeem, knee: S.knee, awake: S.awake };
+      sweetroll: S.sweetroll, nazeem: S.nazeem, knee: S.knee, awake: S.awake, f: S.f, words: S.words };
     S = Object.assign(freshState(), keep);
     $("detail").hidden = true; yardKey = "";
     saveLocal();
@@ -943,6 +964,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
   }
 
   // ---------- Events ----------
+  const bump = k => { S.f = S.f || {}; S.f[k] = (S.f[k] || 0) + 1; };
   const EVENTS = [
     { id: "dackel", ok: () => S.revealed > 0, run: () => {
       const n = 1 + Math.floor(Math.random() * Math.max(1, S.revealed));
@@ -1047,6 +1069,147 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
         { label: `Weiterpolieren (+CHF ${fmt(cash)})`, run: () => { earn(cash); toast("Pflichtbewusst. Gido nickt anerkennend."); } }
       ] });
     } },
+    // ----- Skyrim -----
+    { id: "ulfric", ok: () => S.revealed >= 5, run: () => {
+      const cash = Math.max(40, cps() * 60);
+      modal({ kicker: "BÜRGERKRIEG IN HIMMELSRAND", title: "Ulfric Sturmmantel", text: "Ulfric steht im Hof und will Gidos Hydranten für die Sturmmäntel beschlagnahmen. Ein kaiserlicher Legionär hinter ihm will sie auch.", acts: [
+        { label: `Für Himmelsrand! (Hydranten verleihen, +CHF ${fmt(cash)})`, run: () => { earn(cash); bump("ulfric"); toast("Die Sturmmäntel löschen Windhelm. Ulfric schickt eine Dankeskarte."); } },
+        { label: "Für das Kaiserreich! (Wischen ×4 für 30 s)", run: () => { S.tapBuff = 4; S.buffLabel = ""; S.tapBuffUntil = now() + 30000; bump("empire"); toast("Die Legion poliert im Gleichschritt mit."); } }
+      ] });
+    } },
+    { id: "riese", ok: () => S.revealed >= 3, run: () => {
+      modal({ kicker: "BESUCH VOM HÜGEL", title: "Ein Riese", text: "Ein Riese stapft mit seinem Mammut vorbei und schaut deinen Hydranten an wie einen Zahnstocher.", acts: [
+        { label: "Ganz ruhig bleiben", run: () => { const c = Math.max(20, cps() * 20); earn(c); toast(`Das Mammut lässt Mammutkäse da. Verkauft für CHF ${fmt(c)}.`); } },
+        { label: "Mit dem Lappen angreifen", run: () => { bump("giant"); if (Math.random() < .5) { const loss = Math.floor(S.money * .1); S.money -= loss; toast(`Du fliegst in die Umlaufbahn. Schöne Aussicht auf Münchwilen. Unterwegs verloren: CHF ${fmt(loss)}.`); } else { const c = Math.max(60, cps() * 90); earn(c); toast(`Unglaublich: Der Riese flieht. Er lässt CHF ${fmt(c)} in Septimen zurück.`); } } }
+      ] });
+    } },
+    { id: "kaese", ok: () => true, run: () => {
+      const c = Math.max(15, cps() * 25);
+      modal({ kicker: "PHYSIK-ALARM", title: "300 Käselaibe", text: "Jemand hat 300 Käselaibe vor dem Schopf gestapelt. Du stösst aus Versehen einen an.", acts: [
+        { label: `Rollen lassen (+CHF ${fmt(c)})`, run: () => { earn(c); bump("cheese"); toast("Der Käse rollt bis nach Wil. Du verkaufst ihn dort am Markt."); } },
+        { label: "Alle wieder aufstapeln", run: () => { bump("cheese"); toast("Nach drei Stunden steht der Stapel. Ein Huhn stösst ihn um."); } }
+      ] });
+    } },
+    { id: "draugr", ok: () => S.revealed < 100 && S.revealed >= 2, run: () => {
+      modal({ kicker: "IM HINTERSTEN KISTENSTAPEL", title: "Ein Draugr", text: `Zwischen den Kisten rührt sich etwas. Ein Draugr bewacht Kiste Nr. ${S.revealed + 1} und hat sehr schlechte Laune.`, acts: [
+        { label: "Kiste trotzdem öffnen (gratis)", run: () => { bump("draugr"); S.money += revealCost(); $("reveal").onclick(); toast("Der Draugr zerfällt zu Staub. Die Kiste gehört dir."); } },
+        { label: "Leise rückwärts gehen", run: () => toast("Gute Entscheidung. Draugr hassen Hydranten-Polierer.") }
+      ] });
+    } },
+    { id: "sheogorath", ok: () => S.money >= 20, run: () => {
+      modal({ kicker: "EIN SELTSAMER GAST", title: "Sheogorath", text: "Ein Herr mit Käse in der einen und einer Gabel in der anderen Hand stellt sich als Gott des Wahnsinns vor. «Hydranten! Herrlich! Ich verändere einen. Oder alle. Oder dich.»", acts: [
+        { label: "«Ja, Herr Sheogorath.»", run: () => { bump("sheo"); const r = Math.random();
+          if (r < .33) { const c = Math.floor(S.money * .5); earn(c); toast(`Dein Geld hat sich vermehrt. Warum? Wahnsinn! +CHF ${fmt(c)}`); }
+          else if (r < .66) { S.tapBuff = 15; S.buffLabel = ""; S.tapBuffUntil = now() + 10000; toast("Deine Hände werden zu Schmetterlingen. Wischen ×15 für 10 s!"); }
+          else toast("Er verwandelt deinen Polierlappen in einen Fisch. Er poliert genau gleich gut."); } },
+        { label: "Höflich die Tür schliessen", run: () => toast("Er klopft. Er klopft weiter. Er klopft immer noch.") }
+      ] });
+    } },
+    { id: "paarthurnax", ok: () => S.words === 0 && S.revealed >= 10, run: () => {
+      modal({ kicker: "AUF DEM HALS DER WELT", title: "Paarthurnax", text: "Ein alter Drache bittet dich auf den Berg. «Hydranten-Hüter. Ich lehre dich ein Wort der Macht: HYD.»", acts: [
+        { label: "Das Wort lernen (+5 % Einkommen)", run: () => { S.words = 1; S.bonus += 5; toast("HYD. Du spürst die Macht der Hydranten. Noch zwei Wörter fehlen."); } },
+        { label: "Lieber Höhenangst haben", run: () => toast("Paarthurnax wartet. Drachen haben Zeit.") }
+      ] });
+    } },
+    { id: "wortwand", ok: () => S.words >= 1 && S.words < 3, run: () => {
+      const word = S.words === 1 ? "RAN" : "TEN";
+      modal({ kicker: "HINTER GIDOS SCHOPF", title: "Eine Wortwand", text: `In der Mauer hinter dem Schopf leuchten alte Drachenrunen. Ein Wort glüht: ${word}.`, acts: [
+        { label: "Das Wort aufnehmen (+5 % Einkommen)", run: () => { S.words++; S.bonus += 5; toast(S.words === 3 ? "HYD RAN TEN! Der Schrei ist vollständig. Ganz Münchwilen bebt." : `${word}. Noch ein Wort fehlt.`); } }
+      ] });
+    } },
+    { id: "krabbe", ok: () => S.revealed >= 4, run: () => {
+      const n = 1 + Math.floor(Math.random() * S.revealed);
+      const rent = Math.max(20, cps() * 30);
+      modal({ kicker: "UNTERMIETER", title: "Eine Schlammkrabbe", text: `In Hydrant Nr. ${n} hat sich eine Schlammkrabbe eingenistet. Grässliche Kreatur.`, acts: [
+        { label: "Rauswischen (Wischen ×3 für 20 s)", run: () => { S.tapBuff = 3; S.buffLabel = ""; S.tapBuffUntil = now() + 20000; bump("crab"); toast("Die Krabbe ist raus. Sie schaut sehr beleidigt."); } },
+        { label: `Miete verlangen (+CHF ${fmt(rent)})`, run: () => { earn(rent); bump("crab"); toast("Die Krabbe zahlt pünktlich. Besser als manche Mieter."); } }
+      ] });
+    } },
+    { id: "bruderschaft", ok: () => S.sentAll >= 1, run: () => {
+      const c = Math.max(50, cps() * 80);
+      modal({ kicker: "EIN BRIEF MIT SCHWARZER HAND", title: "Die Dunkle Bruderschaft", text: "«Wir wissen, was du getan hast. Du hast einen Hydranten nach Berlin geschickt. Wir sind beeindruckt.»", acts: [
+        { label: `Beitreten (+CHF ${fmt(c)})`, run: () => { earn(c); bump("brotherhood"); toast("Dein erster Auftrag: einen Hydranten polieren. Sehr gründlich."); } },
+        { label: "Brief verbrennen", run: () => toast("Ein Narr mit Schellenkappe kichert im Gebüsch.") }
+      ] });
+    } },
+    { id: "diebesgilde", ok: () => S.money >= 30, run: () => {
+      const win = Math.max(80, cps() * 120), fine = Math.min(S.money, Math.max(30, cps() * 40));
+      modal({ kicker: "IN DER TAVERNE", title: "Brynjolf", text: "Ein Rothaariger zwinkert dir zu: «Ein Hydrant pro Nacht aus dem Rathaus von Rifton. Keiner merkt's.»", acts: [
+        { label: "Mitmachen (Glücksspiel)", run: () => { bump("thief"); if (Math.random() < .5) { earn(win); toast(`Hat geklappt. Beute: CHF ${fmt(win)}. Gido darf das nie erfahren.`); } else { S.money -= fine; toast(`Erwischt! Busse CHF ${fmt(fine)}. Die Wache hat ein Auge auf dich.`); } } },
+        { label: "Ehrlich bleiben", run: () => toast("Brynjolf zuckt mit den Schultern. «Dein Verlust, Kumpel.»") }
+      ] });
+    } },
+    { id: "pferd", ok: () => !S.coupon, run: () => {
+      modal({ kicker: "HINTER DEM SCHOPF", title: "Ein Pferd an der Felswand", text: "Ein Pferd steht senkrecht an der Felswand hinter dem Schopf. Physik scheint es nicht zu kümmern. Es bietet an, einen Hydranten nach Berlin zu tragen.", acts: [
+        { label: "Angebot annehmen (nächstes Berlin-Paket −50 %)", run: () => { S.coupon = true; bump("horse"); toast("Das Pferd klettert senkrecht Richtung Norden. Berlin-Coupon aktiv!"); } },
+        { label: "Dem Pferd nicht trauen", run: () => toast("Das Pferd klettert beleidigt aufs Dach.") }
+      ] });
+    } },
+    { id: "huhn", ok: () => S.taps > 30, run: () => {
+      modal({ kicker: "ZWISCHENFALL IN FLUSSWALD", title: "Das Huhn", text: "Beim Polieren hast du aus Versehen ein Huhn gestreift. Das ganze Dorf kommt mit Mistgabeln auf dich zu.", acts: [
+        { label: "Rennen! (Wischen ×5 für 15 s)", run: () => { S.tapBuff = 5; S.buffLabel = ""; S.tapBuffUntil = now() + 15000; bump("chicken"); toast("Adrenalin! Du polierst auf der Flucht."); } },
+        { label: "Im Hydranten verstecken", run: () => { bump("chicken"); toast("Du passt nicht rein. Das Dorf verzeiht dir trotzdem, das Huhn nicht."); } }
+      ] });
+    } },
+    { id: "barde", ok: () => S.money >= 50, run: () => {
+      const cost = Math.max(50, cps() * 50);
+      modal({ kicker: "IN DER BANNERMARE", title: "Ein Barde", text: "Ein Barde aus Weisslauf will eine Ballade über deine Hydranten schreiben. «Sie wird in ganz Himmelsrand gesungen werden.»", acts: [
+        { label: `Bezahlen (CHF ${fmt(cost)}, +3 % Einkommen dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.bonus += 3; bump("bard"); toast("Die Ballade heisst «Der Hydrant von Münchwilen». Sie hat 47 Strophen."); } else toast("Zu wenig Geld. Der Barde singt trotzdem. Schief."); } },
+        { label: "Lieber nicht", run: () => toast("Er singt trotzdem. Schief.") }
+      ] });
+    } },
+    { id: "dwemer", ok: () => S.revealed >= 15, run: () => {
+      modal({ kicker: "IN GIDOS KELLER", title: "Eine Dwemer-Maschine", text: "Hinter dem Heizöltank steht eine uralte Zwergenmaschine aus Messing. Sie zischt und will offenbar Hydranten polieren.", acts: [
+        { label: "Einschalten (Einkommen ×2 für 2 Minuten)", run: () => { S.incBuff = 2; S.incBuffUntil = now() + 120000; bump("dwemer"); toast("Die Maschine poliert, solange niemand hinschaut."); } },
+        { label: "Lieber nicht anfassen", run: () => toast("Die Maschine zischt enttäuscht.") }
+      ] });
+    } },
+    { id: "alduin", ok: () => S.revealed >= 30, run: () => {
+      modal({ kicker: "DER WELTENFRESSER", title: "Alduin über Münchwilen", text: "Ein schwarzer Drache kreist über dem Schopf. Die Nachbarin ruft die Gemeinde an. Die Gemeinde ruft die Feuerwehr. Ihr seid die Feuerwehr.", acts: [
+        { label: "Alle zusammen: FUS RO DAH! (Einkommen ×5 für 20 s)", run: () => { S.incBuff = 5; S.incBuffUntil = now() + 20000; S.shouts++; bump("alduin"); toast(`Alduin fliegt davon. ${friend()} hat mitgeschrien, aus Berlin.`); } },
+        { label: "Atemschutz anziehen und abwarten", run: () => { S.tapBuff = 7; S.buffLabel = "Atemschutz"; S.tapBuffUntil = now() + 15000; S.atemCount++; showTab("p-hof"); toast("Drachenatem? Kein Problem mit 300 bar."); } }
+      ] });
+    } },
+    // ----- Gidos Oldtimer und Töffs -----
+    { id: "toff", ok: () => true, run: () => {
+      modal({ kicker: "GIDOS GARAGE", title: "Der Töff springt nicht an", text: "Gidos alte Condor springt nicht an. Gido steht seit zwei Stunden kickend daneben und flucht auf Thurgauerdeutsch.", acts: [
+        { label: "Anschieben helfen (Einkommen ×2 für 45 s)", run: () => { S.incBuff = 2; S.incBuffUntil = now() + 45000; bump("garage"); bump("push"); toast("Sie läuft! Gido dreht eine Runde ums Dorf und kommt nach zwei Stunden zurück."); } },
+        { label: "Vorschlagen, ihn zu verkaufen", run: () => { bump("garage"); toast("Gido schaut dich an, als hättest du einen Hydranten beleidigt."); } }
+      ] });
+    } },
+    { id: "saurer", ok: () => S.revealed >= 5, run: () => {
+      const cash = Math.max(60, cps() * 120);
+      modal({ kicker: "FEUERWEHRFEST MÜNCHWILEN", title: "Das alte Saurer-Feuerwehrauto", text: "In Gidos Sammlung steht ein Saurer-Feuerwehrauto von 1958. Die Feuerwehr fragt, ob ihr damit am Fest vorfahrt. Gefreiter und Soldat am Steuer.", acts: [
+        { label: `Mit Blaulicht vorfahren (+CHF ${fmt(cash)})`, run: () => { earn(cash); bump("garage"); bump("saurer"); toast(`Ganz Münchwilen jubelt. ${friend() === "Filip" ? "Soldat Filip" : "Gefreiter Andrin"} darf die Sirene bedienen.`); } },
+        { label: "Lieber zu Fuss", run: () => { bump("garage"); toast("Gido fährt allein. Mit Blaulicht. Bis nach Wil."); } }
+      ] });
+    } },
+    { id: "kaefer", ok: () => true, run: () => {
+      const cash = Math.max(40, cps() * 70);
+      modal({ kicker: "ANFRAGE", title: "Oldtimer-Club Frauenfeld", text: "Ein Oldtimer-Club will Gidos VW Käfer von 1963 für eine Hochzeit mieten. Gido will dafür einen Hydranten als Kühlerfigur.", acts: [
+        { label: `Vermieten (+CHF ${fmt(cash)})`, run: () => { earn(cash); bump("garage"); toast("Die Braut findet die Hydranten-Kühlerfigur «sehr speziell»."); } },
+        { label: "Gido fragen", run: () => { bump("garage"); toast("Gido sagt nein. Dann ja. Dann nein. Der Club mietet ein anderes Auto."); } }
+      ] });
+    } },
+    { id: "ausfahrt", ok: () => S.revealed >= 3, run: () => {
+      modal({ kicker: "SONNTAG", title: "Töff-Ausfahrt", text: "Gido, Andrin und Filip auf drei alten Töffs, einer mit Seitenwagen voller Hydranten. Ziel: der Hörnli.", acts: [
+        { label: "Mitfahren (Einkommen ×3 für 30 s)", run: () => { S.incBuff = 3; S.incBuffUntil = now() + 30000; bump("garage"); bump("ride"); toast("Nach vier Kilometern bleibt Filips Töff stehen. Trotzdem ein schöner Tag."); } },
+        { label: "Lieber Skyrim spielen", run: () => { S.quests++; bump("garage"); toast("Gido fährt allein. Er schickt ein Foto vom Hörnli. Mit Hydrant im Seitenwagen."); } }
+      ] });
+    } },
+    { id: "ersatzteil", ok: () => activeSlots().some(i => S.order[i] === "c"), run: () => {
+      modal({ kicker: "GIDOS GARAGE", title: "Das fehlende Ersatzteil", text: "Gido sucht seit Jahren einen Vergaser für seinen 1957er Oldtimer. Ein Händler im Internet will ihn gegen einen Hydranten tauschen.", acts: [
+        { label: "Einen gewöhnlichen Hydranten tauschen (+5 % Einkommen dauerhaft)", run: () => { const i = activeSlots().find(i => S.order[i] === "c"); S.gone[i] = "traded"; S.bonus += 5; bump("garage"); bump("trade"); toast("Der Oldtimer läuft wieder. Gido weint ein bisschen vor Freude."); } },
+        { label: "Kein Hydrant verlässt den Schopf", run: () => { bump("garage"); toast("Gido sucht weiter. Seit 1994."); } }
+      ] });
+    } },
+    { id: "mfk", ok: () => S.money >= 50, run: () => {
+      const cost = Math.max(50, cps() * 60);
+      modal({ kicker: "STRASSENVERKEHRSAMT", title: "MFK-Aufgebot", text: "Drei von Gidos Töffs müssen zur Motorfahrzeugkontrolle. Gleichzeitig. Am selben Morgen.", acts: [
+        { label: `Gido helfen (CHF ${fmt(cost)}, +3 % Einkommen dauerhaft)`, run: () => { if (S.money >= cost) { S.money -= cost; S.bonus += 3; bump("garage"); bump("mfk"); toast("Alle drei bestanden! Der Experte will jetzt auch einen Hydranten."); } else toast("Zu wenig Geld. Gido fährt allein und verliert unterwegs den Auspuff."); } },
+        { label: "Viel Glück wünschen", run: () => { bump("garage"); toast("Zwei bestehen. Der dritte verliert unterwegs den Auspuff."); } }
+      ] });
+    } },
     { id: "biz", w: 3, ok: () => S.money >= 50, run: () => {
       const [idea, win, lose] = BIZ[Math.floor(Math.random() * BIZ.length)];
       const by = Math.random() < .5 ? `${friend()} hat eine Idee` : "Du hast um 3 Uhr nachts eine Idee";
@@ -1091,7 +1254,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
     if (modalOpen || !S.name || now() < S.nextEvent) return;
     const pool = [];
     for (const e of EVENTS) if (e.ok() && e.id !== lastEvent) for (let i = 0; i < (e.w || 1); i++) pool.push(e);
-    S.nextEvent = now() + rand(70000, 140000);
+    S.nextEvent = now() + rand(60000, 120000);
     if (!pool.length) return;
     const e = pool[Math.floor(Math.random() * pool.length)]; lastEvent = e.id; S.evCount++; e.run();
   }
